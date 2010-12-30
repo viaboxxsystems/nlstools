@@ -13,12 +13,12 @@ Alle labels of GUI elements and messages in the applications are maintained in r
 This side describes, how to maintain the files and exchange them with employees, that are responsible for translation of new languages. Usually, these employees are freelancers that need a tool, that is easy to use for their translation tasks.
 
 
-h2. Add a new locale
+== Add a new locale ==
 
 Sometimes a new locale should be added and we need to prepare the resource bundles files beforehand.
 
 
-h3. How-to:
+=== How-to ===
 
   * Open a command window in directory nlstools/example/exampleProject
   * Invoke the ant-build target "addLocale" with the "newLocale" property
@@ -32,7 +32,7 @@ Example to add the Spanisch language to the main-default.xml file:
 
   * Check the xml-file, rename/replace as required and do the same for other xml-files of the project (refer to build.xml how to adapt the ant target)
 
-h2. File exchange with translator
+== File exchange with translator==
 
 Our experience shows, that freelancer translators find it difficult to deal with XML files or that the XML files they return are usually corrupted. Attention is also required when they are working with systems with a different charset.
 
@@ -41,7 +41,7 @@ We suggest to exchange Excel-Spreadsheets instead of XML, because
   * Excel-Spreadsheets can be enhanced, so that some parts of the sheets are read-only
   * The tools we are using to develop the software can also handle excel sheets, not only XML
 
-h3. How-to send a file to the translator:
+=== How-to send a file to the translator ===
 
   * Open a command window in directory nlstools/example/exampleProject
   * Invoke the ant-build target "convert-xml-to-excel"
@@ -53,7 +53,7 @@ ant convert-xml-to-excel
 
   * Send the Excel files (those ending with .xls) to the translator. You can set some cells to read-only before you send the files or you can delete the locales from the excel files, that you do not want to include.
 
-h3. How-to work with a file received from the translator:
+=== How-to work with a file received from the translator ===
 
   * Check the excel files whether the translator has provided a correct format
   * Copy the files to their positions (just besides their XML-counterpart, see Output  messages above)
@@ -64,17 +64,16 @@ h3. How-to work with a file received from the translator:
 ant -DnewLocale=es_ES compare-bundles
 }}}
 
-h4. *Option 1*
+==== Option 1 ====
 
-* IF you want to convert the whole Excel-file back to XML (and replace the XML files), invoke the ant-build target "convert-excel-to-xml"
-
+  * IF you want to convert the whole Excel-file back to XML (and replace the XML files), invoke the ant-build target "convert-excel-to-xml"
 
 
 {{{
 ant convert-excel-to-xml
 }}}
 
-h4. Option 2
+==== Option 2 ====
 
   * IF you want to merge specific locales from theExcel-file back into XML, invoke the ant-build target "merge-bundles
 
