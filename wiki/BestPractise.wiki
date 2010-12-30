@@ -67,7 +67,7 @@ ant convert-excel-to-xml
 
 ==== Option 2 ====
 
-  * IF you want to merge specific locales from theExcel-file back into XML, invoke the ant-build target "merge-bundles
+  * IF you want to merge specific locales from theExcel-file back into XML, invoke the ant-build target "merge-bundles"
 
 {{{
  ant -DnewLocale=es_ES merge-bundles
