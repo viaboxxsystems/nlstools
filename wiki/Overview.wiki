@@ -10,21 +10,11 @@ Tools (ant tasks) for I18n management of different locales and their translation
 = API documentation =
   * [http://nlstools.googlecode.com/svn/trunk/javadoc/nlstools/index.html JavaDoc]
 
-= NLS (manage resource bundles) = 
+= Ant-Tasks manage resource bundles = 
 
 Some [http://ant.apache.org/ ant]-tasks. You can use them with ant or maven2 (with maven-antrun-plugin).
+ * [ http://nlstools.googlecode.com/svn/trunk/javadoc/nlstools/com/google/nlstools/tasks/package-summary.html Ant-Tasks]
 
-  * [http://nlstools.googlecode.com/svn/trunk/javadoc/nlstools/com/google/nlstools/tasks/MessageBundleTask.html MessageBundleTask]
-  * [http://nlstools.googlecode.com/svn/trunk/javadoc/nlstools/com/google/nlstools/tasks/Property2XMLConverterTask.html Property2XMLConverterTask]
-  * [http://nlstools.googlecode.com/svn/trunk/javadoc/nlstools/com/google/nlstools/tasks/MergeLocaleTask.html MergeLocaleTask]
-  * [http://nlstools.googlecode.com/svn/trunk/javadoc/nlstools/com/google/nlstools/tasks/AddLocaleTask.html AddLocaleTask]
-  * [http://nlstools.googlecode.com/svn/trunk/javadoc/nlstools/com/google/nlstools/tasks/UpdateBundlesTask.html UpdateBundlesTask]
-  * [http://nlstools.googlecode.com/svn/trunk/javadoc/nlstools/com/google/nlstools/tasks/OptimizeBundlesTask.html OptimizeBundlesTask]
-  * [http://nlstools.googlecode.com/svn/trunk/javadoc/nlstools/com/google/nlstools/tasks/CopyBundlesTask.html CopyBundlesTask]
-  * [http://nlstools.googlecode.com/svn/trunk/javadoc/nlstools/com/google/nlstools/tasks/LocaleSanityCheckerTask.html LocaleSanityCheckerTask]
-  * [http://nlstools.googlecode.com/svn/trunk/javadoc/nlstools/com/google/nlstools/tasks/ChangeListingTask.html ChangeListingTask]
-  * [http://nlstools.googlecode.com/svn/trunk/javadoc/nlstools/com/google/nlstools/tasks/CompareLocalesTask.html CompareLocalesTask]
-  * [http://nlstools.googlecode.com/svn/trunk/javadoc/nlstools/com/google/nlstools/tasks/FillLocaleTask.html FillLocaleTask]
 
 == Example ==
 
