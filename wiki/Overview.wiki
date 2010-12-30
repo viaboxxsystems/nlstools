@@ -13,7 +13,7 @@ Tools (ant tasks) for I18n management of different locales and their translation
 = Ant-Tasks manage resource bundles = 
 
 Some [http://ant.apache.org/ ant]-tasks. You can use them with ant or maven2 (with maven-antrun-plugin).
- * [ http://nlstools.googlecode.com/svn/trunk/javadoc/nlstools/com/google/nlstools/tasks/package-summary.html Ant-Tasks]
+ * [http://nlstools.googlecode.com/svn/trunk/javadoc/nlstools/com/google/nlstools/tasks/package-summary.html Ant-Tasks]
 
 
 == Example ==
