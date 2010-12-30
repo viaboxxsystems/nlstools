@@ -1,5 +1,6 @@
 package com.google.nlstools.tasks;
 
+import com.google.nlstools.formats.BundleWriterExcel;
 import com.google.nlstools.formats.MBPersistencer;
 import com.google.nlstools.model.MBBundle;
 import com.google.nlstools.model.MBBundles;
@@ -11,30 +12,57 @@ import org.apache.tools.ant.Task;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.Writer;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.StringTokenizer;
+import java.util.*;
 
 /**
- * <br/>NEW (29.12.2010):<br/>
- * * Can handle XML and Excel files.<br/>
+ * Print different values between two bundles.
+ *
+ * @see com.google.nlstools.tasks.CompareLocalesTask
+ *      <br/>NEW (29.12.2010):<br/>
+ *      * Can handle XML and Excel files.<br/>
+ *      <p/>
+ *      <pre>
+ *                      * checkedLocales: optional (default: all locales). a ; separated list of locales to compare
+ *                      * originalXML: excel or xml file to read (the ORIGINAL file)
+ *                      * newXML: excel or xml file to read (the NEWER file)
+ *                      * ignoreMissingKeys: true/false (default: false)
+ *                     <pre>
+ *                     Example:
+ *                     <pre>
+ *                      <changeListing ignoreMissingKeys="true"
+ *                     checkedLocales="en_US;de_DE"
+ *                     originalXML="i18n/main-default.xml" newXML="i18n/main-default.xls" results="results.txt"/>
+ *                     </pre>
  */
 public class ChangeListingTask extends Task {
 
-    private File originalXML, newXML, result;
+    private File originalXML, newXML, results;
     private String checkedLocales;
-    private boolean ignoreMissingKeys = true;
+    private boolean ignoreMissingKeys = false;
 
     @Override
     public void execute() throws BuildException {
         List<String> diffs = new ArrayList<String>();
         try {
-            StringTokenizer locales = new StringTokenizer(checkedLocales, ";");
-            while (locales.hasMoreTokens()) {
-                String locale = locales.nextToken();
+            MBBundles originalBundles = MBPersistencer.loadFile(originalXML);
+            MBBundles newBundles = MBPersistencer.loadFile(newXML);
+
+            HashSet<String> locales = new HashSet();
+            if (checkedLocales == null || checkedLocales.length() == 0) {
+                for (MBBundle each : originalBundles.getBundles()) {
+                    locales.addAll(new BundleWriterExcel(each).getLocalesUsed());
+                }
+            } else {
+                StringTokenizer localesTokens = new StringTokenizer(checkedLocales, ";");
+                while (localesTokens.hasMoreTokens()) {
+                    String locale = localesTokens.nextToken();
+                    locales.add(locale);
+                }
+            }
+            List<String> localeOrdered = new ArrayList(locales);
+            Collections.sort(localeOrdered);
+            for (String locale : localeOrdered) {
                 log("Checking locale:" + locale);
-                MBBundles originalBundles = MBPersistencer.loadFile(originalXML);
-                MBBundles newBundles = MBPersistencer.loadFile(newXML);
                 for (MBBundle originalBundle : originalBundles.getBundles()) {
                     for (MBEntry originalEntry : originalBundle.getEntries()) {
                         MBText newText = newBundles == null ? null :
@@ -57,7 +85,7 @@ public class ChangeListingTask extends Task {
                     }
                 }
             }
-            Writer writer = new FileWriter(result);
+            Writer writer = new FileWriter(results);
             for (String diff : diffs) {
                 writer.append(diff).append("\n");
             }
@@ -83,12 +111,12 @@ public class ChangeListingTask extends Task {
         this.newXML = newXML;
     }
 
-    public File getResult() {
-        return result;
+    public File getResults() {
+        return results;
     }
 
-    public void setResult(File result) {
-        this.result = result;
+    public void setResults(File results) {
+        this.results = results;
     }
 
     public String getCheckedLocales() {
@@ -97,5 +125,13 @@ public class ChangeListingTask extends Task {
 
     public void setCheckedLocales(String checkedLocales) {
         this.checkedLocales = checkedLocales;
+    }
+
+    public boolean isIgnoreMissingKeys() {
+        return ignoreMissingKeys;
+    }
+
+    public void setIgnoreMissingKeys(boolean ignoreMissingKeys) {
+        this.ignoreMissingKeys = ignoreMissingKeys;
     }
 }
