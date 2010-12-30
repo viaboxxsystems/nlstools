@@ -20,19 +20,19 @@ import java.util.StringTokenizer;
  * @author Simon Tiffert
  */
 public class AddLocaleTask extends Task {
-    private String fromXML, toXML, locales;
+    private String from, to, locales;
 
     /**
      * The xml file with path name to read from
      *
      * @return
      */
-    public String getFromXML() {
-        return fromXML;
+    public String getFrom() {
+        return from;
     }
 
-    public void setFromXML(String fromXML) {
-        this.fromXML = fromXML;
+    public void setFrom(String from) {
+        this.from = from;
     }
 
     /**
@@ -40,12 +40,12 @@ public class AddLocaleTask extends Task {
      *
      * @return
      */
-    public String getToXML() {
-        return toXML;
+    public String getTo() {
+        return to;
     }
 
-    public void setToXML(String toXML) {
-        this.toXML = toXML;
+    public void setTo(String to) {
+        this.to = to;
     }
 
     /**
@@ -63,11 +63,11 @@ public class AddLocaleTask extends Task {
 
     public void execute() {
         MBBundles loadedBundles;
-        log("Reading Bundles from " + fromXML, Project.MSG_INFO);
+        log("Reading Bundles from " + from, Project.MSG_INFO);
         // try to load the bundles of the file
         try {
-            MBPersistencer persistencer = MBPersistencer.forFile(fromXML);
-            loadedBundles = persistencer.load(new File(fromXML));
+            MBPersistencer persistencer = MBPersistencer.forFile(from);
+            loadedBundles = persistencer.load(new File(from));
 
             // if bundles exist
             if (loadedBundles != null) {
@@ -100,8 +100,8 @@ public class AddLocaleTask extends Task {
             }
 
             // write the combined locales into a file
-            persistencer.save(loadedBundles, new File(toXML));
-            log("Writing to XML file " + toXML, Project.MSG_INFO);
+            persistencer.save(loadedBundles, new File(to));
+            log("Writing to XML file " + to, Project.MSG_INFO);
         } catch (Exception e) {
             throw new BuildException(e);
         }

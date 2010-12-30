@@ -27,7 +27,7 @@ import java.util.List;
  */
 public class LocaleSanityCheckerTask extends Task {
 
-    private File localeXML, results;
+    private File from, results;
     private String locale;
     private List<String> missingTranslations = new ArrayList<String>();
 
@@ -38,7 +38,7 @@ public class LocaleSanityCheckerTask extends Task {
         }
         MBBundles originalBundles;
         try {
-            originalBundles = MBPersistencer.loadFile(localeXML);
+            originalBundles = MBPersistencer.loadFile(from);
             for (MBBundle bundle : originalBundles.getBundles()) {
                 for (MBEntry entry : bundle.getEntries()) {
                     MBText text = entry.getText(locale);
@@ -83,12 +83,12 @@ public class LocaleSanityCheckerTask extends Task {
 
     }
 
-    public File getLocaleXML() {
-        return localeXML;
+    public File getFrom() {
+        return from;
     }
 
-    public void setLocaleXML(File localeXML) {
-        this.localeXML = localeXML;
+    public void setFrom(File from) {
+        this.from = from;
     }
 
     public String getLocale() {

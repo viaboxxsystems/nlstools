@@ -11,11 +11,11 @@ import org.apache.tools.ant.Task;
 import java.io.File;
 
 /**
- * Fills missing keys in locale with the values found in a different locale in teh same file.
+ * Fills missing keys in locale with the values found in a different locale in the same file.
  * <p/>
  * &lt;fillLocale
- * localeXML=&quot;filled/filled-main-default-FR.xml&quot;
- * targetXML=&quot;complete/main-default.xml&quot;
+ * from=&quot;filled/filled-main-default-FR.xml&quot;
+ * to=&quot;complete/main-default.xml&quot;
  * sourceLocale=&quot;en_US&quot;
  * targetLocale=&quot;it_IT&quot;
  * doSetReviewFlag=&quot;false&quot;
@@ -24,7 +24,7 @@ import java.io.File;
  */
 public class FillLocaleTask extends Task {
 
-    private File localeXML, targetXML;
+    private File from, to;
     private String sourceLocale, targetLocale;
     private String fillOnlyKeysStartingWith;
     private boolean doSetReviewFlag = true;
@@ -32,7 +32,7 @@ public class FillLocaleTask extends Task {
     @Override
     public void execute() throws BuildException {
         try {
-            MBBundles bundles = MBPersistencer.loadFile(localeXML);
+            MBBundles bundles = MBPersistencer.loadFile(from);
             for (MBBundle bundle : bundles.getBundles()) {
                 for (MBEntry entry : bundle.getEntries()) {
                     if (fillOnlyKeysStartingWith != null) {
@@ -53,26 +53,26 @@ public class FillLocaleTask extends Task {
                     }
                 }
             }
-            MBPersistencer.saveFile(bundles, targetXML);
+            MBPersistencer.saveFile(bundles, to);
         } catch (Exception e) {
             throw new BuildException(e);
         }
     }
 
-    public File getLocaleXML() {
-        return localeXML;
+    public File getFrom() {
+        return from;
     }
 
-    public void setLocaleXML(File localeXML) {
-        this.localeXML = localeXML;
+    public void setFrom(File from) {
+        this.from = from;
     }
 
-    public File getTargetXML() {
-        return targetXML;
+    public File getTo() {
+        return to;
     }
 
-    public void setTargetXML(File targetXML) {
-        this.targetXML = targetXML;
+    public void setTo(File to) {
+        this.to = to;
     }
 
     public String getSourceLocale() {

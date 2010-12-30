@@ -17,21 +17,21 @@ import java.util.List;
  * Compares new (e.g. changed by customer) and old (e.g. stuff without customer changes) locale files and
  * lists keys and bundles that are missing in the new translation.
  *
- * @see com.google.nlstools.tasks.ChangeListingTask to compare translation values
+ * @see ListChangesTask to compare translation values
  *      <p/>
  *      <br/>NEW (29.12.2010):<br/>
  *      * Can handle XML and Excel files.
  *      <p/>
  *      <br/>
  *      Sample usage:
- *      &lt;compareLocales
- *      originalXML=&quot;original/main-default.xml&quot;
- *      newXML=&quot;new/main-default.xml&quot;
+ *      &lt;compareBundles
+ *      original=&quot;original/main-default.xml&quot;
+ *      newer=&quot;new/main-default.xml&quot;
  *      results=&quot;compare-results.txt&quot;
  *      /&gt;
  */
-public class CompareLocalesTask extends Task {
-    private File originalXML, newXML, results;
+public class CompareBundlesTask extends Task {
+    private File original, newer, results;
 
     @Override
     public void execute() throws BuildException {
@@ -39,8 +39,8 @@ public class CompareLocalesTask extends Task {
         List<String> missingKeys = new ArrayList<String>();
         List<String> missingBundles = new ArrayList<String>();
         try {
-            originalBundles = MBPersistencer.loadFile(originalXML);
-            newBundles = MBPersistencer.loadFile(newXML);
+            originalBundles = MBPersistencer.loadFile(original);
+            newBundles = MBPersistencer.loadFile(newer);
             for (MBBundle originalBundle : originalBundles.getBundles()) {
                 MBBundle newBundle = newBundles.getBundle(originalBundle.getBaseName());
                 if (newBundle == null) {
@@ -59,8 +59,8 @@ public class CompareLocalesTask extends Task {
         }
         try {
             Writer writer = new FileWriter(results);
-            writer.append("# Comparison of ").append(originalXML.getAbsolutePath()).append(" (original) and ")
-                    .append(newXML.getAbsolutePath()).append(" (new version)");
+            writer.append("# Comparison of ").append(original.getAbsolutePath()).append(" (original) and ")
+                    .append(newer.getAbsolutePath()).append(" (new version)");
             if (missingBundles.size() > 0) {
                 writer.append("# Missing bundles (").append(String.valueOf(missingKeys.size())).append("):\n");
                 for (String missingBundle : missingBundles) {
@@ -85,20 +85,20 @@ public class CompareLocalesTask extends Task {
         }
     }
 
-    public File getOriginalXML() {
-        return originalXML;
+    public File getOriginal() {
+        return original;
     }
 
-    public void setOriginalXML(File originalXML) {
-        this.originalXML = originalXML;
+    public void setOriginal(File original) {
+        this.original = original;
     }
 
-    public File getNewXML() {
-        return newXML;
+    public File getNewer() {
+        return newer;
     }
 
-    public void setNewXML(File newXML) {
-        this.newXML = newXML;
+    public void setNewer(File newer) {
+        this.newer = newer;
     }
 
     public File getResults() {

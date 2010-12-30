@@ -24,26 +24,26 @@ import java.util.StringTokenizer;
  * &lt;/taskdef>
  * <p/>
  * &lt;mergeLocale
- * fromXML="src/main/bundles/Common.xml"
- * xmlWithNewLocale="src/main/bundles/Common_de_DE.xml"
+ * from="src/main/bundles/Common.xml"
+ * with="src/main/bundles/Common_de_DE.xml"
  * locales="de_DE"
- * toXML="src/main/bundles/Common_de_DE.xml"/>
+ * to="src/main/bundles/Common_de_DE.xml"/>
  * </pre>
  */
 public class MergeLocaleTask extends Task {
-    private String fromXML, xmlWithNewLocale, toXML, locales;
+    private String from, with, to, locales;
 
     /**
      * The xml file with path name to read from
      *
      * @return
      */
-    public String getFromXML() {
-        return fromXML;
+    public String getFrom() {
+        return from;
     }
 
-    public void setFromXML(String fromXML) {
-        this.fromXML = fromXML;
+    public void setFrom(String from) {
+        this.from = from;
     }
 
     /**
@@ -51,12 +51,12 @@ public class MergeLocaleTask extends Task {
      *
      * @return
      */
-    public String getToXML() {
-        return toXML;
+    public String getTo() {
+        return to;
     }
 
-    public void setToXML(String toXML) {
-        this.toXML = toXML;
+    public void setTo(String to) {
+        this.to = to;
     }
 
     /**
@@ -64,12 +64,12 @@ public class MergeLocaleTask extends Task {
      *
      * @return
      */
-    public String getXmlWithNewLocale() {
-        return xmlWithNewLocale;
+    public String getWith() {
+        return with;
     }
 
-    public void setXmlWithNewLocale(String xmlWithNewLocale) {
-        this.xmlWithNewLocale = xmlWithNewLocale;
+    public void setWith(String xmlWithNewLocale) {
+        this.with = xmlWithNewLocale;
     }
 
     /**
@@ -91,11 +91,11 @@ public class MergeLocaleTask extends Task {
 
         // try to load the bundles of the file
         try {
-            log("Reading Bundles from " + fromXML, Project.MSG_INFO);
-            loadedBundles = MBPersistencer.loadFile(new File(fromXML));
+            log("Reading Bundles from " + from, Project.MSG_INFO);
+            loadedBundles = MBPersistencer.loadFile(new File(from));
 
-            log("Reading Bundles from " + xmlWithNewLocale, Project.MSG_INFO);
-            translatedBundles = MBPersistencer.loadFile(new File(xmlWithNewLocale));
+            log("Reading Bundles from " + with, Project.MSG_INFO);
+            translatedBundles = MBPersistencer.loadFile(new File(with));
 
             // if bundles exist
             if (loadedBundles != null) {
@@ -131,8 +131,8 @@ public class MergeLocaleTask extends Task {
             }
 
             // write the combined locales into a file
-            MBPersistencer.saveFile(loadedBundles, new File(toXML));
-            log("Writing to bundles to file " + toXML, Project.MSG_INFO);
+            MBPersistencer.saveFile(loadedBundles, new File(to));
+            log("Writing to bundles to file " + to, Project.MSG_INFO);
         } catch (Exception e) {
             throw new BuildException(e);
         }
