@@ -1,0 +1,109 @@
+#summary NLS Tools - ant tasks for managing resource bundles
+#labels Featured
+
+Tools (ant tasks) for I18n management of different locales and their translations.
+
+= NLS (manage resource bundles) = 
+
+Some [http://ant.apache.org/ ant]-tasks. You can use them with ant or maven2 (with maven-antrun-plugin).
+
+  * [http://nlstools.googlecode.com/svn/trunk/javadoc/nlstools/com/google/nlstools/tasks/MessageBundleTask.html MessageBundleTask]
+  * [http://nlstools.googlecode.com/svn/trunk/javadoc/nlstools/com/google/nlstools/tasks/Property2XMLConverterTask.html Property2XMLConverterTask]
+  * [http://nlstools.googlecode.com/svn/trunk/javadoc/nlstools/com/google/nlstools/tasks/MergeLocaleTask.html MergeLocaleTask]
+  * [http://nlstools.googlecode.com/svn/trunk/javadoc/nlstools/com/google/nlstools/tasks/AddLocaleTask.html AddLocaleTask]
+  * [http://nlstools.googlecode.com/svn/trunk/javadoc/nlstools/com/google/nlstools/tasks/UpdateBundlesTask.html UpdateBundlesTask]
+  * [http://nlstools.googlecode.com/svn/trunk/javadoc/nlstools/com/google/nlstools/tasks/OptimizeBundlesTask.html OptimizeBundlesTask]
+  * [http://nlstools.googlecode.com/svn/trunk/javadoc/nlstools/com/google/nlstools/tasks/CopyBundlesTask.html CopyBundlesTask]
+  * [http://nlstools.googlecode.com/svn/trunk/javadoc/nlstools/com/google/nlstools/tasks/LocaleSanityCheckerTask.html LocaleSanityCheckerTask]
+  * [http://nlstools.googlecode.com/svn/trunk/javadoc/nlstools/com/google/nlstools/tasks/ChangeListingTask.html ChangeListingTask]
+  * [http://nlstools.googlecode.com/svn/trunk/javadoc/nlstools/com/google/nlstools/tasks/CompareLocalesTask.html CompareLocalesTask]
+  * [http://nlstools.googlecode.com/svn/trunk/javadoc/nlstools/com/google/nlstools/tasks/FillLocaleTask.html FillLocaleTask]
+
+== Example ==
+
+=== Resource Bundle as XML ===
+
+{{{
+<bundles>
+  <bundle baseName="Example" interfaceName="com.viaboxx.I_Example">
+    <entry key="key1">
+      <description>a description for the entry</description>
+      <text locale="de">Beispieltext mit ÄÖÜ</text>
+      <text locale="en">An example</text>
+    </entry>
+    <entry key="key2">
+      <text locale="de" review="true">anderer Wert</text>
+    </entry>
+  </bundle>
+</bundles>
+}}}
+
+=== Resource Bundle as Excel spreadsheet ===
+For each bundle, create a new page in the excel file, like this:
+
+http://nlstools.googlecode.com/svn/wiki/excelExample.png
+
+You find some examples under http://nlstools.googlecode.com/svn/trunk/nlstools/example/excelExample.xls
+
+You can use the .xls file instead of the .xml file in all ant-tasks instead.
+You can let translator users work on the excel files.
+Red colored labels are marked as "to be reviewed", when converting between excel and xml format.
+
+=== Usage ===
+
+This demonstrates the use of the NLS Tasks from within a maven2 pom.xml:
+
+{{{
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>generate bundles</id>
+            <phase>generate-sources</phase>
+            <configuration>
+              <tasks>
+                <taskdef name="addLocale"
+                         classname="com.google.nlstools.tasks.AddLocaleTask">
+                  <classpath refid="maven.test.classpath"/>
+                </taskdef>
+
+                <addLocale
+                    fromXML="src/main/bundles/CustomerForm.xml"
+                    locales="de_DE"
+                    toXML="src/main/bundles/CustomerForm_de_DE.xml"/>
+
+                <taskdef name="mergeLocale"
+                         classname="com.google.nlstools.tasks.MergeLocaleTask">
+                  <classpath refid="maven.test.classpath"/>
+                </taskdef>
+
+                <mergeLocale
+                    fromXML="src/main/bundles/CustomerForm.xml"
+                    xmlWithNewLocale="src/main/bundles/CustomerForm_de_DE_new.xml"
+                    locales="da_DK"
+                    toXML="src/main/bundles/CustomerForm_de_DE.xml"/>
+
+                <taskdef name="msgbundle"
+                         classname="com.google.nlstools.tasks.MessageBundleTask">
+                  <classpath refid="maven.test.classpath"/>
+                </taskdef>
+
+                <msgbundle overwrite="true" bundles="src/main/bundles/CustomerForm.xml;../base/src/main/bundles/Common.xml"
+                           writeProperties="true"
+                           writeJson="true"
+                           jsonPath="src\main\webapp\js"
+                           jsonFile="i18n"
+                           propertyPath="src\main\webapp\WEB-INF\classes"/>
+              </tasks>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+}}}
