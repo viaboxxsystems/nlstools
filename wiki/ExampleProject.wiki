@@ -56,7 +56,7 @@ ant convert-xml-to-excel
 === How-to work with a file received from the translator ===
 
   * Check the excel files whether the translator has provided a correct format
-  * Copy the files to their positions (just besides their XML-counterpart, see Output  messages above)
+  * Copy the files to their positions (just besides their XML-counterpart)
   * Open a command window in directory nlstools/example/exampleProject
   * Compare the changes and check the bundle. (The property 'newLocale' can be omitted.)
 
