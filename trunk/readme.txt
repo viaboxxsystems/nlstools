@@ -53,7 +53,7 @@ Feedback, questions, contribution
 
 https://code.google.com/p/nlstools/
 http://www.viaboxx.de/
-http://www.viaboxxsystems.de/blogg
+http://www.viaboxxsystems.de/blog
 
 Roman Stumm, Viaboxx GmbH, 2010
 email: roman.stumm@viaboxx.de
