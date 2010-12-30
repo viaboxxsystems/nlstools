@@ -91,6 +91,10 @@ Red colored labels are marked as "to be reviewed", when converting between excel
 
 === Usage ===
 
+Refer to the [ExampleProject example project] for a runnable demonstration.
+
+=== Glimpse syntax for usage of 'nlstools' with maven2 ==
+
 This demonstrates the use of the NLS Tasks from within a maven2 pom.xml:
 
 {{{
