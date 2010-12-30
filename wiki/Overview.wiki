@@ -59,7 +59,7 @@ Some [http://ant.apache.org/ ant]-tasks. You can use them with ant or maven2 (wi
         </dependency>
 }}}
 
-== Example ==
+== Examples ==
 
 === Resource Bundle as XML ===
 
@@ -89,7 +89,9 @@ You can use the .xls file instead of the .xml file in all ant-tasks instead.
 You can let translator users work on the excel files.
 Red colored labels are marked as "to be reviewed", when converting between excel and xml format.
 
-=== Usage ===
+=Usage=
+
+=== ExampleProject ===
 
 Refer to the [ExampleProject example project] for a runnable demonstration.
 
