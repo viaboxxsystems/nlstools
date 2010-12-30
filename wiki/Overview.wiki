@@ -40,7 +40,7 @@ For each bundle, create a new page in the excel file, like this:
 
 http://nlstools.googlecode.com/svn/wiki/excelExample.png
 
-You find some examples under http://nlstools.googlecode.com/svn/trunk/nlstools/example/excelExample.xls
+You find some examples under http://nlstools.googlecode.com/svn/trunk/example/excelExample.xls
 
 You can use the .xls file instead of the .xml file in all ant-tasks instead.
 You can let translator users work on the excel files.
