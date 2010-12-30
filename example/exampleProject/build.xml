@@ -1,0 +1,164 @@
+<project name="nlstools for flex invoker" default="generate-sources-all">
+
+    <!-- name of the default example resource bundle file (without suffix) -->
+    <property name="bundlesFile" value="i18n/main-default"/>
+
+    <!-- suffix - alternatives:
+       put .xml here to use the XML file as input 
+       put .xls here to use the excel file as input -->
+    <property name="bundlesType" value=".xml"/>
+
+    <!-- example: generate all sources -->
+    <target name="generate-sources-all"
+            depends="generate-sources-flex,generate-sources-java,generate-sources-json"/>
+
+    <target name="generate-sources-flex" depends="init" description="generate runtime bundles for Flex">
+        <msgbundle writeInterface="Flex"
+                   overwrite="true"
+                   deleteOldFiles="false"
+                   debugMode="false"
+                   bundles="${bundlesFile}${bundlesType}"
+                   sourcePath="src/main/flex"
+                />
+
+        <msgbundle writeProperties="true" writeJson="false" writeInterface="false"
+                   overwrite="true" deleteOldFiles="false" debugMode="false"
+                   preserveNewlines="true"
+                   flexLayout="true"
+                   bundles="${bundlesFile}${bundlesType}"
+                   propertyPath="src/main/locales"/>
+    </target>
+
+
+    <target name="generate-sources-java" depends="init" description="generate runtime bundles for Java">
+        <msgbundle writeProperties="true"
+                   writeInterface="true"
+                   overwrite="true"
+                   deleteOldFiles="true"
+                   debugMode="false"
+                   propertyPath="src/main/resources"
+                   bundles="${bundlesFile}${bundlesType}"
+                   sourcePath="src/main/java"
+                />
+    </target>
+
+    <target name="generate-sources-sql" depends="init" description="generate database script">
+        <!-- rarely used,
+          replace in file i18n/main-default.xml
+              <bundle baseName="main" interfaceName="com.nlstools.example.flexapp.I18nKeys">
+           with
+               <bundle baseName="main" interfaceName="com.nlstools.example.flexapp.I18nKeys" sqldomain="NLSApp">
+         -->
+        <msgbundle
+                sqlScriptDir="."
+                bundles="${bundlesFile}${bundlesType}"/>
+    </target>
+
+    <target name="generate-sources-json" depends="init" description="generate runtime bundles for JSON">
+        <!-- jsonFile -->
+        <msgbundle writeJson="true"
+                   debugMode="false"
+                   jsonPath="src/json"
+                   bundles="${bundlesFile}${bundlesType}"
+                   sourcePath="src/main/java"
+                />
+    </target>
+
+    <path id="toolspath">
+        <fileset dir="../../target/">
+            <include name="*.jar"/>
+        </fileset>
+        <fileset dir="libs">
+            <include name="*.jar"/>
+        </fileset>
+    </path>
+
+    <target name="init">
+        <taskdef name="prop2xml"
+                 classname="com.google.nlstools.tasks.Property2XMLConverterTask"
+                 classpathref="toolspath"/>
+
+        <taskdef name="msgbundle"
+                 classname="com.google.nlstools.tasks.MessageBundleTask"
+                 classpathref="toolspath"/>
+
+        <taskdef name="mergeLocale"
+                 classname="com.google.nlstools.tasks.MergeLocaleTask"
+                 classpathref="toolspath"/>
+
+        <taskdef name="addLocale"
+                 classname="com.google.nlstools.tasks.AddLocaleTask"
+                 classpathref="toolspath"/>
+
+        <taskdef name="optLocale"
+                 classname="com.google.nlstools.tasks.OptimizeBundlesTask"
+                 classpathref="toolspath"/>
+
+        <taskdef name="convertBundles"
+                 classname="com.google.nlstools.tasks.ConvertBundlesTask"
+                 classpathref="toolspath"/>
+
+        <taskdef name="compareBundles"
+                 classname="com.google.nlstools.tasks.CompareBundlesTask"
+                 classpathref="toolspath"/>
+
+        <taskdef name="listChanges"
+                 classname="com.google.nlstools.tasks.ListChangesTask"
+                 classpathref="toolspath"/>
+    </target>
+
+    <target name="addLocale" depends="init" if="newLocale" description="add a new empty locale to a xml file">
+        <addLocale from="${bundlesFile}${bundlesType}" to="${bundlesFile}+${newLocale}${bundlesType}"
+                   locales="${newLocale}"/>
+    </target>
+
+    <target name="convert-xml-to-excel" depends="init" description="convert xml bundle files to excel">
+        <property name="fromType" value=".xml"/>
+        <property name="toType" value=".xls"/>
+        <antcall target="convert-bundles"/>
+    </target>
+
+    <target name="convert-excel-to-xml" depends="init" description="convert excel bundle files to xml">
+        <property name="fromType" value=".xls"/>
+        <property name="toType" value=".xml"/>
+        <antcall target="convert-bundles"/>
+    </target>
+
+    <target name="compare-bundles" depends="init" description="print differences between two bundles">
+        <property name="newLocale" value=""/>
+        <echo message="Comparison results:"/>
+        <compareBundles original="${bundlesFile}.xml" newer="${bundlesFile}.xls" results="tmp-compare.txt"/>
+        <echo file="tmp-compare.txt"/>
+        <echo message="Change listing results:"/>
+        <listChanges ignoreMissingKeys="false"
+                     locales="${newLocale}"
+                     original="${bundlesFile}.xml" newer="${bundlesFile}.xls" results="tmp-changes.txt"/>
+        <echo file="target/tmp-changes.txt"/>
+    </target>
+
+    <target name="merge-bundles" depends="init" description="merge new locales to the bundles">
+        <mergeLocale
+                from="${bundlesFile}.xml"
+                with="${bundlesFile}.xls"
+                locales="${newLocale}"
+                to="${bundlesFile}.xml"/>
+    </target>
+
+    <target name="convert-bundles" depends="init" description="convert bundle files from/to excel/xml">
+        <convertBundles from="${bundlesFile}${fromType}" to="${bundlesFile}${toType}"/>
+    </target>
+
+    <target name="prop2xml" depends="init"
+            description="Execute this once if you want to convert .properties to .xml bundles">
+        <prop2xml locales="de_DE;en_US" fromProperty="src/main/locales/main"
+                  to="${bundlesFile}${bundlesType}"
+                  interfaceName="com.nlstools.example.flexapp.I18nKeys"/>
+        <!--
+        <optLocale masterFile="i18n/bundles.txt"
+                   commonBundleFile="main-default.xml"
+                   commonBundleBaseName="/main"
+                   deleteEmptyEntries="true">
+        </optLocale>-->
+    </target>
+
+</project>
