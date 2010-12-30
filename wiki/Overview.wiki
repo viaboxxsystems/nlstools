@@ -7,8 +7,8 @@ Tools (ant tasks) for I18n management of different locales and their translation
   
   * ReleaseNotes
 
-= ApiDocs =
-  * [http://nlstools.googlecode.com/svn/trunk/javadoc/index.html JavaDoc of nlstools]
+= API documentation =
+  * [http://nlstools.googlecode.com/svn/trunk/javadoc/nlstools/index.html JavaDoc]
 
 = NLS (manage resource bundles) = 
 
