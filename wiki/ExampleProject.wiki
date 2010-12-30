@@ -23,3 +23,5 @@ You can run the tasks separately:
 You can use the excel file instead of the xml file:
   * Invoke ant with 'ant -DbundlesType=.xls' instead of the default '.xml'
 
+
+=== Want to know more? Read BestPractise ===
