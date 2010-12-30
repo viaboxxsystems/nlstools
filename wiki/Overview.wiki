@@ -110,9 +110,9 @@ This demonstrates the use of the NLS Tasks from within a maven2 pom.xml:
                 </taskdef>
 
                 <addLocale
-                    fromXML="src/main/bundles/CustomerForm.xml"
+                    from="src/main/bundles/CustomerForm.xml"
                     locales="de_DE"
-                    toXML="src/main/bundles/CustomerForm_de_DE.xml"/>
+                    to="src/main/bundles/CustomerForm_de_DE.xml"/>
 
                 <taskdef name="mergeLocale"
                          classname="com.google.nlstools.tasks.MergeLocaleTask">
@@ -120,10 +120,10 @@ This demonstrates the use of the NLS Tasks from within a maven2 pom.xml:
                 </taskdef>
 
                 <mergeLocale
-                    fromXML="src/main/bundles/CustomerForm.xml"
-                    xmlWithNewLocale="src/main/bundles/CustomerForm_de_DE_new.xml"
+                    from="src/main/bundles/CustomerForm.xml"
+                    with="src/main/bundles/CustomerForm_de_DE_new.xml"
                     locales="da_DK"
-                    toXML="src/main/bundles/CustomerForm_de_DE.xml"/>
+                    to="src/main/bundles/CustomerForm_de_DE.xml"/>
 
                 <taskdef name="msgbundle"
                          classname="com.google.nlstools.tasks.MessageBundleTask">
