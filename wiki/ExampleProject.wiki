@@ -1,7 +1,7 @@
 #summary an example project to demonstrate the features of nlstools
 
 = Introduction =
-The project is checked in SVN in the example folder. Check out the sources and refer to the build.xml file.
+The project is checked in SVN in the example folder (or in the Downloads section). Check out the sources and refer to the build.xml file.
 
 You need to have apache ant installed to execute the scripts.
   
