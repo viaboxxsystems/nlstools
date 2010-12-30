@@ -13,13 +13,13 @@ import java.io.FileInputStream;
 import java.util.*;
 
 /**
- * <p>Description: Create a bundles-xml file fromProperty some plain property (or xml) files</p>
+ * <p>Description: Create a bundles-xml (or excel) file fromProperty some plain property (or xml) files</p>
  *
  * @author Roman Stumm
  */
 public class Property2XMLConverterTask extends Task {
     private boolean xml = false;
-    private String fromProperty, toXML, locales;
+    private String fromProperty, to, locales;
     private String interfaceName = "";
 
     public boolean isXml() {
@@ -60,12 +60,12 @@ public class Property2XMLConverterTask extends Task {
      *
      * @return
      */
-    public String getToXML() {
-        return toXML;
+    public String getTo() {
+        return to;
     }
 
-    public void setToXML(String aToXML) {
-        toXML = aToXML;
+    public void setTo(String aToXML) {
+        to = aToXML;
     }
 
     /**
@@ -134,7 +134,7 @@ public class Property2XMLConverterTask extends Task {
                     }
                 }
             }
-            MBPersistencer.saveFile(bundles, new File(getToXML()));
+            MBPersistencer.saveFile(bundles, new File(getTo()));
         } catch (Exception e) {
             e.printStackTrace();
             throw new BuildException(e);
