@@ -239,7 +239,7 @@ public class MBExcelPersistencer extends MBPersistencer {
                     MBText text = new MBText();
                     text.setLocale(each);
                     text.setValue(cell.getStringCellValue());
-                    text.setReview(cell.getCellStyle().getFont(wb).getColor() == Font.COLOR_RED);
+                    text.setReview(cell.getCellStyle().getFont(wb).getColor() != Font.COLOR_NORMAL);
                     entry.getTexts().add(text);
                 }
             }
