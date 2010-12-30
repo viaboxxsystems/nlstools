@@ -35,18 +35,13 @@
             <version>2.0.1</version>
         </dependency>
 
-        <!--<dependency>
-            <groupId>xml-apis</groupId>
-            <artifactId>xml-apis</artifactId>
-        </dependency>-->
-
         <dependency>
             <groupId>org.apache.ant</groupId>
             <artifactId>ant</artifactId>
             <version>1.8.2</version>
         </dependency>
 
-        <!-- required for MessageBundleTask to write JSON files only and to test -->
+        <!-- required to write JSON files -->
         <dependency>
             <groupId>com.sdicons.jsontools</groupId>
             <artifactId>jsontools-core</artifactId>
@@ -66,27 +61,13 @@
     <build>
         <plugins>
             <plugin>
-                <!-- NOTE: We don't need a groupId specification because the group is
-                    org.apache.maven.plugins ...which is assumed by default.
-                -->
-                <artifactId>maven-assembly-plugin</artifactId>
-                <version>2.2</version>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <descriptorRefs>
-                        <descriptorRef>jar-with-dependencies</descriptorRef>
-                    </descriptorRefs>
+                    <source>1.5</source>
+                    <target>1.5</target>
+                    <encoding>UTF-8</encoding>
                 </configuration>
-                <executions>
-                    <execution>
-                        <!-- this is used for inheritance merges -->
-                        <id>make-assembly</id>
-                        <!-- append to the packaging phase. -->
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
             <plugin>
                 <artifactId>maven-antrun-plugin</artifactId>
