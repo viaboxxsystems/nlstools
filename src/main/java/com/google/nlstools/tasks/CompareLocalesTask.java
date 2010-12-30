@@ -16,17 +16,19 @@ import java.util.List;
 /**
  * Compares new (e.g. changed by customer) and old (e.g. stuff without customer changes) locale files and
  * lists keys and bundles that are missing in the new translation.
- * <p/>
- * <br/>NEW (29.12.2010):<br/>
- * * Can handle XML and Excel files.
- * <p/>
- * <br/>
- * Sample usage:
- * &lt;compareLocales
- * originalXML=&quot;original/main-default.xml&quot;
- * newXML=&quot;new/main-default.xml&quot;
- * results=&quot;compare-results.txt&quot;
- * /&gt;
+ *
+ * @see com.google.nlstools.tasks.ChangeListingTask to compare translation values
+ *      <p/>
+ *      <br/>NEW (29.12.2010):<br/>
+ *      * Can handle XML and Excel files.
+ *      <p/>
+ *      <br/>
+ *      Sample usage:
+ *      &lt;compareLocales
+ *      originalXML=&quot;original/main-default.xml&quot;
+ *      newXML=&quot;new/main-default.xml&quot;
+ *      results=&quot;compare-results.txt&quot;
+ *      /&gt;
  */
 public class CompareLocalesTask extends Task {
     private File originalXML, newXML, results;
@@ -55,16 +57,7 @@ public class CompareLocalesTask extends Task {
         } catch (Exception e) {
             throw new BuildException(e);
         }
-        if (results.exists()) {
-            throw new BuildException("Output file already exists:" + results.getAbsolutePath());
-        }
         try {
-            if (!results.createNewFile()) {
-                throw new BuildException("Could not create result file:" + results.getAbsolutePath());
-            }
-            if (!results.canWrite()) {
-                throw new BuildException("Cannot write to output file:" + results.getAbsolutePath());
-            }
             Writer writer = new FileWriter(results);
             writer.append("# Comparison of ").append(originalXML.getAbsolutePath()).append(" (original) and ")
                     .append(newXML.getAbsolutePath()).append(" (new version)");
