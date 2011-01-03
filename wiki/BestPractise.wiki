@@ -13,7 +13,7 @@ Sometimes a new locale should be added and we need to prepare the resource bundl
 === How-to ===
 
   * Open a command window in directory nlstools/example/exampleProject
-  * Invoke the ant-build target "addLocale" with the "newLocale" property
+  * Invoke the ant-build target "add-locale" with the "newLocale" property
 
 Example to add the Spanisch language to the main-default.xml file:
 
