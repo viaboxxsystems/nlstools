@@ -19,7 +19,7 @@ Example to add the Spanisch language to the main-default.xml file:
 
 
 {{{
- ant -DnewLocale=es_ES addLocale
+ ant -DnewLocale=es_ES add-locale
 }}}
 
   * Check the xml-file, rename/replace as required and do the same for other xml-files of the project (refer to build.xml how to adapt the ant target)
