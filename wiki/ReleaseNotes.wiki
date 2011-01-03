@@ -5,7 +5,7 @@
   * Nls Tools separated from annomark.jar
   * Excel-File support as an alternative for XML-Files in all ant-tasks
   * code separated, packages reorganized, google-code site created from http://code.google.com/p/agimatec-tools/wiki/NLSTools
-  * ConvertBundlesTask = 
+  * ConvertBundlesTask = convert between different formats (XML/Excel/JSON) 
 
 
 Features:
