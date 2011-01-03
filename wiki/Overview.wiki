@@ -78,6 +78,36 @@ Some [http://ant.apache.org/ ant]-tasks. You can use them with ant or maven2 (wi
 </bundles>
 }}}
 
+
+==== XML Attributes and Elements ====
+  * Element: bundles 
+    Root tag of XML resource bundles file
+    * Attributes: -
+    * Elements: bundle (0..n) - resource bundles in the file
+
+  * Element: bundle
+    A single resource bundle in the file
+    * Attributes: 
+        baseName   - name of bundle
+        interfaceName - (optional) name of interface to generate
+        sqldomain - (optional) name of sql file to generate
+    * Elements: entry - (0..n) entries in the bundle
+
+  * Element: entry
+    * Attributes: 
+        key - unique key of the resource entry
+    * Elements:
+       description - (optional) textual description of the entry 
+       texts - (0..n) the translations for different locales
+
+  * Element: text
+    A translation of an entry for a locale.
+    * Value: the translation (\n = carriage return)
+    * Attributes: 
+        locale - locale key (en_EN, ...), unique under its entry
+        review - (boolean, optional) true to mark the entry as "to be reviewed"
+        useDefault (boolean, optional) true to mark the entry as "use translation from common bundle"
+
 === Resource Bundle as Excel spreadsheet ===
 For each bundle, create a new page in the excel file, like this:
 
