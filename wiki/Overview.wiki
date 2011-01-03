@@ -118,7 +118,7 @@ http://nlstools.googlecode.com/svn/wiki/excelExample.png
   * You find an example for an excel sheet at [http://nlstools.googlecode.com/svn/trunk/example/excelExample.xls excelExample.xls]
 
   * You can use the .xls file instead of the .xml file in all ant-tasks. You can let translator users work on the excel files.
-  * Red colored labels are marked as "to be reviewed", when converting between excel and xml format.
+  * Red colored texts are marked as "to be reviewed", when converting between excel and xml format.
   * Each spreadsheet in the excel file represents a single resource bundle.
 
 =Usage=
