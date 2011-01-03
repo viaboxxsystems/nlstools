@@ -107,7 +107,7 @@
                  classpathref="toolspath"/>
     </target>
 
-    <target name="addLocale" depends="init" if="newLocale" description="add a new empty locale to a xml file">
+    <target name="add-locale" depends="init" if="newLocale" description="add a new empty locale to a xml file">
         <addLocale from="${bundlesFile}${bundlesType}" to="${bundlesFile}+${newLocale}${bundlesType}"
                    locales="${newLocale}"/>
     </target>
