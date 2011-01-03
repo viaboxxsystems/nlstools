@@ -63,6 +63,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
                 <configuration>
                     <source>1.5</source>
                     <target>1.5</target>
@@ -70,48 +71,26 @@
                 </configuration>
             </plugin>
             <plugin>
-                <artifactId>maven-antrun-plugin</artifactId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.2</version>
+                <configuration>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                </configuration>
                 <executions>
                     <execution>
-                        <id>Generate database history scripts</id>
-                        <phase>verify</phase>
-                        <configuration>
-                            <tasks>
-
-                                <!--
-                                           <taskdef name="msgbundle"
-                                                     classname="com.google.nlstools.tasks.MessageBundleTask">
-                                              <classpath refid="maven.test.classpath"/>
-                                            </taskdef>
-
-                                            <msgbundle overwrite="true" bundles="example/example.xml"
-                                                       sourcePath="target/out-src2"
-                                                       writeInterface="small_enum"
-                                                       writeProperties="xml"
-                                                       writeJson="pretty"
-                                                       jsonPath="target/out-json2"
-                                                       propertyPath="target/out-properties"/>
-
-                                             <taskdef name="prop2xml"
-                                                     classname="com.google.nlstools.tasks.Property2XMLConverterTask">
-                                              <classpath refid="maven.test.classpath"/>
-                                            </taskdef>
-
-                                            <prop2xml
-                                                 fromProperty="target/out-properties/Example"
-                                                 locales="de;en"
-                                                 toXML="target/example-reverse.xml"/>
-                                -->
-                            </tasks>
-                        </configuration>
+                        <!-- this is used for inheritance merges -->
+                        <id>make-assembly</id>
+                        <!-- append to the packaging phase. -->
+                        <phase>package</phase>
                         <goals>
-                            <goal>run</goal>
+                            <goal>single</goal>
                         </goals>
                     </execution>
                 </executions>
-
             </plugin>
-
+                
         </plugins>
     </build>
 

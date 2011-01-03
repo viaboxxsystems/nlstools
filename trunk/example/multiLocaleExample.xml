@@ -1,11 +1,33 @@
 <bundles>
-    <bundle baseName="MultiLocaleExample" interfaceName="com.google.I_Example">
-        <entry key="key1">
-            <text locale="de">Beispieltext mit √Ñ√ñ√ú</text>
-            <text locale="en">An example</text>
-        </entry>
-        <entry key="key2">
-            <text locale="de">anderer Wert</text>
-        </entry>
-    </bundle>
+  <bundle baseName="MultiLocaleExample" interfaceName="com.agimatec.I_MultiLocaleExample">
+    <entry key="key1">
+      <description>Some comment about the entry...</description>
+      <text locale="de">
+        <value>Beispieltext mit ÄÖÜ</value>
+      </text>
+      <text locale="en">
+        <value>An example</value>
+      </text>
+      <text locale="es">
+        <value>An example</value>
+      </text>
+        <text locale="fi">
+        <value>An example</value>
+      </text>
+    </entry>
+    <entry key="key2">
+      <text locale="de">
+        <value>Beispieltext mit ÄÖÜ</value>
+      </text>
+      <text locale="en">
+        <value>An exampleasd</value>
+      </text>
+      <text locale="es">
+        <value>An example asd</value>
+      </text>
+        <text locale="fi">
+        <value>An example asd</value>
+      </text>
+    </entry>
+  </bundle>
 </bundles>
