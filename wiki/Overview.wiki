@@ -119,6 +119,7 @@ http://nlstools.googlecode.com/svn/wiki/excelExample.png
 
   * You can use the .xls file instead of the .xml file in all ant-tasks. You can let translator users work on the excel files.
   * Red colored texts are marked as "to be reviewed", when converting between excel and xml format.
+  * Cells with grey background indicate missing translations.
   * Each spreadsheet in the excel file represents a single resource bundle.
 
 =Usage=
