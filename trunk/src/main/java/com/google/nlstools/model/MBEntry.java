@@ -16,7 +16,7 @@ import java.util.List;
  * Copyright: Viaboxx GmbH
  */
 @XStreamAlias("entry")
-public class MBEntry {
+public class MBEntry implements Comparable {
     @XStreamAsAttribute
     private String key;
     private String description;  // comment field
@@ -81,5 +81,16 @@ public class MBEntry {
         return !(description != null ? !description.equals(mbEntry.description) : mbEntry.description != null) &&
                 !(key != null ? !key.equals(mbEntry.key) : mbEntry.key != null) &&
                 !(texts != null ? !texts.equals(mbEntry.texts) : mbEntry.texts != null);
+    }
+
+    public int compareTo(Object o) {
+        if (o instanceof MBEntry) {
+            if (getKey() != null) {
+                return getKey().compareTo(((MBEntry) o).getKey());
+            } else {
+                return 1;
+            }
+        }
+        return -1;
     }
 }

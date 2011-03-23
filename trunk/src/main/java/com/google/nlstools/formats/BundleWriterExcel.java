@@ -45,6 +45,7 @@ public class BundleWriterExcel extends BundleWriter {
     }
 
     public void writeOutputFiles() throws Exception {
+        bundles.sort();
         new MBExcelPersistencer().save(bundles, target);
     }
 

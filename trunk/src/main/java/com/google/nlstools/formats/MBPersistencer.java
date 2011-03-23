@@ -38,6 +38,7 @@ public abstract class MBPersistencer {
     }
 
     public static void saveFile(MBBundles obj, File aFile) throws Exception {
+        obj.sort();
         forFile(aFile).save(obj, aFile);
     }
 }

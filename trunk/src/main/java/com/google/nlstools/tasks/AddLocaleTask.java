@@ -100,6 +100,7 @@ public class AddLocaleTask extends Task {
             }
 
             // write the combined locales into a file
+            if(loadedBundles != null) loadedBundles.sort();
             persistencer.save(loadedBundles, new File(to));
             log("Writing to XML file " + to, Project.MSG_INFO);
         } catch (Exception e) {
