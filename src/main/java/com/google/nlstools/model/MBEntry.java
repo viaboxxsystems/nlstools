@@ -25,7 +25,7 @@ public class MBEntry implements Comparable {
     private List<MBText> texts = new ArrayList();
 
     public void sort() {
-        Collections.sort(texts);
+        if (texts != null) Collections.sort(texts);
     }
 
     public String getKey() {
