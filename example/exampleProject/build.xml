@@ -105,6 +105,11 @@
         <taskdef name="listChanges"
                  classname="com.google.nlstools.tasks.ListChangesTask"
                  classpathref="toolspath"/>
+
+        <taskdef name="sanityCheck"
+                 classname="com.google.nlstools.tasks.LocaleSanityCheckerTask"
+                 classpathref="toolspath"/>
+
     </target>
 
     <target name="add-locale" depends="init" if="newLocale" description="add a new empty locale to a xml file">
@@ -143,6 +148,14 @@
                 locales="${newLocale}"
                 to="${bundlesFile}.xml"/>
     </target>
+
+    <target name="sanityCheck" description="create a bundle with missing entries from a bundle (sanity check)">
+        <sanityCheck
+                locale="${newLocale}"
+                from="${bundlesFile}"
+                to="missing-${bundlesFile}"/>
+    </target>
+
 
     <target name="convert-bundles" depends="init" description="convert bundle files from/to excel/xml">
         <convertBundles from="${bundlesFile}${fromType}" to="${bundlesFile}${toType}"/>

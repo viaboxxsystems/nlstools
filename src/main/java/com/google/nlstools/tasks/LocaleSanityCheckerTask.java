@@ -9,10 +9,7 @@ import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
 
 import java.io.File;
-import java.io.FileWriter;
-import java.io.Writer;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.IOException;
 
 /**
  * Checks localisation files for obvious errors like missing translations for single entries.
@@ -21,64 +18,73 @@ import java.util.List;
  * Usage sample:
  * &lt;sanityCheck
  * locale=&quot;fr_FR&quot;
- * ocaleXML=&quot;complete/main-default.xml&quot;
- * results=&quot;sanity-check-FR.txt&quot;
+ * from=&quot;complete/main-default.xml&quot;
+ * to=&quot;sanity-check-FR.xml&quot;
  * /&gt;
  */
 public class LocaleSanityCheckerTask extends Task {
 
-    private File from, results;
+    private File from, to;
     private String locale;
-    private List<String> missingTranslations = new ArrayList<String>();
+
 
     @Override
     public void execute() throws BuildException {
         if (locale == null) {
             throw new BuildException("locale parameter is needed!");
         }
+        if (to.exists()) {
+            throw new BuildException("Output file already exists:" + to.getAbsolutePath());
+        }
+        try {
+            if (!to.createNewFile()) {
+                throw new BuildException("Could not create result file:" + to.getAbsolutePath());
+            }
+        } catch (IOException e) {
+            throw new BuildException(e);
+        }
+        if (!to.canWrite()) {
+            throw new BuildException("Cannot write to output file:" + to.getAbsolutePath());
+        }
+
+
+        boolean foundMissing = false;
+        MBBundles missingTranslations = new MBBundles();
         MBBundles originalBundles;
         try {
             originalBundles = MBPersistencer.loadFile(from);
             for (MBBundle bundle : originalBundles.getBundles()) {
+                MBBundle missingBundle = new MBBundle();
+                missingBundle.setBaseName(bundle.getBaseName());
+                missingBundle.setInterfaceName(bundle.getInterfaceName());
+                missingBundle.setSqldomain(bundle.getSqldomain());
+                boolean needsBundle = false;
+
                 for (MBEntry entry : bundle.getEntries()) {
                     MBText text = entry.getText(locale);
-                    if (text == null) {
-                        missingTranslations.add(entry.getKey());
-                    } else {
-                        String textForLocale = text.getValue();
-                        if ("".equals(textForLocale)) {
-                            missingTranslations.add(entry.getKey());
+                    if (text == null || text.getValue() == null || text.getValue().equals("")) {
+                        if (!needsBundle) {
+                            missingTranslations.getBundles().add(missingBundle);
+                            needsBundle = true;
+                            foundMissing = true;
                         }
+                        missingBundle.getEntries().add(entry);
                     }
                 }
             }
         } catch (Exception e) {
             throw new BuildException(e);
         }
-        if (results.exists()) {
-            throw new BuildException("Output file already exists:" + results.getAbsolutePath());
-        }
-        try {
-            if (!results.createNewFile()) {
-                throw new BuildException("Could not create result file:" + results.getAbsolutePath());
+
+        if (foundMissing) {
+            try {
+                MBPersistencer.saveFile(missingTranslations, to);
+            } catch (Exception e) {
+                throw new BuildException(e);
             }
-            if (!results.canWrite()) {
-                throw new BuildException("Cannot write to output file:" + results.getAbsolutePath());
-            }
-            Writer writer = new FileWriter(results);
-            if (missingTranslations.size() > 0) {
-                writer.append("# Missing translations (").append(String.valueOf(missingTranslations.size()))
-                        .append("):\n");
-                for (String missingBundle : missingTranslations) {
-                    writer.append(missingBundle);
-                    writer.append("\n");
-                }
-            } else {
-                writer.append("# No translations missing.");
-            }
-            writer.close();
-        } catch (Exception e) {
-            throw new BuildException(e);
+            log("missing translations saved as " + to.getPath());
+        } else {
+            log("no missing translations found.");
         }
 
     }
@@ -99,11 +105,11 @@ public class LocaleSanityCheckerTask extends Task {
         this.locale = locale;
     }
 
-    public File getResults() {
-        return results;
+    public File getTo() {
+        return to;
     }
 
-    public void setResults(File results) {
-        this.results = results;
+    public void setTo(File to) {
+        this.to = to;
     }
 }
