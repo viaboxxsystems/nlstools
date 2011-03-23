@@ -27,7 +27,10 @@ public class MBBundle {
     private List<MBEntry> entries = new ArrayList();
 
     public void sort() {
-        if(entries != null) Collections.sort(entries);
+        if (entries != null) Collections.sort(entries);
+        for (MBEntry each : entries) {
+            each.sort();
+        }
     }
 
     public List<MBEntry> getEntries() {
