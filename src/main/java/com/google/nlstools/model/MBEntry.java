@@ -6,6 +6,7 @@ import com.thoughtworks.xstream.annotations.XStreamImplicit;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -22,6 +23,10 @@ public class MBEntry implements Comparable {
     private String description;  // comment field
     @XStreamImplicit(itemFieldName = "text")
     private List<MBText> texts = new ArrayList();
+
+    public void sort() {
+        Collections.sort(texts);
+    }
 
     public String getKey() {
         return key;
@@ -93,4 +98,5 @@ public class MBEntry implements Comparable {
         }
         return -1;
     }
+
 }
