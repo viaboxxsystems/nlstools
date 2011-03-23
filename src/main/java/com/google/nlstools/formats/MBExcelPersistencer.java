@@ -5,6 +5,7 @@ import com.google.nlstools.model.MBBundles;
 import com.google.nlstools.model.MBEntry;
 import com.google.nlstools.model.MBText;
 import org.apache.poi.hssf.usermodel.*;
+import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
 
@@ -25,6 +26,7 @@ public class MBExcelPersistencer extends MBPersistencer {
     private static final int STYLE_BOLD = 1;
     private static final int STYLE_ITALIC = 2;
     private static final int STYLE_REVIEW = 3;
+    private static final int STYLE_MISSING = 4;
 
     private HSSFWorkbook wb;
     private HSSFSheet sheet;
@@ -56,6 +58,11 @@ public class MBExcelPersistencer extends MBPersistencer {
         font.setColor(Font.COLOR_RED);
         style.setFont(font);
         styles.put(STYLE_REVIEW, style);
+
+        style = wb.createCellStyle();
+        style.setFillPattern(HSSFCellStyle.FINE_DOTS);
+        style.setFillBackgroundColor(HSSFColor.BLUE_GREY.index);
+        styles.put(STYLE_MISSING, style);
     }
 
     private int writeHeaders(MBBundle bundle) throws IOException {
@@ -132,6 +139,8 @@ public class MBExcelPersistencer extends MBPersistencer {
                     cell.setCellValue(new HSSFRichTextString(text.getValue()));
                     if (text.isReview()) {
                         cell.setCellStyle(styles.get(STYLE_REVIEW));
+                    } else if (text.getValue() == null || text.getValue().length() == 0) {
+                        cell.setCellStyle(styles.get(STYLE_MISSING));
                     }
                 }
                 colNum++;
