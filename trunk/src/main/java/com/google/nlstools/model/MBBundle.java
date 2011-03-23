@@ -28,7 +28,7 @@ public class MBBundle {
 
     public void sort() {
         if (entries != null) Collections.sort(entries);
-        for (MBEntry each : entries) {
+        for (MBEntry each : getEntries()) {
             each.sort();
         }
     }
