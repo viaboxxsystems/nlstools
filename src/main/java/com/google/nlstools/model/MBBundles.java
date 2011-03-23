@@ -19,9 +19,9 @@ public class MBBundles {
     private List<MBBundle> bundles = new ArrayList();
 
     public void sort() {
-       for (MBBundle each : bundles) {
-           each.sort();
-       }
+        for (MBBundle each : getBundles()) {
+            each.sort();
+        }
     }
 
     public List<MBBundle> getBundles() {
