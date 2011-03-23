@@ -33,8 +33,9 @@ public class ConvertBundlesTask extends Task {
             this.log("Convert " + from.getPath() + " ==> " + to.getPath());
             MBPersistencer.saveFile(MBPersistencer.loadFile(from), to);
         } catch (Exception e) {
+            e.printStackTrace();
             throw new BuildException(
-                    "Bundle file conversion from " + from.getPath() + " to " + to.getPath() + "failed!", e);
+                    "Bundle file conversion from " + from.getPath() + " to " + to.getPath() + " failed!", e);
         }
     }
 
