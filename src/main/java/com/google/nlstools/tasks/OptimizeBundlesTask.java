@@ -151,6 +151,7 @@ public class OptimizeBundlesTask extends Task {
                         truncateBundles(bundles);
                     }
                     this.log("SAVING modified file: " + source);
+                    bundles.sort();
                     persistencer.save(bundles, source);
                 }
             }

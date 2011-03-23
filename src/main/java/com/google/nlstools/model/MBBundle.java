@@ -5,6 +5,7 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -24,6 +25,10 @@ public class MBBundle {
     private String sqldomain;
     @XStreamImplicit
     private List<MBEntry> entries = new ArrayList();
+
+    public void sort() {
+        if(entries != null) Collections.sort(entries);
+    }
 
     public List<MBEntry> getEntries() {
         if (entries == null) entries = new ArrayList();

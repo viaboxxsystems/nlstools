@@ -18,6 +18,12 @@ public class MBBundles {
     @XStreamImplicit
     private List<MBBundle> bundles = new ArrayList();
 
+    public void sort() {
+       for (MBBundle each : bundles) {
+           each.sort();
+       }
+    }
+
     public List<MBBundle> getBundles() {
         if (bundles == null) bundles = new ArrayList();
         return bundles;
