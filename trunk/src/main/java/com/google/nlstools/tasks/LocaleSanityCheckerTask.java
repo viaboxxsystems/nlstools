@@ -18,6 +18,7 @@ import java.io.IOException;
  * Usage sample:
  * &lt;sanityCheck
  * locale=&quot;fr_FR&quot;
+ * includeReview=&quot;false&quot;
  * from=&quot;complete/main-default.xml&quot;
  * to=&quot;sanity-check-FR.xml&quot;
  * /&gt;
@@ -26,7 +27,7 @@ public class LocaleSanityCheckerTask extends Task {
 
     private File from, to;
     private String locale;
-
+    private boolean includeReview = false;
 
     @Override
     public void execute() throws BuildException {
@@ -62,7 +63,7 @@ public class LocaleSanityCheckerTask extends Task {
 
                 for (MBEntry entry : bundle.getEntries()) {
                     MBText text = entry.getText(locale);
-                    if (text == null || text.getValue() == null || text.getValue().equals("")) {
+                    if (isMissing(text)) {
                         if (!needsBundle) {
                             missingTranslations.getBundles().add(missingBundle);
                             needsBundle = true;
@@ -89,6 +90,12 @@ public class LocaleSanityCheckerTask extends Task {
 
     }
 
+    private boolean isMissing(MBText text) {
+        return text == null ||
+                (isIncludeReview() && text.isReview()) ||
+                (text.getValue() == null || text.getValue().equals(""));
+    }
+
     public File getFrom() {
         return from;
     }
@@ -111,5 +118,13 @@ public class LocaleSanityCheckerTask extends Task {
 
     public void setTo(File to) {
         this.to = to;
+    }
+
+    public boolean isIncludeReview() {
+        return includeReview;
+    }
+
+    public void setIncludeReview(boolean includeReview) {
+        this.includeReview = includeReview;
     }
 }
