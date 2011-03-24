@@ -149,11 +149,12 @@
                 to="${bundlesFile}.xml"/>
     </target>
 
-    <target name="sanityCheck" description="create a bundle with missing entries from a bundle (sanity check)">
+    <target name="sanity-check" description="create a bundle with missing entries from a bundle (sanity check)">
         <sanityCheck
                 locale="${newLocale}"
                 from="${bundlesFile}"
-                to="missing-${bundlesFile}"/>
+                to="missing-${bundlesFile}"
+                includeReview="true"/>
     </target>
 
 
