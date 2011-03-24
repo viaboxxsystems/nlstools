@@ -57,6 +57,9 @@ ant -DnewLocale=es_ES compare-bundles
 }}}
 
   * Check for missing translations
+
+This task creates a new bundle (XML or Excel) that contains only missing/empty translations or translations marked as "review". This helps to export a file with those translations, that need work to be done by the translator.
+
 {{{
 ant -DnewLocale=es_ES sanity-check
 }}}
