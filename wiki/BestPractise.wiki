@@ -56,6 +56,11 @@ ant convert-xml-to-excel
 ant -DnewLocale=es_ES compare-bundles
 }}}
 
+  * Check for missing translations
+{{{
+ant -DnewLocale=es_ES sanity-check
+}}}
+
 ==== Option 1 ====
 
   * IF you want to convert the whole Excel-file back to XML (and replace the XML files), invoke the ant-build target "convert-excel-to-xml"
