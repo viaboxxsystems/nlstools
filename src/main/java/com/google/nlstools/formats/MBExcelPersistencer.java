@@ -235,21 +235,23 @@ public class MBExcelPersistencer extends MBPersistencer {
 
         row = sheet.getRow(rowNum++);
         while (row != null) {
-            MBEntry entry = new MBEntry();
-            bundle.getEntries().add(entry);
-            entry.setKey(row.getCell(0).getStringCellValue());
-            if (row.getCell(1) != null) {
-                entry.setDescription(row.getCell(1).getStringCellValue());
-            }
-            colNum = firstCol;
-            for (String each : locales) {
-                cell = row.getCell(colNum++);
-                if (cell != null) {
-                    MBText text = new MBText();
-                    text.setLocale(each);
-                    text.setValue(cell.getStringCellValue());
-                    text.setReview(cell.getCellStyle().getFont(wb).getColor() != Font.COLOR_NORMAL);
-                    entry.getTexts().add(text);
+            if (row.getCell(0) != null) {
+                MBEntry entry = new MBEntry();
+                bundle.getEntries().add(entry);
+                entry.setKey(row.getCell(0).getStringCellValue());
+                if (row.getCell(1) != null) {
+                    entry.setDescription(row.getCell(1).getStringCellValue());
+                }
+                colNum = firstCol;
+                for (String each : locales) {
+                    cell = row.getCell(colNum++);
+                    if (cell != null) {
+                        MBText text = new MBText();
+                        text.setLocale(each);
+                        text.setValue(cell.getStringCellValue());
+                        text.setReview(cell.getCellStyle().getFont(wb).getColor() != Font.COLOR_NORMAL);
+                        entry.getTexts().add(text);
+                    }
                 }
             }
             row = sheet.getRow(rowNum++);
