@@ -14,7 +14,7 @@ import java.util.List;
  * Copyright: Viaboxx GmbH
  */
 @XStreamAlias("bundles")
-public class MBBundles {
+public class MBBundles implements Cloneable {
     @XStreamImplicit
     private List<MBBundle> bundles = new ArrayList();
 
@@ -67,5 +67,18 @@ public class MBBundles {
             }
         }
         return null;
+    }
+
+    public MBBundles copy() {
+        try {
+            MBBundles copy = (MBBundles) clone();
+            copy.setBundles(new ArrayList(getBundles().size()));
+            for (MBBundle bundle : copy.getBundles()) {
+                copy.getBundles().add(bundle.copy());
+            }
+            return copy;
+        } catch (CloneNotSupportedException e) {
+            return null;
+        }
     }
 }

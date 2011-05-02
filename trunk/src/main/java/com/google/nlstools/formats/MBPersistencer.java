@@ -28,6 +28,8 @@ public abstract class MBPersistencer {
             return new MBXMLPersistencer();
         } else if (name.endsWith(".js")) {
             return new MBJSONPersistencer(true);
+        } else if (name.endsWith(".mem")) {
+            return new MBInMemoryPersistencer();
         } else {
             throw new IllegalArgumentException("File type not supported: " + aFile);
         }
