@@ -16,7 +16,7 @@ import java.util.List;
  * Copyright: Viaboxx GmbH
  */
 @XStreamAlias("bundle")
-public class MBBundle {
+public class MBBundle implements Cloneable {
     @XStreamAsAttribute
     private String baseName;
     @XStreamAsAttribute
@@ -91,4 +91,16 @@ public class MBBundle {
 
     }
 
+    public MBBundle copy() {
+        try {
+            MBBundle copy = (MBBundle) clone();
+            copy.setEntries(new ArrayList(getEntries().size()));
+            for (MBEntry entry : getEntries()) {
+                copy.getEntries().add(entry.copy());
+            }
+            return copy;
+        } catch (CloneNotSupportedException e) {
+            return null;
+        }
+    }
 }

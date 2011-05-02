@@ -8,7 +8,7 @@ package com.google.nlstools.model;
  * Copyright: Viaboxx GmbH
  */
 //@XStreamAlias("text")
-public class MBText implements Comparable {
+public class MBText implements Comparable, Cloneable {
 //    @XStreamAsAttribute
     private String locale;
     private String value;
@@ -69,5 +69,13 @@ public class MBText implements Comparable {
         return review == mbText.review && useDefault == mbText.useDefault &&
                 !(locale != null ? !locale.equals(mbText.locale) : mbText.locale != null) &&
                 !(value != null ? !value.equals(mbText.value) : mbText.value != null);
+    }
+
+    public MBText copy() {
+        try {
+            return (MBText) clone();
+        } catch (CloneNotSupportedException e) {
+            return null;
+        }
     }
 }

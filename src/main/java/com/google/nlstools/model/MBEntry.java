@@ -17,7 +17,7 @@ import java.util.List;
  * Copyright: Viaboxx GmbH
  */
 @XStreamAlias("entry")
-public class MBEntry implements Comparable {
+public class MBEntry implements Comparable, Cloneable {
     @XStreamAsAttribute
     private String key;
     private String description;  // comment field
@@ -99,4 +99,16 @@ public class MBEntry implements Comparable {
         return -1;
     }
 
+    public MBEntry copy() {
+        try {
+            MBEntry entry = (MBEntry) clone();
+            entry.setTexts(new ArrayList(getTexts().size()));
+            for (MBText text : getTexts()) {
+                entry.getTexts().add(text.copy());
+            }
+            return entry;
+        } catch (CloneNotSupportedException ex) {
+            return null;
+        }
+    }
 }
