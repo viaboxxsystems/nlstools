@@ -1,6 +1,7 @@
 package com.google.nlstools.tasks;
 
 import com.google.nlstools.formats.MBPersistencer;
+import com.google.nlstools.formats.MBXMLPersistencer;
 import com.google.nlstools.model.MBBundle;
 import com.google.nlstools.model.MBBundles;
 import com.google.nlstools.model.MBEntry;
@@ -131,10 +132,20 @@ public class DiffMergeLocaleTask extends MergeLocaleTask {
     @Override
     protected void outputExecute() throws Exception {
         if (conflictsBundles != null) {
-            MBPersistencer.saveFile(conflictsBundles, new File(conflicts));
-            log("Writing conflicts to bundles to file " + conflicts, Project.MSG_INFO);
+            if (conflicts != null) {
+                MBPersistencer.saveFile(conflictsBundles, new File(conflicts));
+                log("Merged and writing conflict bundles to " + conflicts, Project.MSG_INFO);
+            } else {
+                log("Merged with conflicts found: \n" + MBXMLPersistencer.getXstream().toXML(conflictsBundles),
+                        Project.MSG_INFO);
+            }
         } else {
-            log("Merged without conflicts", Project.MSG_INFO);
+            if (conflicts != null) {
+                log("Merged without conflicts - writing empty bundles to " + conflicts, Project.MSG_INFO);
+                MBPersistencer.saveFile(new MBBundles(), new File(conflicts));
+            } else {
+                log("Merged without conflicts", Project.MSG_INFO);
+            }
         }
     }
 
