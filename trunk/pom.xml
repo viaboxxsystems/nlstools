@@ -41,11 +41,11 @@
             <version>1.8.2</version>
         </dependency>
 
-        <!-- required to write JSON files -->
+        <!-- required for JSON support with XStream -->
         <dependency>
-            <groupId>com.sdicons.jsontools</groupId>
-            <artifactId>jsontools-core</artifactId>
-            <version>1.5</version>
+            <groupId>org.codehaus.jettison</groupId>
+            <artifactId>jettison</artifactId>
+            <version>1.3</version>
             <optional>true</optional>
         </dependency>
 
@@ -90,7 +90,7 @@
                     </execution>
                 </executions>
             </plugin>
-                
+
         </plugins>
     </build>
 

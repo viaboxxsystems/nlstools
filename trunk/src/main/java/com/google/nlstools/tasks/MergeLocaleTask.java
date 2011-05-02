@@ -32,6 +32,8 @@ import java.util.StringTokenizer;
  */
 public class MergeLocaleTask extends Task {
     private String from, with, to, locales;
+    protected MBBundles loadedBundles;
+    protected MBBundles translatedBundles;
 
     /**
      * The xml file with path name to read from
@@ -86,59 +88,67 @@ public class MergeLocaleTask extends Task {
     }
 
     public void execute() {
-        MBBundles loadedBundles;
-        MBBundles translatedBundles;
 
         // try to load the bundles of the file
         try {
-            log("Reading Bundles from " + from, Project.MSG_INFO);
-            loadedBundles = MBPersistencer.loadFile(new File(from));
-
-            log("Reading Bundles from " + with, Project.MSG_INFO);
-            translatedBundles = MBPersistencer.loadFile(new File(with));
-
-            // if bundles exist
-            if (loadedBundles != null) {
-                for (MBBundle bundle : loadedBundles.getBundles()) {
-                    for (MBEntry entry : bundle.getEntries()) {
-                        // divide the locale string
-                        StringTokenizer tokens = new StringTokenizer(locales, ";");
-                        while (tokens.hasMoreTokens()) {
-                            String locale = tokens.nextToken();
-                            MBText tmpText = null;
-
-                            // check if the defined locale already exists
-                            for (MBText text : entry.getTexts()) {
-                                if (text.getLocale().equals(locale)) {
-                                    tmpText = text;
-                                }
-                            }
-
-                            if (tmpText == null) {
-                                tmpText = new MBText();
-                                tmpText.setLocale(locale);
-                                tmpText.setValue("");
-                                entry.getTexts().add(tmpText);
-                            }
-
-                            MBText translatedText = findMBTextForLocale(entry.getKey(), locale, translatedBundles);
-                            if (translatedText != null) {
-                                tmpText.setValue(translatedText.getValue());
-                            }
-                        }
-                    }
-                }
-            }
-
-            // write the combined locales into a file
-            MBPersistencer.saveFile(loadedBundles, new File(to));
-            log("Writing to bundles to file " + to, Project.MSG_INFO);
+            loadExecute();
+            processExecute();
+            outputExecute();
         } catch (Exception e) {
             throw new BuildException(e);
         }
     }
 
-    private MBText findMBTextForLocale(String key, String locale, MBBundles bundles) {
+    protected void processExecute() {
+        // if bundles exist
+        if (loadedBundles != null) {
+            for (MBBundle bundle : loadedBundles.getBundles()) {
+                for (MBEntry entry : bundle.getEntries()) {
+                    // divide the locale string
+                    StringTokenizer tokens = new StringTokenizer(locales, ";");
+                    while (tokens.hasMoreTokens()) {
+                        String locale = tokens.nextToken();
+                        MBText tmpText = null;
+
+                        // check if the defined locale already exists
+                        for (MBText text : entry.getTexts()) {
+                            if (text.getLocale().equals(locale)) {
+                                tmpText = text;
+                            }
+                        }
+
+                        if (tmpText == null) {
+                            tmpText = new MBText();
+                            tmpText.setLocale(locale);
+                            tmpText.setValue("");
+                            entry.getTexts().add(tmpText);
+                        }
+
+                        MBText translatedText = findMBTextForLocale(entry.getKey(), locale, translatedBundles);
+                        if (translatedText != null) {
+                            tmpText.setValue(translatedText.getValue());
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    protected void outputExecute() throws Exception {
+        // write the combined locales into a file
+        MBPersistencer.saveFile(loadedBundles, new File(to));
+        log("Writing to bundles to file " + to, Project.MSG_INFO);
+    }
+
+    protected void loadExecute() throws Exception {
+        log("Reading Bundles from " + from, Project.MSG_INFO);
+        loadedBundles = MBPersistencer.loadFile(new File(from));
+
+        log("Reading Bundles from " + with, Project.MSG_INFO);
+        translatedBundles = MBPersistencer.loadFile(new File(with));
+    }
+
+    protected MBText findMBTextForLocale(String key, String locale, MBBundles bundles) {
         if (bundles != null) {
             for (MBBundle bundle : bundles.getBundles()) {
                 for (MBEntry entry : bundle.getEntries()) {
