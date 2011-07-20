@@ -1,8 +1,8 @@
 package com.google.nlstools.formats;
 
 import com.google.nlstools.model.MBBundle;
-import org.apache.commons.lang.LocaleUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.LocaleUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Task;
 
@@ -33,7 +33,7 @@ public class BundleWriterJson extends BundleWriter {
         Properties merged = null;
         List<Locale> locales;
         if (!StringUtils.isEmpty(locale)) {
-            locales = new ArrayList(LocaleUtils.localeLookupList(LocaleUtils.toLocale(locale)));
+            locales = new ArrayList<Locale>(LocaleUtils.localeLookupList(LocaleUtils.toLocale(locale)));
             Collections.reverse(locales);
             for (Locale loc : locales) {
                 Properties p = createProperties(loc.toString());

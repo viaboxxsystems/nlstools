@@ -3,7 +3,7 @@ package com.google.nlstools.model;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,7 +22,7 @@ public class MBEntry implements Comparable, Cloneable {
     private String key;
     private String description;  // comment field
     @XStreamImplicit(itemFieldName = "text")
-    private List<MBText> texts = new ArrayList();
+    private List<MBText> texts = new ArrayList<MBText>();
 
     public void sort() {
         if (texts != null) Collections.sort(texts);
@@ -45,7 +45,7 @@ public class MBEntry implements Comparable, Cloneable {
     }
 
     public List<MBText> getTexts() {
-        if (texts == null) texts = new ArrayList();
+        if (texts == null) texts = new ArrayList<MBText>();
         return texts;
     }
 
@@ -102,7 +102,7 @@ public class MBEntry implements Comparable, Cloneable {
     public MBEntry copy() {
         try {
             MBEntry entry = (MBEntry) clone();
-            entry.setTexts(new ArrayList(getTexts().size()));
+            entry.setTexts(new ArrayList<MBText>(getTexts().size()));
             for (MBText text : getTexts()) {
                 entry.getTexts().add(text.copy());
             }

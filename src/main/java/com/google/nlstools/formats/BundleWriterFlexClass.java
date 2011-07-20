@@ -4,7 +4,7 @@ import com.google.nlstools.model.MBBundle;
 import com.google.nlstools.model.MBEntry;
 import com.google.nlstools.model.MBText;
 import com.google.nlstools.util.FileUtils;
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Task;
 
@@ -97,6 +97,7 @@ public class BundleWriterFlexClass extends BundleWriter {
 
     /**
      * Write the static beginning of the interface file.
+     * @param pw writer to write to
      */
     void writeStaticIntro(PrintWriter pw) {
         String str = getIPackage();
@@ -127,6 +128,7 @@ public class BundleWriterFlexClass extends BundleWriter {
 
     /**
      * Write the staic end of the interface file.
+     * @param pw writer to write to
      */
     private void writeStaticOutro(PrintWriter pw) {
         pw.println("}");
@@ -136,14 +138,14 @@ public class BundleWriterFlexClass extends BundleWriter {
 
     /**
      * Write the constants to the interface file.
+     * @param pw writer to write to
+     * @param aBundle to read from
      */
     void writeConstants(PrintWriter pw, MBBundle aBundle) {
-        Iterator<MBEntry> iter = aBundle.getEntries().iterator();
-        while (iter.hasNext()) {
-            MBEntry eachEntry = iter.next();
-            String keyName = eachEntry.getKey();
-            Iterator<MBText> texts = eachEntry.getTexts().iterator();
-            String value = eachEntry.getTexts().get(0).getValue();
+        for (MBEntry mbEntry : aBundle.getEntries()) {
+            String keyName = mbEntry.getKey();
+            Iterator<MBText> texts = mbEntry.getTexts().iterator();
+            String value = mbEntry.getTexts().get(0).getValue();
             if (value != null) {
                 pw.print("  /** ");
                 while (texts.hasNext()) {
