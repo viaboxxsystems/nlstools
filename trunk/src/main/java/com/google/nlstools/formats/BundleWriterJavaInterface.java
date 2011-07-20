@@ -4,7 +4,7 @@ import com.google.nlstools.model.MBBundle;
 import com.google.nlstools.model.MBEntry;
 import com.google.nlstools.model.MBText;
 import com.google.nlstools.util.FileUtils;
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Task;
 
@@ -99,6 +99,7 @@ public class BundleWriterJavaInterface extends BundleWriter {
 
     /**
      * Write the static beginning of the interface file.
+     * @param pw writer to write to
      */
     void writeStaticIntro(PrintWriter pw) {
         String str = getIPackage();
@@ -129,6 +130,7 @@ public class BundleWriterJavaInterface extends BundleWriter {
 
     /**
      * Write the staic end of the interface file.
+     * @param pw writer to write to
      */
     private void writeStaticOutro(PrintWriter pw) {
         pw.println("}");
@@ -137,12 +139,14 @@ public class BundleWriterJavaInterface extends BundleWriter {
 
     /**
      * Write the constants to the interface file.
+     * @param pw writer to write to
+     * @param aBundle to read from
      */
     void writeConstants(PrintWriter pw, MBBundle aBundle) {
         Iterator<MBEntry> iter = aBundle.getEntries().iterator();
         boolean enumerateNames =
                 (fileType == FileType.JAVA_ENUM_KEYS || fileType == FileType.JAVA_FULL_ENUM_KEYS);
-        List allNames = enumerateNames ? new ArrayList() : null;
+        List<String> allNames = enumerateNames ? new ArrayList<String>() : null;
         while (iter.hasNext()) {
             MBEntry eachEntry = iter.next();
             String keyName = eachEntry.getKey();
@@ -178,10 +182,12 @@ public class BundleWriterJavaInterface extends BundleWriter {
 
     /**
      * Add an array of constant names to the interface for quick enumeration purposes.
+     * @param pw writer to write to
+     * @param allNames to iterate over and read from
      */
-    private void writeNameEnumeration(PrintWriter pw, List allNames) {
+    private void writeNameEnumeration(PrintWriter pw, List<String> allNames) {
         pw.print("  String[] _ALL_KEYS = {");
-        for (Iterator i = allNames.iterator(); i.hasNext();) {
+        for (Iterator<String> i = allNames.iterator(); i.hasNext();) {
             pw.print(i.next());
             if (i.hasNext()) {
                 pw.print(", ");

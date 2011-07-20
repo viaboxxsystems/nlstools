@@ -16,8 +16,19 @@ Requirements:
 
 Use the binaries
 ================
-1. Place nlstools-*.jar into the classpath
-2. Use the Tasks in your maven (pom.xml) or ant (build.xml) 
+1.
+a) WITH MAVEN (recommended)
+
+   <dependency>
+        <groupId>de.viaboxx</groupId>
+        <artifactId>nlstools</artifactId>
+        <version>2.5.0</version> <!-- or a later version... --->
+   </dependency>
+
+b) WITHOUT MAVEN
+ Place nlstools-*.jar into the classpath
+
+2. Use the Tasks in your maven (pom.xml) or ant (build.xml)
    or with whatever build system you are using (gradle, grails, ...)
    
    Refer to the Tests and Examples provided with nlstools.
@@ -55,5 +66,5 @@ https://code.google.com/p/nlstools/
 http://www.viaboxx.de/
 http://www.viaboxxsystems.de/blog
 
-Roman Stumm, Viaboxx GmbH, 2010
+Roman Stumm, Viaboxx GmbH, 2010, 2011
 email: roman.stumm@viaboxx.de
