@@ -1,0 +1,189 @@
+#summary NLS Tools - ant tasks for managing resource bundles
+#labels Featured
+
+Tools (ant tasks) for I18n management of different locales and their translations.
+
+== What's new? ==
+  
+  * ReleaseNotes
+
+= API documentation =
+  * [http://nlstools.googlecode.com/svn/trunk/javadoc/nlstools/index.html JavaDoc]
+
+= Ant-Tasks manage resource bundles = 
+
+Some [http://ant.apache.org/ ant]-tasks. You can use them with ant or maven2 (with maven-antrun-plugin).
+ * [http://nlstools.googlecode.com/svn/trunk/javadoc/nlstools/com/google/nlstools/tasks/package-summary.html Ant-Tasks]
+
+== Dependencies ==
+
+{{{
+        <dependency>
+            <groupId>com.thoughtworks.xstream</groupId>
+            <artifactId>xstream</artifactId>
+            <version>1.3.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>2.5</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.0.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.ant</groupId>
+            <artifactId>ant</artifactId>
+            <version>1.8.2</version>
+        </dependency>
+
+        <!-- required to write JSON files -->
+        <dependency>
+            <groupId>com.sdicons.jsontools</groupId>
+            <artifactId>jsontools-core</artifactId>
+            <version>1.5</version>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- required to read/write excel spreadsheets -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>3.7</version>
+            <optional>true</optional>
+        </dependency>
+}}}
+
+== Examples ==
+
+=== Resource Bundle as XML ===
+
+{{{
+<bundles>
+  <bundle baseName="Example" interfaceName="com.viaboxx.I_Example">
+    <entry key="key1">
+      <description>a description for the entry</description>
+      <text locale="de">Beispieltext mit ÄÖÜ</text>
+      <text locale="en">An example</text>
+    </entry>
+    <entry key="key2">
+      <text locale="de" review="true">anderer Wert</text>
+    </entry>
+  </bundle>
+</bundles>
+}}}
+
+
+==== XML Attributes and Elements ====
+{{{
+  * Element: bundles 
+    Root tag of XML resource bundles file
+    * Attributes: -
+    * Elements: bundle (0..n) - resource bundles in the file
+
+  * Element: bundle
+    A single resource bundle in the file
+    * Attributes: 
+        baseName   - name of bundle
+        interfaceName - (optional) name of interface to generate
+        sqldomain - (optional) name of sql file to generate
+    * Elements: entry - (0..n) entries in the bundle
+
+  * Element: entry
+    * Attributes: 
+        key - unique key of the resource entry
+    * Elements:
+       description - (optional) textual description of the entry
+       texts - (0..n) the translations for different locales
+
+  * Element: text
+    A translation of an entry for a locale.
+    * Value: the translation (\n = carriage return)
+    * Attributes: 
+        locale - locale key (en_EN, ...), unique under its entry
+        review - (boolean, optional) true to mark the entry as "to be reviewed"
+        useDefault - (boolean, optional) true to mark the entry as "use translation from common bundle"
+}}}
+
+=== Resource Bundle as Excel spreadsheet ===
+For each bundle, create a new page in the excel file, like this:
+
+http://nlstools.googlecode.com/svn/wiki/excelExample.png
+
+  * You find an example for an excel sheet at [http://nlstools.googlecode.com/svn/trunk/example/excelExample.xls excelExample.xls]
+
+  * You can use the .xls file instead of the .xml file in all ant-tasks. You can let translator users work on the excel files.
+  * Red colored texts are marked as "to be reviewed", when converting between excel and xml format.
+  * Cells with grey background indicate missing translations.
+  * Each spreadsheet in the excel file represents a single resource bundle.
+
+=Usage=
+
+=== ExampleProject ===
+
+Refer to the [ExampleProject example project] for a runnable demonstration.
+Refer to the [BestPractise best practises] for a usage description.
+
+=== Glimpse syntax for usage of 'nlstools' with maven2 ==
+
+This demonstrates the use of the NLS Tasks from within a maven2 pom.xml:
+
+{{{
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>generate bundles</id>
+            <phase>generate-sources</phase>
+            <configuration>
+              <tasks>
+               <!-- <taskdef name="addLocale"
+                         classname="com.google.nlstools.tasks.AddLocaleTask">
+                  <classpath refid="maven.test.classpath"/>
+                </taskdef>
+
+                <addLocale
+                    from="src/main/bundles/CustomerForm.xml"
+                    locales="de_DE"
+                    to="src/main/bundles/CustomerForm_de_DE.xml"/>
+
+                <taskdef name="mergeLocale"
+                         classname="com.google.nlstools.tasks.MergeLocaleTask">
+                  <classpath refid="maven.test.classpath"/>
+                </taskdef>
+
+                <mergeLocale
+                    from="src/main/bundles/CustomerForm.xml"
+                    with="src/main/bundles/CustomerForm_de_DE_new.xml"
+                    locales="da_DK"
+                    to="src/main/bundles/CustomerForm_de_DE.xml"/> -->
+
+                <taskdef name="msgbundle"
+                         classname="com.google.nlstools.tasks.MessageBundleTask">
+                  <classpath refid="maven.test.classpath"/>
+                </taskdef>
+
+                <msgbundle overwrite="true" bundles="src/main/bundles/CustomerForm.xml;../base/src/main/bundles/Common.xml"
+                           writeProperties="true"
+                           writeJson="true"
+                           jsonPath="src\main\webapp\js"
+                           jsonFile="i18n"
+                           propertyPath="src\main\webapp\WEB-INF\classes"/>
+              </tasks>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+}}}
