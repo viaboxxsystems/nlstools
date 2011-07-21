@@ -75,39 +75,39 @@
 
     <target name="init">
         <taskdef name="prop2xml"
-                 classname="com.google.nlstools.tasks.Property2XMLConverterTask"
+                 classname="de.viaboxx.nlstools.tasks.Property2XMLConverterTask"
                  classpathref="toolspath"/>
 
         <taskdef name="msgbundle"
-                 classname="com.google.nlstools.tasks.MessageBundleTask"
+                 classname="de.viaboxx.nlstools.tasks.MessageBundleTask"
                  classpathref="toolspath"/>
 
         <taskdef name="mergeLocale"
-                 classname="com.google.nlstools.tasks.MergeLocaleTask"
+                 classname="de.viaboxx.nlstools.tasks.MergeLocaleTask"
                  classpathref="toolspath"/>
 
         <taskdef name="addLocale"
-                 classname="com.google.nlstools.tasks.AddLocaleTask"
+                 classname="de.viaboxx.nlstools.tasks.AddLocaleTask"
                  classpathref="toolspath"/>
 
         <taskdef name="optLocale"
-                 classname="com.google.nlstools.tasks.OptimizeBundlesTask"
+                 classname="de.viaboxx.nlstools.tasks.OptimizeBundlesTask"
                  classpathref="toolspath"/>
 
         <taskdef name="convertBundles"
-                 classname="com.google.nlstools.tasks.ConvertBundlesTask"
+                 classname="de.viaboxx.nlstools.tasks.ConvertBundlesTask"
                  classpathref="toolspath"/>
 
         <taskdef name="compareBundles"
-                 classname="com.google.nlstools.tasks.CompareBundlesTask"
+                 classname="de.viaboxx.nlstools.tasks.CompareBundlesTask"
                  classpathref="toolspath"/>
 
         <taskdef name="listChanges"
-                 classname="com.google.nlstools.tasks.ListChangesTask"
+                 classname="de.viaboxx.nlstools.tasks.ListChangesTask"
                  classpathref="toolspath"/>
 
         <taskdef name="sanityCheck"
-                 classname="com.google.nlstools.tasks.LocaleSanityCheckerTask"
+                 classname="de.viaboxx.nlstools.tasks.LocaleSanityCheckerTask"
                  classpathref="toolspath"/>
 
     </target>
