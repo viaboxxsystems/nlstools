@@ -1,5 +1,5 @@
 <bundles>
-    <bundle baseName="NewLineExample" interfaceName="com.google.I_Example">
+    <bundle baseName="NewLineExample" interfaceName="de.viaboxx.I_Example">
         <entry key="key1">
             <text locale="de">Beispieltext mit\n mehreren Zeilen</text>
             <text locale="en">An example\nwith may lines</text>

@@ -1,5 +1,5 @@
 <bundles>
-  <bundle baseName="Example" interfaceName="com.agimatec.I_Example">
+  <bundle baseName="Example" interfaceName="de.viaboxx.I_Example">
     <entry key="key1">
       <description>Some comment about the entry...</description>
       <text locale="de">
