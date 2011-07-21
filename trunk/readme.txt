@@ -40,6 +40,23 @@ mvn clean install
 
 (artifacts are generated into the target directories)
 
+deploy to maven central:
+========================
+mvn clean install
+
+You can run
+  mvn javadoc:jar and
+  mvn source:jar
+respectively to generate -javadoc.jar and -sources.jar.
+
+Refer to https://docs.sonatype.org/display/Repository/Sonatype+OSS+Maven+Repository+Usage+Guide
+
+Stage Existing Artifacts
+------------------------
+# build jar,pom,source,javadoc artifacts and sign everything (YOU NEED THE PASSPHRASE)
+mvn package javadoc:jar source:jar gpg:sign
+
+
 (optional) generate site, javadoc:
 -----------------------
 mvn site
