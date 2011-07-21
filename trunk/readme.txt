@@ -42,20 +42,20 @@ mvn clean install
 
 deploy to maven central:
 ========================
-mvn clean install
+mvn clean deploy
 
-You can run
-  mvn javadoc:jar and
-  mvn source:jar
-respectively to generate -javadoc.jar and -sources.jar.
+Note: this also creates javadoc and sources jar and deploys to maven snapshot repository.
 
 Refer to https://docs.sonatype.org/display/Repository/Sonatype+OSS+Maven+Repository+Usage+Guide
 
-Stage Existing Artifacts
-------------------------
-# build jar,pom,source,javadoc artifacts and sign everything (YOU NEED THE PASSPHRASE)
-mvn package javadoc:jar source:jar gpg:sign
+Stage a Release
+---------------
+mvn release:clean release:prepare release:perform
 
+(optional) generate jar-with-dependencies:
+-------------------------------------------
+mvn assembly:assembly
+(or activate <phase>package</phase> so that it happens automatically during mvn install)
 
 (optional) generate site, javadoc:
 -----------------------
