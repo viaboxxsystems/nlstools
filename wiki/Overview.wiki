@@ -19,6 +19,12 @@ Some [http://ant.apache.org/ ant]-tasks. You can use them with ant or maven2 (wi
 
 {{{
         <dependency>
+          <groupId>de.viaboxx</groupId>
+          <artifactId>nlstools</artifactId>
+          <version>2.5.0</version>
+        </dependency>
+
+        <dependency>
             <groupId>com.thoughtworks.xstream</groupId>
             <artifactId>xstream</artifactId>
             <version>1.3.1</version>
