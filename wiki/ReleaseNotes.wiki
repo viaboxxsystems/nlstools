@@ -1,6 +1,20 @@
 #labels Featured
 = Release notes: nlstools =
 
+== 2.5.0 (21.07.2011) ==
+  * Changed package names from com.google to de.viaboxx
+  * Published artifacts to maven central.
+  
+You can create a dependency in your maven pom to use nlstools:
+
+{{{
+<dependency>
+  <groupId>de.viaboxx</groupId>
+  <artifactId>nlstools</artifactId>
+  <version>2.5.0</version>
+</dependency>
+}}}
+
 == 2.4.0 (29.12.2010) ==
   * Nls Tools separated from annomark.jar
   * Excel-File support as an alternative for XML-Files in all ant-tasks
