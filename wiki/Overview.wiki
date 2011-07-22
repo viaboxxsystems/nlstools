@@ -15,14 +15,18 @@ Tools (ant tasks) for I18n management of different locales and their translation
 Some [http://ant.apache.org/ ant]-tasks. You can use them with ant or maven2 (with maven-antrun-plugin).
  * [http://nlstools.googlecode.com/svn/trunk/javadoc/nlstools/com/google/nlstools/tasks/package-summary.html Ant-Tasks]
 
-== Dependencies ==
+== Reference nlstools in maven pom.xml ==
+{{{
+  <dependency>
+    <groupId>de.viaboxx</groupId>
+    <artifactId>nlstools</artifactId>
+    <version>2.5.0</version>
+  </dependency>
+}}}
+
+=== transitive dependencies ===
 
 {{{
-        <dependency>
-          <groupId>de.viaboxx</groupId>
-          <artifactId>nlstools</artifactId>
-          <version>2.5.0</version>
-        </dependency>
 
         <dependency>
             <groupId>com.thoughtworks.xstream</groupId>
