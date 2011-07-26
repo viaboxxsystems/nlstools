@@ -1,6 +1,9 @@
 #labels Featured
 = Release notes: nlstools =
 
+== 2.5.1 ==
+  * support fromCharset attribute in Property2XMLConverterTask to support UTF-8 properties files used in Grails projects
+
 == 2.5.0 (21.07.2011) ==
   * Changed package names from com.google to de.viaboxx
   * Published artifacts to maven central.
