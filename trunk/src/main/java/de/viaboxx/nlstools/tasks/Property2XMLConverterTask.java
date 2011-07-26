@@ -5,11 +5,11 @@ import de.viaboxx.nlstools.model.MBBundle;
 import de.viaboxx.nlstools.model.MBBundles;
 import de.viaboxx.nlstools.model.MBEntry;
 import de.viaboxx.nlstools.model.MBText;
+import de.viaboxx.nlstools.util.FileUtils;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
 
-import java.io.File;
-import java.io.FileInputStream;
+import java.io.*;
 import java.util.*;
 
 /**
@@ -21,6 +21,19 @@ public class Property2XMLConverterTask extends Task {
     private boolean xml = false;
     private String fromProperty, to, locales;
     private String interfaceName = "";
+    /**
+     * charset (e.g. UTF-8) of the .properties Files - if they do not use the default charset (e.g. Grails i18n files)
+     * By default, the ISO 8859-1 character encoding is used (see javadoc of java.util.Properties)
+     */
+    private String fromCharset = null;
+
+    public String getFromCharset() {
+        return fromCharset;
+    }
+
+    public void setFromCharset(String fromCharset) {
+        this.fromCharset = fromCharset;
+    }
 
     public boolean isXml() {
         return xml;
@@ -104,11 +117,19 @@ public class Property2XMLConverterTask extends Task {
                         : getFromProperty();
 
                 if (!xml) {
-                    prop.load(new FileInputStream(
-                            fname + ".properties"));
+                    if (getFromCharset() == null) { // use default charset
+                        InputStream stream = new FileInputStream(fname + ".properties");
+                        prop.load(stream);
+                        stream.close();
+                    } else {
+                        Reader reader = FileUtils.openFileReader(new File(fname+".properties"), getFromCharset());
+                        prop.load(reader);
+                        reader.close();
+                    }
                 } else {
-                    prop.loadFromXML(new FileInputStream(
-                            fname + ".xml"));
+                    InputStream stream = new FileInputStream(fname + ".xml");
+                    prop.loadFromXML(stream);
+                    stream.close();
                 }
                 properties.put(eachLocale, prop);
                 allKeys.addAll(prop.keySet());
