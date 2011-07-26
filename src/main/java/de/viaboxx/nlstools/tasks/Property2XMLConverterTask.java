@@ -14,7 +14,15 @@ import java.util.*;
 
 /**
  * <p>Description: Create a bundles-xml (or excel) file fromProperty some plain property (or xml) files</p>
- *
+ * <br/>
+ * example:
+ *  convert grails-app/i18n/messages_en.properties, messages_de.properties and messages_zh.properties
+ *  to i18n/messages.xml, where the properties files are stored in UTF-8 encoding:
+ * <pre>
+ *  &lt;prop2xml locales="en;de;zh" fromProperty="grails-app/i18n/messages"
+                  to="i18n/messages.xml" fromCharset="UTF-8"
+                  interfaceName="MyMessages"/&gt;
+ * </pre>
  * @author Roman Stumm
  */
 public class Property2XMLConverterTask extends Task {

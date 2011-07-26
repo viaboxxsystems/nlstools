@@ -42,6 +42,7 @@ import java.util.StringTokenizer;
  * bundles = the XML (or Excel)-bundles input file(s), separated by ;
  * sourcePath = to write .java interface to
  * propertyPath = to write .properties/.xml to
+ * toCharset = (optional, default: null) the charset, e.g. UTF-8, to write properties files
  * jsonPath = to write .js to
  * jsonFile = null or the hard-coded json file name
  * sqlScriptDir = to write .sql to
@@ -84,11 +85,24 @@ public class MessageBundleTask extends Task {
     private boolean debugMode = false;
     private boolean flexLayout = false;
     private boolean preserveNewlines = false;
+    /**
+     * charset (e.g. UTF-8) of the .properties Files - if they do not use the default charset (e.g. Grails i18n files)
+     * By default, the ISO 8859-1 character encoding is used (see javadoc of java.util.Properties)
+     */
+    private String toCharset = null;
 
     private MBBundles parsedBundles;
     private String xmlConfigBundle;
 
     private Set<String> allowedLocales;
+
+    public String getToCharset() {
+        return toCharset;
+    }
+
+    public void setToCharset(String toCharset) {
+        this.toCharset = toCharset;
+    }
 
     public String getJsonPath() {
         return jsonPath;
@@ -251,8 +265,12 @@ public class MessageBundleTask extends Task {
         } else {
             fileType = BundleWriter.FileType.PROPERTIES;
         }
-        executeBundleWriter(new BundleWriterProperties(this, getXMLConfigBundle(), o,
-                getPropertyPath(), fileType, allowedLocales));
+        BundleWriterProperties writer = new BundleWriterProperties(this, getXMLConfigBundle(), o,
+                getPropertyPath(), fileType, allowedLocales);
+        if (getToCharset() != null) {
+            writer.setCharset(getToCharset());
+        }
+        executeBundleWriter(writer);
     }
 
     private void handleJson(MBBundle o) throws Exception {
