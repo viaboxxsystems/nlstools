@@ -61,6 +61,14 @@ mvn assembly:assembly
 -----------------------
 mvn site
 mvn javadoc:javadoc
+svn remove javadoc
+svn commit -m "removed old javadoc dir"
+mv target/site/apidocs javadoc
+svn add javadoc
+cd javadoc
+svn propset -R svn:mime-type text/html *
+cd ..
+svn commit -m "readded javadoc"
 
 (optional) generate an IntelliJ project:
 -----------------------------
