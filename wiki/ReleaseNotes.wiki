@@ -1,4 +1,6 @@
+#summary What's new in releases of nlstools?
 #labels Featured
+
 = Release notes: nlstools =
 
 == 2.5.2-SNAPSHOT (current source) == 
