@@ -1,4 +1,4 @@
-#summary Grails Integration
+#summary How to integrate nlstools in a grails project
 
 = Introduction =
 
