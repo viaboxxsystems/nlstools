@@ -1,0 +1,58 @@
+== Glimpse syntax for usage of 'nlstools' with maven2 ==
+
+This demonstrates the use of the NLS Tasks from within a maven2 pom.xml:
+
+{{{
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>generate bundles</id>
+            <phase>generate-sources</phase>
+            <configuration>
+              <tasks>
+               <!-- <taskdef name="addLocale"
+                         classname="de.viaboxx.nlstools.tasks.AddLocaleTask">
+                  <classpath refid="maven.test.classpath"/>
+                </taskdef>
+
+                <addLocale
+                    from="src/main/bundles/CustomerForm.xml"
+                    locales="de_DE"
+                    to="src/main/bundles/CustomerForm_de_DE.xml"/>
+
+                <taskdef name="mergeLocale"
+                         classname="de.viaboxx.nlstools.tasks.MergeLocaleTask">
+                  <classpath refid="maven.test.classpath"/>
+                </taskdef>
+
+                <mergeLocale
+                    from="src/main/bundles/CustomerForm.xml"
+                    with="src/main/bundles/CustomerForm_de_DE_new.xml"
+                    locales="da_DK"
+                    to="src/main/bundles/CustomerForm_de_DE.xml"/> -->
+
+                <taskdef name="msgbundle"
+                         classname="de.viaboxx.nlstools.tasks.MessageBundleTask">
+                  <classpath refid="maven.test.classpath"/>
+                </taskdef>
+
+                <msgbundle overwrite="true" bundles="src/main/bundles/CustomerForm.xml;../base/src/main/bundles/Common.xml"
+                           writeProperties="true"
+                           writeJson="true"
+                           jsonPath="src\main\webapp\js"
+                           jsonFile="i18n"
+                           propertyPath="src\main\webapp\WEB-INF\classes"/>
+              </tasks>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+}}}
