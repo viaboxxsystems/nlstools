@@ -14,9 +14,7 @@ This demonstrates the use of the NLS Tasks from within a maven2 pom.xml:
             <configuration>
               <tasks>
                <!-- <taskdef name="addLocale"
-                         classname="de.viaboxx.nlstools.tasks.AddLocaleTask">
-                  <classpath refid="maven.test.classpath"/>
-                </taskdef>
+                         classname="de.viaboxx.nlstools.tasks.AddLocaleTask"/>
 
                 <addLocale
                     from="src/main/bundles/CustomerForm.xml"
@@ -24,9 +22,7 @@ This demonstrates the use of the NLS Tasks from within a maven2 pom.xml:
                     to="src/main/bundles/CustomerForm_de_DE.xml"/>
 
                 <taskdef name="mergeLocale"
-                         classname="de.viaboxx.nlstools.tasks.MergeLocaleTask">
-                  <classpath refid="maven.test.classpath"/>
-                </taskdef>
+                         classname="de.viaboxx.nlstools.tasks.MergeLocaleTask"/>
 
                 <mergeLocale
                     from="src/main/bundles/CustomerForm.xml"
