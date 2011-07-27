@@ -35,9 +35,7 @@ This demonstrates the use of the NLS Tasks from within a maven2 pom.xml:
                     to="src/main/bundles/CustomerForm_de_DE.xml"/> -->
 
                 <taskdef name="msgbundle"
-                         classname="de.viaboxx.nlstools.tasks.MessageBundleTask">
-                  <classpath refid="maven.test.classpath"/>
-                </taskdef>
+                         classname="de.viaboxx.nlstools.tasks.MessageBundleTask"/>
 
                 <msgbundle overwrite="true" bundles="src/main/bundles/CustomerForm.xml;../base/src/main/bundles/Common.xml"
                            writeProperties="true"
@@ -52,6 +50,13 @@ This demonstrates the use of the NLS Tasks from within a maven2 pom.xml:
             </goals>
           </execution>
         </executions>
+        <dependencies>
+                    <dependency>
+                        <groupId>de.viaboxx</groupId>
+                        <artifactId>nlstools</artifactId>
+                        <version>2.5.1</version>
+                    </dependency>
+       </dependencies>
       </plugin>
     </plugins>
   </build>
