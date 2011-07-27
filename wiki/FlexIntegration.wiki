@@ -184,6 +184,15 @@ public class I18n extends I18nKeys implements IEventDispatcher, I18nFactory {
 
 }}}
 
+and this interface (in case you want to mock the implementation for testing)
+
+{{{
+package de.viaboxx.flexClient {
+public interface I18nFactory {
+    function newI18nInstance():I18n;
+}
+}
+}}}
 === Usage in Flex Skins and Views ===
 
 {{{
