@@ -1,7 +1,9 @@
 #labels Featured
 = Release notes: nlstools =
 
-== 2.5.1 (current source) ==
+== 2.5.2-SNAPSHOT (current source) == 
+
+== 2.5.1 (27.07.2001) ==
   * "fromCharset" attribute in Property2XMLConverterTask to support UTF-8 properties files used in Grails projects
   * "toCharset" attribute in MessageBundleTask to support UTF-8 properties files used in Grails projects
   * dependency to ant with scope=provided to avoid version conflicts (for grails projects using nlstools)
