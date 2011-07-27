@@ -1,0 +1,63 @@
+#summary How to build property files for a Flex project
+
+= Introduction =
+
+You can build your flex project with the maven (http://maven.apache.org/) flex mojos.
+
+==  pom.xml ==
+
+under the build section of the pom place something like this:
+{{{
+<plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>clean</id>
+                        <phase>clean</phase>
+                        <configuration>
+                            <tasks>
+                                <delete>
+                                    <fileset dir="src/main/flex/de/viaboxx/flexExampleProject/">
+                                        <include name="I18nKeys.as"/>
+                                    </fileset>
+                                </delete>
+                            </tasks>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>generate-bundles</id>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <tasks>
+                                <taskdef name="msgbundle"
+                                         classname="de.viaboxx.nlstools.tasks.MessageBundleTask"/>
+
+                                <msgbundle writeProperties="false"
+                                           writeJson="false"
+                                           writeInterface="Flex"
+                                           overwrite="true"
+                                           deleteOldFiles="false"
+                                           debugMode="false"
+                                           bundles="../i18n/main-default.xml"
+                                           sourcePath="src/main/flex"
+                                        />
+
+                            </tasks>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>de.viaboxx</groupId>
+                        <artifactId>nlstools</artifactId>
+                        <version>2.5.0</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+}}}
