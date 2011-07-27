@@ -2,7 +2,7 @@
 
 = Introduction =
 
-Use nlstools to generate the properties files under grails-app/i18n/messages*.properties for your Grails project.
+Use nlstools to generate the properties files under grails-app/i18n/messages*.properties for your Grails project. (http://grails.org/)
 
 Caution: The properties files for a grails project are stored in UTF-8 charset (in contrast to the java default for properties files).
 
