@@ -1,3 +1,5 @@
+#summary How to exchange files with external partners for translation
+
 = Best practises =
 
 Alle labels of GUI elements and messages in the applications are maintained in resource bundle files. During development, these files are kept in the version control systems together with the sources, in XML-files. We generate some artifacts based on these files as required.
