@@ -2,11 +2,12 @@
 
 = Introduction =
 
-You can build your flex project with the maven (http://maven.apache.org/) flex mojos.
+You can build your flex project (http://www.adobe.com/de/products/flex) with the maven (http://maven.apache.org) flex mojos (http://flexmojos.sonatype.org).
 
 ==  pom.xml ==
 
-under the build section of the pom place something like this:
+under the build section of the pom place something like this to generate a flex source file with resource keys:
+
 {{{
          <plugin>
                 <artifactId>maven-antrun-plugin</artifactId>
@@ -180,3 +181,64 @@ public class I18n extends I18nKeys implements IEventDispatcher, I18nFactory {
 }
 
 }}}
+
+3. Generated properties files in flex project layout
+
+To generate the properties files, the pom.xml can be like this:
+{{{
+<plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>clean</id>
+                        <phase>clean</phase>
+                        <configuration>
+                            <tasks>
+                                <delete>
+                                    <fileset dir="src/main/locales">
+                                        <include name="**/*.properties"/>
+                                    </fileset>
+                                </delete>
+                            </tasks>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>generate-bundles</id>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <tasks>
+                                <taskdef name="msgbundle"
+                                         classname="de.viaboxx.nlstools.tasks.MessageBundleTask"/>
+                                <msgbundle writeProperties="true" writeJson="false" writeInterface="false"
+                                           overwrite="true" deleteOldFiles="false" debugMode="false"
+                                           flexLayout="true"
+                                           preserveNewlines="true"
+                                           allowedLocales="en_US;ar_AE"
+                                           bundles="../i18n/main-default.xml"
+                                           propertyPath="src/main/locales"/>
+                            </tasks>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>de.viaboxx</groupId>
+                        <artifactId>nlstools</artifactId>
+                        <version>2.5.1</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+}}}
+
+You find the generated properties files under src/main/locales/<the locale here>/main.properties
+
+
+=== More? ===
+
+Refer to BestPratice
