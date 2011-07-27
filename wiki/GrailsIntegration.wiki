@@ -31,7 +31,7 @@ Download the file from: http://maven.apache.org/ant-tasks/download.html
         </artifact:dependencies>
     </target>
 
-    <target name="reverse" depends="init" description="Einmalig aus .properties das i18n-xml File machen">
+    <target name="reverse" depends="init">
         <taskdef name="prop2xml"
                  classname="de.viaboxx.nlstools.tasks.Property2XMLConverterTask"
                  classpathref="toolspath"/>
