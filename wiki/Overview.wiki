@@ -20,7 +20,7 @@ Some [http://ant.apache.org/ ant]-tasks. You can use them with ant or maven2 (wi
   <dependency>
     <groupId>de.viaboxx</groupId>
     <artifactId>nlstools</artifactId>
-    <version>2.5.0</version>
+    <version>2.5.1</version>
   </dependency>
 }}}
 
