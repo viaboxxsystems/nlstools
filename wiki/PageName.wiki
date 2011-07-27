@@ -79,3 +79,27 @@ Add the nlstools dependency.
     }
   }
 }}}
+
+2. Create the file scripts/_Events.groovy
+
+This is the file content:
+{{{
+eventCompileStart = { msg ->      
+
+  ant.taskdef(name: "msgbundle", classname: "de.viaboxx.nlstools.tasks.MessageBundleTask")
+
+  ant.msgbundle(writeProperties: "true",
+          bundles: "i18n/messages.xml",
+          propertyPath: "grails-app/i18n", toCharset: "UTF-8"//, overwrite: "true", debugMode: "true"
+  )
+}
+}}}
+
+
+3. That's it!
+Whenever you call
+{{{
+grails compile
+}}}
+
+You get the properties files whenever the xml file has been changed.
