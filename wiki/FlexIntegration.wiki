@@ -4,7 +4,7 @@
 
 You can build your flex project (http://www.adobe.com/de/products/flex) with the maven (http://maven.apache.org) flex mojos (http://flexmojos.sonatype.org).
 
-==  pom.xml ==
+==  pom.xml to generate a flex.as file ==
 
 under the build section of the pom place something like this to generate a flex source file with resource keys:
 
@@ -62,6 +62,8 @@ under the build section of the pom place something like this to generate a flex 
                 </dependencies>
             </plugin>
 }}}
+
+=== Flex I18nKeys.as ==
 
 This generates:
 
@@ -181,6 +183,8 @@ public class I18n extends I18nKeys implements IEventDispatcher, I18nFactory {
 }
 
 }}}
+
+== pom.xml to generate properties files in flex layout ==
 
 3. Generated properties files in flex project layout
 
