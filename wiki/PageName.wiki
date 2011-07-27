@@ -44,4 +44,38 @@ Download the file from: http://maven.apache.org/ant-tasks/download.html
 
 }}}
 
+3. Call the script
+
+{{{
+ant reverse
+}}}
+
+This creates a file i18n/messages.xml
+You can now delete the properties files from the vcs. 
+Next steps show how to integrate the generation of the files into the grails build lifecycle.
+
 == Integration in grails build lifecycle ==
+
+Whenever you call grails compile, we want to generate/update the properties files under grails-app/i18n from the XML file i18n/messages.xml.
+
+1. Modify grails-app/conf/BuildConfig.groovy
+
+Enable mavenLocal and mavenCentral repositories.
+Add the nlstools dependency.
+
+{{{
+  repositories {
+    grailsPlugins()
+    grailsHome()
+    grailsCentral()
+
+    mavenLocal()
+    mavenCentral()
+    }
+  dependencies {
+    // for _Events.groovy to build the project
+    build('de.viaboxx:nlstools:2.5.1') {
+      transitive = true
+    }
+  }
+}}}
