@@ -1,6 +1,6 @@
 == Glimpse syntax for usage of 'nlstools' with maven2 ==
 
-This demonstrates the use of the NLS Tasks from within a maven2 pom.xml:
+This demonstrates the use of the NLS Tasks from within a maven2 (http://maven.apache.org) pom.xml:
 
 {{{
   <build>
