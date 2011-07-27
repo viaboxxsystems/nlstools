@@ -245,4 +245,4 @@ You find the generated properties files under src/main/locales/<the locale here>
 
 === More? ===
 
-Refer to BestPratice
+Refer to BestPractise
