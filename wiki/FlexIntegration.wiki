@@ -184,6 +184,12 @@ public class I18n extends I18nKeys implements IEventDispatcher, I18nFactory {
 
 }}}
 
+=== Usage in Flex Skins and Views ===
+
+{{{
+  <s:Label text="{I18n.bundle.string(I18nKeys.askForCustomsDuty_question_text)}"
+}}}
+
 == pom.xml to generate properties files in flex layout ==
 
 3. Generated properties files in flex project layout
