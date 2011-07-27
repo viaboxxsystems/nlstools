@@ -80,7 +80,7 @@ Add the nlstools dependency.
   }
 }}}
 
-2. Create the file scripts/_Events.groovy
+2. Create the file scripts/`_`Events.groovy
 
 This is the file content:
 {{{
