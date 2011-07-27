@@ -36,13 +36,16 @@ Download the file from: http://maven.apache.org/ant-tasks/download.html
                  classname="de.viaboxx.nlstools.tasks.Property2XMLConverterTask"
                  classpathref="toolspath"/>
 
-        <prop2xml locales="en;de;zh" fromProperty="grails-app/i18n/messages"
+        <prop2xml locales="en;de" fromProperty="grails-app/i18n/messages"
                   to="i18n/messages.xml" fromCharset="UTF-8"
                   interfaceName="Messages"/>
     </target>
 </project>
 
 }}}
+
+  * Adapt the list of locales for your needs (en;de)
+  * Change the interfaceName (optional)
 
 3. Call the script
 
