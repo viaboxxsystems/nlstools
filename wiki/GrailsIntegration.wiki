@@ -31,7 +31,7 @@ Download the file from: http://maven.apache.org/ant-tasks/download.html
         </artifact:dependencies>
     </target>
 
-    <target name="reverse" depends="init">
+    <target name="prop2xml" depends="init">
         <taskdef name="prop2xml"
                  classname="de.viaboxx.nlstools.tasks.Property2XMLConverterTask"
                  classpathref="toolspath"/>
@@ -47,7 +47,7 @@ Download the file from: http://maven.apache.org/ant-tasks/download.html
 3. Call the script
 
 {{{
-ant reverse
+ant prop2xml
 }}}
 
 This creates a file i18n/messages.xml
