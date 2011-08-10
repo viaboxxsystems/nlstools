@@ -99,6 +99,7 @@ public class BundleWriterJavaInterface extends BundleWriter {
 
     /**
      * Write the static beginning of the interface file.
+     *
      * @param pw writer to write to
      */
     void writeStaticIntro(PrintWriter pw) {
@@ -130,6 +131,7 @@ public class BundleWriterJavaInterface extends BundleWriter {
 
     /**
      * Write the staic end of the interface file.
+     *
      * @param pw writer to write to
      */
     private void writeStaticOutro(PrintWriter pw) {
@@ -139,7 +141,8 @@ public class BundleWriterJavaInterface extends BundleWriter {
 
     /**
      * Write the constants to the interface file.
-     * @param pw writer to write to
+     *
+     * @param pw      writer to write to
      * @param aBundle to read from
      */
     void writeConstants(PrintWriter pw, MBBundle aBundle) {
@@ -151,20 +154,22 @@ public class BundleWriterJavaInterface extends BundleWriter {
             MBEntry eachEntry = iter.next();
             String keyName = eachEntry.getKey();
             Iterator<MBText> texts = eachEntry.getTexts().iterator();
-            String value = eachEntry.getTexts().get(0).getValue();
-            if (value != null) {
-                pw.print("  /** ");
-                while (texts.hasNext()) {
-                    MBText theText = texts.next();
-                    String lang = theText.getLocale();
-                    pw.print("{");
-                    pw.print(lang);
-                    pw.print("} ");
-                }
-                pw.print("=> ");
-                pw.print(StringEscapeUtils.escapeXml(value));
-                pw.println(" */");
+            pw.print("  /** ");
+            while (texts.hasNext()) {
+                MBText theText = texts.next();
+                String lang = theText.getLocale();
+                pw.print("{");
+                pw.print(lang);
+                pw.print("} ");
             }
+            MBText xmpl = eachEntry.findExampleText();
+            if (xmpl != null) {
+                pw.print(" | ");
+                pw.print(xmpl.getLocale());
+                pw.print(" = ");
+                pw.print(StringEscapeUtils.escapeXml(xmpl.getValue()));
+            }
+            pw.println(" */");
             pw.print("  String ");
             String theKey = keyName.replace('.', '_');
             pw.print(theKey);
@@ -182,7 +187,8 @@ public class BundleWriterJavaInterface extends BundleWriter {
 
     /**
      * Add an array of constant names to the interface for quick enumeration purposes.
-     * @param pw writer to write to
+     *
+     * @param pw       writer to write to
      * @param allNames to iterate over and read from
      */
     private void writeNameEnumeration(PrintWriter pw, List<String> allNames) {

@@ -97,6 +97,7 @@ public class BundleWriterFlexClass extends BundleWriter {
 
     /**
      * Write the static beginning of the interface file.
+     *
      * @param pw writer to write to
      */
     void writeStaticIntro(PrintWriter pw) {
@@ -128,6 +129,7 @@ public class BundleWriterFlexClass extends BundleWriter {
 
     /**
      * Write the staic end of the interface file.
+     *
      * @param pw writer to write to
      */
     private void writeStaticOutro(PrintWriter pw) {
@@ -138,27 +140,30 @@ public class BundleWriterFlexClass extends BundleWriter {
 
     /**
      * Write the constants to the interface file.
-     * @param pw writer to write to
+     *
+     * @param pw      writer to write to
      * @param aBundle to read from
      */
     void writeConstants(PrintWriter pw, MBBundle aBundle) {
         for (MBEntry mbEntry : aBundle.getEntries()) {
             String keyName = mbEntry.getKey();
             Iterator<MBText> texts = mbEntry.getTexts().iterator();
-            String value = mbEntry.getTexts().get(0).getValue();
-            if (value != null) {
-                pw.print("  /** ");
-                while (texts.hasNext()) {
-                    MBText theText = texts.next();
-                    String lang = theText.getLocale();
-                    pw.print("{");
-                    pw.print(lang);
-                    pw.print("} ");
-                }
-                pw.print("=> ");
-                pw.print(StringEscapeUtils.escapeXml(value));
-                pw.println(" */");
+            pw.print("  /** ");
+            while (texts.hasNext()) {
+                MBText theText = texts.next();
+                String lang = theText.getLocale();
+                pw.print("{");
+                pw.print(lang);
+                pw.print("} ");
             }
+            MBText xmpl = mbEntry.findExampleText();
+            if (xmpl != null) {
+                pw.print(" | ");
+                pw.print(xmpl.getLocale());
+                pw.print(" = ");
+                pw.print(StringEscapeUtils.escapeXml(xmpl.getValue()));
+            }
+            pw.println(" */");
             pw.print("  public static const ");
             String theKey = keyName.replace('.', '_');
             pw.print(theKey);
