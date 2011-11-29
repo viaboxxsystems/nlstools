@@ -27,7 +27,7 @@ Download the file from: http://maven.apache.org/ant-tasks/download.html
 
     <target name="init">
         <artifact:dependencies pathid="toolspath">
-            <dependency groupId="de.viaboxx" artifactId="nlstools" version="2.5.1"/>
+            <dependency groupId="de.viaboxx" artifactId="nlstools" version="2.5.2"/>
         </artifact:dependencies>
     </target>
 
