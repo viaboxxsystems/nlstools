@@ -57,7 +57,7 @@ under the build section of the pom place something like this to generate a flex 
                     <dependency>
                         <groupId>de.viaboxx</groupId>
                         <artifactId>nlstools</artifactId>
-                        <version>2.5.0</version>
+                        <version>2.5.2</version>
                     </dependency>
                 </dependencies>
             </plugin>
@@ -249,7 +249,7 @@ To generate the properties files, the pom.xml can be like this:
                     <dependency>
                         <groupId>de.viaboxx</groupId>
                         <artifactId>nlstools</artifactId>
-                        <version>2.5.1</version>
+                        <version>2.5.2</version>
                     </dependency>
                 </dependencies>
             </plugin>
