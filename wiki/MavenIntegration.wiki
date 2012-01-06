@@ -60,7 +60,8 @@ This demonstrates the use of the NLS Tasks from within a maven2 (http://maven.ap
   </build>
 }}}
 
-Another example, this time, a java interface and a properties files are generated. It makes use of the build-helper-maven-plugin to automatically add the folders containing the generated files to the maven source/resource directories. So you can clean all generated files automatically with a "mvn clean" and you do not need to set deleteOldFiles="true".
+Another example: 
+This time, a java interface and .properties files are generated. It makes use of the build-helper-maven-plugin to automatically add the folders containing the generated files to the maven source/resource directories. So you can clean all generated files automatically with a "mvn clean" and you do not need to set deleteOldFiles="true".
 
 {{{
  <plugin>
