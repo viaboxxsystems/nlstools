@@ -64,7 +64,7 @@ Another example:
 This time, a java interface and .properties files are generated. It makes use of the build-helper-maven-plugin to automatically add the folders containing the generated files to the maven source/resource directories. So you can clean all generated files automatically with a "mvn clean" and you do not need to set deleteOldFiles="true".
 
 {{{
- <plugin>
+             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
                 <version>1.7</version>
