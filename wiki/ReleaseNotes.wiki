@@ -3,7 +3,14 @@
 
 = Release notes: nlstools =
 
-== 2.5.3-SNAPSHOT (current source) ==
+== 2.5.5-SNAPSHOT (current source) ==
+
+== 2.5.4 (16.08.2012) ==
+  * fixed MessageBundleTask: parent-locale-lookup did not work for locales with Country/Variant. 
+  * added option 'merged' to MessageBundleTask
+
+== 2.5.3 ==
+  * upgraded 3rdparty dependencies
 
 == 2.5.2 == 
   * flex and java interface contains a non-empty example value in comment
