@@ -47,6 +47,7 @@ mvn clean deploy
 Note: this also creates javadoc and sources jar and deploys to maven snapshot repository.
 
 Refer to https://docs.sonatype.org/display/Repository/Sonatype+OSS+Maven+Repository+Usage+Guide
+Use https://oss.sonatype.org/index.html#welcome to stage/release
 
 Stage a Release
 ---------------
