@@ -17,6 +17,12 @@ import java.util.Set;
  * Copyright: Viaboxx GmbH
  */
 public class BundleWriterProperties extends BundleWriter {
+    private boolean merged = true;
+
+    public void setMerged(boolean merged) {
+        this.merged = merged;
+    }
+
     /**
      * charset (e.g. UTF-8) of the .properties Files - if they do not use the default charset (e.g. Grails i18n files)
      * By default, the ISO 8859-1 character encoding is used (see javadoc of java.util.Properties)
@@ -65,7 +71,7 @@ public class BundleWriterProperties extends BundleWriter {
             Writer writer = FileUtils.openFileWriter(new File(propfile), getCharset());
             try {
                 String header = getPropertiesHeader(locale);
-                Properties p = createProperties(locale);
+                Properties p = createProperties(locale, merged);
                 p.store(writer, header);
             } finally {
                 writer.close();
@@ -75,7 +81,7 @@ public class BundleWriterProperties extends BundleWriter {
 
     protected void writeProperties(OutputStream stream, String aLocale, String header)
             throws IOException {
-        Properties p = createProperties(aLocale);
+        Properties p = createProperties(aLocale, merged);
         if (fileType.equals(FileType.XML)) {
             p.storeToXML(stream, header);
         } else {

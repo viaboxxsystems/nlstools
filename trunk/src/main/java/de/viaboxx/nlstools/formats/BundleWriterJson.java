@@ -1,13 +1,12 @@
 package de.viaboxx.nlstools.formats;
 
 import de.viaboxx.nlstools.model.MBBundle;
-import org.apache.commons.lang3.LocaleUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Task;
 
 import java.io.File;
-import java.util.*;
+import java.util.Properties;
+import java.util.Set;
 
 /**
  * Description: <br/>
@@ -18,6 +17,11 @@ import java.util.*;
  */
 public class BundleWriterJson extends BundleWriter {
     private final String outputFile;
+    private boolean merged = true;
+
+    public void setMerged(boolean merged) {
+        this.merged = merged;
+    }
 
     public BundleWriterJson(Task task, String configFile,
                             MBBundle currentBundle, String outputPath, String outputFile,
@@ -30,25 +34,10 @@ public class BundleWriterJson extends BundleWriter {
         String jsfile = getFileName(locale);
         mkdirs(jsfile);
         task.log("writing json file " + jsfile, Project.MSG_INFO);
-        Properties merged = null;
-        List<Locale> locales;
-        if (!StringUtils.isEmpty(locale)) {
-            locales = new ArrayList<Locale>(LocaleUtils.localeLookupList(LocaleUtils.toLocale(locale)));
-            Collections.reverse(locales);
-            for (Locale loc : locales) {
-                Properties p = createProperties(loc.toString());
-                if (merged == null) {
-                    merged = p;
-                } else {
-                    merged.putAll(p);
-                }
-            }
-        } else {
-            merged = createProperties(locale);
-        }
+        Properties mergedProperties = createProperties(locale, merged);
         MBJSONPersistencer writer =
                 new MBJSONPersistencer(fileType == FileType.JS_PRETTY);
-        writer.saveObject(merged, new File(jsfile));
+        writer.saveObject(mergedProperties, new File(jsfile));
     }
 
     @Override
