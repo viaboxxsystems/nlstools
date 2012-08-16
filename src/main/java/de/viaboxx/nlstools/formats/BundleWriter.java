@@ -3,6 +3,8 @@ package de.viaboxx.nlstools.formats;
 import de.viaboxx.nlstools.model.MBBundle;
 import de.viaboxx.nlstools.model.MBEntry;
 import de.viaboxx.nlstools.model.MBText;
+import org.apache.commons.lang3.LocaleUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Task;
 import org.apache.tools.ant.taskdefs.Delete;
@@ -257,16 +259,28 @@ public abstract class BundleWriter {
         return currentBundle;
     }
 
-    protected Properties createProperties(String aLocale) {
+    /**
+     * @param locale
+     * @param merged - merged: also include properties from parent-bundles (true), only own properties (false)
+     * @return some properties for the locale (and - if merged == true - of its parent bundles)
+     */
+    protected Properties createProperties(String locale, boolean merged) {
         Iterator<MBEntry> entries = getCurrentBundle().getEntries().iterator();
         Properties p = new Properties();
 
         while (entries.hasNext()) {
             MBEntry eachEntry = entries.next();
             String key = eachEntry.getKey();
-            MBText langText = eachEntry.getText(aLocale);
-            if (langText == null && aLocale != null && !"".equals(aLocale)) {
-                langText = eachEntry.getText("");
+            MBText langText = eachEntry.getText(locale);
+            if (langText == null && merged && !StringUtils.isEmpty(locale)) {
+                List<Locale> locales = LocaleUtils.localeLookupList(LocaleUtils.toLocale(locale));
+                // start with i=1 because locales.get(0) has already been tried - it is the 'locale' itself.
+                for (int i=1;i<locales.size();i++) {  // try to find from parent. begin with next specific
+                    Locale each = locales.get(i);
+                    langText = eachEntry.getText(each.toString());
+                    if (langText != null) break;
+                }
+                if (langText == null) langText = eachEntry.getText("");
             }
             if (langText != null) {
                 String value;

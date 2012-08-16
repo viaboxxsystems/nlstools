@@ -26,18 +26,24 @@ import java.util.StringTokenizer;
  * writeJson = true (=compressed .js file), false, pretty (formatted .js file)
  * writeInterface = true (keys + bundle name), false, small_enum, small (bundle name only), Flex (ActionScript class), smallFlex (bundle name only)
  *  enum (keys + bundle name + enum of all keys), small_enum (bundle name + enum of all keys)
- * <p/>
+ *
  * This utility can generate:
  * Properties: .properties, .xml
  * JSON: .js
  * SQL-Script: .sql
  * Interface: .java
- * <p/>
+ *
  * overwrite = (default false)
  * deleteOldFiles = (default true)
- * <p/>
+ *
+ * merged (has effect when writing .properties files for json files)
+ * merged = (default true) - true: also include properties from parent-bundles
+ *                  (to keep the properties small, set merged=false - requires fallback at runtime of your app)
+ *                      - false: only own properties, parent properties not included in output
+ *                      (if you want the java.util.ResourceBundle to look'em up)
+ *
  * debugMode = (default false) ignores translations and sets the key as label
- * <p/>
+ *
  * Configuration:
  * bundles = the XML (or Excel)-bundles input file(s), separated by ;
  * sourcePath = to write .java interface to
@@ -51,14 +57,14 @@ import java.util.StringTokenizer;
  * preserveNewlines=true: newlines will *not* be escaped when writing properties files
  * preserveNewlines=false: (default) newlines will be escaped when writing properties files
  * allowedLocales: ';'-separated list of locales that should be written, all other locales will NOT be written, if empty, all locales are written.
- * <p/>
+ *
  * </pre>
  * Example:
  * <pre>
  * &lt;taskdef name="msgbundle" classname="de.viaboxx.nlstools.tasks.MessageBundleTask">
  * &lt;classpath refid="maven.test.classpath"/>
  * &lt;/taskdef>
- * <p/>
+ *
  * &lt;msgbundle overwrite="true" bundles="src/main/bundles/Customer.xml;../utilities/base/src/main/bundles/Common.xml"
  * writeProperties="true"
  * writeJson="true"
@@ -85,6 +91,8 @@ public class MessageBundleTask extends Task {
     private boolean debugMode = false;
     private boolean flexLayout = false;
     private boolean preserveNewlines = false;
+    private boolean merged = true;
+
     /**
      * charset (e.g. UTF-8) of the .properties Files - if they do not use the default charset (e.g. Grails i18n files)
      * By default, the ISO 8859-1 character encoding is used (see javadoc of java.util.Properties)
@@ -118,6 +126,14 @@ public class MessageBundleTask extends Task {
 
     public void setFlexLayout(boolean flexLayout) {
         this.flexLayout = flexLayout;
+    }
+
+    public boolean isMerged() {
+        return merged;
+    }
+
+    public void setMerged(boolean merged) {
+        this.merged = merged;
     }
 
     /**
@@ -267,6 +283,7 @@ public class MessageBundleTask extends Task {
         }
         BundleWriterProperties writer = new BundleWriterProperties(this, getXMLConfigBundle(), o,
                 getPropertyPath(), fileType, allowedLocales);
+        writer.setMerged(isMerged());
         if (getToCharset() != null) {
             writer.setCharset(getToCharset());
         }
@@ -282,8 +299,10 @@ public class MessageBundleTask extends Task {
         } else {
             fileType = BundleWriter.FileType.JS;
         }
-        executeBundleWriter(new BundleWriterJson(this, getXMLConfigBundle(), o, getJsonPath(),
-                getJsonFile(), fileType, allowedLocales));
+        BundleWriterJson writer = new BundleWriterJson(this, getXMLConfigBundle(), o, getJsonPath(),
+                getJsonFile(), fileType, allowedLocales);
+        writer.setMerged(isMerged());
+        executeBundleWriter(writer);
     }
 
     public String getJsonFile() {
