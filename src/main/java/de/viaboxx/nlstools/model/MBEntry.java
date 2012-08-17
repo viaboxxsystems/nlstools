@@ -62,11 +62,15 @@ public class MBEntry implements Comparable, Cloneable {
         return null;
     }
 
-    public MBText findExampleText() {
-        for (MBText each : getTexts()) {
-            if (each.getValue() != null && each.getValue().length() > 0) {
-                return each;
+    public MBText findExampleText(String exampleLocale) {
+        if (StringUtils.isEmpty(exampleLocale)) {
+            for (MBText each : getTexts()) {
+                if (each.getValue() != null && each.getValue().length() > 0) {
+                    return each;
+                }
             }
+        } else {
+            return getText(exampleLocale);
         }
         return null;
     }

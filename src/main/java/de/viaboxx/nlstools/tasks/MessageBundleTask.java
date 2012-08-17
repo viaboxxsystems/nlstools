@@ -22,29 +22,23 @@ import java.util.StringTokenizer;
  * <p/>
  * <br>Values for:<br>
  * <pre>
- * writeProperties = true (=.properties), false, xml (=.xml)
- * writeJson = true (=compressed .js file), false, pretty (formatted .js file)
- * writeInterface = true (keys + bundle name), false, small_enum, small (bundle name only), Flex (ActionScript class), smallFlex (bundle name only)
- *  enum (keys + bundle name + enum of all keys), small_enum (bundle name + enum of all keys)
+ * writeProperties = true (default=false)
+ *      (=.properties), false, xml (=.xml)
+ * writeJson = true  (default=false)
+ *      (=compressed .js file), false, pretty (formatted .js file)
+ * writeInterface = true  (default=false)
+ *      (keys + bundle name), false, small_enum, small (bundle name only), Flex (ActionScript class), smallFlex (bundle name only)
+ *      enum (keys + bundle name + enum of all keys), small_enum (bundle name + enum of all keys)
  *
  * This utility can generate:
  * Properties: .properties, .xml
  * JSON: .js
  * SQL-Script: .sql
  * Interface: .java
+ * </pre>
  *
- * overwrite = (default false)
- * deleteOldFiles = (default true)
- *
- * merged (has effect when writing .properties files for json files)
- * merged = (default true) - true: also include properties from parent-bundles
- *                  (to keep the properties small, set merged=false - requires fallback at runtime of your app)
- *                      - false: only own properties, parent properties not included in output
- *                      (if you want the java.util.ResourceBundle to look'em up)
- *
- * debugMode = (default false) ignores translations and sets the key as label
- *
- * Configuration:
+ * <strong>Configuration:</strong>
+ * <pre>
  * bundles = the XML (or Excel)-bundles input file(s), separated by ;
  * sourcePath = to write .java interface to
  * propertyPath = to write .properties/.xml to
@@ -57,9 +51,17 @@ import java.util.StringTokenizer;
  * preserveNewlines=true: newlines will *not* be escaped when writing properties files
  * preserveNewlines=false: (default) newlines will be escaped when writing properties files
  * allowedLocales: ';'-separated list of locales that should be written, all other locales will NOT be written, if empty, all locales are written.
- *
+ * overwrite = (default false)
+ * deleteOldFiles = (default true)
+ * merged (has effect when writing .properties files for json files)
+ * merged = (default true) - true: also include properties from parent-bundles
+ *                  (to keep the properties small, set merged=false - requires fallback at runtime of your app)
+ *                      - false: only own properties, parent properties not included in output
+ *                      (if you want the java.util.ResourceBundle to look'em up)
+ * debugMode = (default false) ignores translations and sets the key as label
+ * exampleLocale = a locale, e.g. 'en' (default: the first available locale) optional. to force the flex/java interface to use this locale's text in their example comment
  * </pre>
- * Example:
+ * <strong>Example:</strong>
  * <pre>
  * &lt;taskdef name="msgbundle" classname="de.viaboxx.nlstools.tasks.MessageBundleTask">
  * &lt;classpath refid="maven.test.classpath"/>
@@ -103,6 +105,7 @@ public class MessageBundleTask extends Task {
     private String xmlConfigBundle;
 
     private Set<String> allowedLocales;
+    private String exampleLocale;
 
     public String getToCharset() {
         return toCharset;
@@ -256,20 +259,24 @@ public class MessageBundleTask extends Task {
         } else if (getWriteInterface().equalsIgnoreCase("enum")) {
             fileType = BundleWriter.FileType.JAVA_FULL_ENUM_KEYS;
         } else if (getWriteInterface().equalsIgnoreCase("Flex")) {
-            executeBundleWriter(
-                    new BundleWriterFlexClass(this, getXMLConfigBundle(), o, sourcePath,
-                            BundleWriter.FileType.FLEX_FULL, allowedLocales));
+            BundleWriterFlexClass writer = new BundleWriterFlexClass(this, getXMLConfigBundle(), o, sourcePath,
+                    BundleWriter.FileType.FLEX_FULL, allowedLocales);
+            writer.setExampleLocale(getExampleLocale());
+            executeBundleWriter(writer);
             return;
         } else if (getWriteInterface().equalsIgnoreCase("smallFlex")) {
-            executeBundleWriter(
-                    new BundleWriterFlexClass(this, getXMLConfigBundle(), o, sourcePath,
-                            BundleWriter.FileType.FLEX_SMALL, allowedLocales));
+            BundleWriterFlexClass writer = new BundleWriterFlexClass(this, getXMLConfigBundle(), o, sourcePath,
+                    BundleWriter.FileType.FLEX_SMALL, allowedLocales);
+            writer.setExampleLocale(getExampleLocale());
+            executeBundleWriter(writer);
             return;
         } else {
             fileType = BundleWriter.FileType.JAVA_FULL;
         }
-        executeBundleWriter(
-                new BundleWriterJavaInterface(this, getXMLConfigBundle(), o, sourcePath, fileType, allowedLocales));
+        BundleWriterJavaInterface writer =
+                new BundleWriterJavaInterface(this, getXMLConfigBundle(), o, sourcePath, fileType, allowedLocales);
+        writer.setExampleLocale(getExampleLocale());
+        executeBundleWriter(writer);
     }
 
     private void handleProperties(MBBundle o) throws Exception {
@@ -385,5 +392,13 @@ public class MessageBundleTask extends Task {
     public void setAllowedLocales(String allowedLocales) {
         this.allowedLocales = new HashSet<String>((Arrays.asList(allowedLocales.split(";"))));
 
+    }
+
+    public String getExampleLocale() {
+        return exampleLocale;
+    }
+
+    public void setExampleLocale(String exampleLocale) {
+        this.exampleLocale = exampleLocale;
     }
 }

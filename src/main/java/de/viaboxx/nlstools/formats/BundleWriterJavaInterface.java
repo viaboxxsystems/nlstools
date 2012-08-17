@@ -25,11 +25,20 @@ import java.util.Set;
  * Copyright: Viaboxx GmbH
  */
 public class BundleWriterJavaInterface extends BundleWriter {
+    private String exampleLocale;
+
     public BundleWriterJavaInterface(Task task, String configFile, MBBundle currentBundle, String outputPath,
                                      FileType fileType, Set<String> allowedLocales) {
         super(task, configFile, currentBundle, outputPath, fileType, allowedLocales);
     }
 
+    public String getExampleLocale() {
+        return exampleLocale;
+    }
+
+    public void setExampleLocale(String exampleLocale) {
+        this.exampleLocale = exampleLocale;
+    }
 
     protected String suffix() {
         return ".java";
@@ -162,7 +171,7 @@ public class BundleWriterJavaInterface extends BundleWriter {
                 pw.print(lang);
                 pw.print("} ");
             }
-            MBText xmpl = eachEntry.findExampleText();
+            MBText xmpl = eachEntry.findExampleText(getExampleLocale());
             if (xmpl != null) {
                 pw.print(" | ");
                 pw.print(xmpl.getLocale());
