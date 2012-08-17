@@ -23,11 +23,20 @@ import java.util.Set;
  * Copyright: viaboxx GmbH
  */
 public class BundleWriterFlexClass extends BundleWriter {
+    private String exampleLocale;
+
     public BundleWriterFlexClass(Task task, String configFile, MBBundle currentBundle, String outputPath,
                                  FileType fileType, Set<String> allowedLocales) {
         super(task, configFile, currentBundle, outputPath, fileType, allowedLocales);
     }
 
+    public String getExampleLocale() {
+        return exampleLocale;
+    }
+
+    public void setExampleLocale(String exampleLocale) {
+        this.exampleLocale = exampleLocale;
+    }
 
     protected String suffix() {
         return ".as";
@@ -156,7 +165,7 @@ public class BundleWriterFlexClass extends BundleWriter {
                 pw.print(lang);
                 pw.print("} ");
             }
-            MBText xmpl = mbEntry.findExampleText();
+            MBText xmpl = mbEntry.findExampleText(getExampleLocale());
             if (xmpl != null) {
                 pw.print(" | ");
                 pw.print(xmpl.getLocale());
