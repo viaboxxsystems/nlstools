@@ -3,7 +3,10 @@
 
 = Release notes: nlstools =
 
-== 2.5.5-SNAPSHOT (current source) ==
+== 2.5.6-SNAPSHOT (current source) ==
+
+== 2.5.5 (17.08.2012) ==
+  * new option 'exampleLocale' in MessageBundleTask, used to select a locale as example in the generated java- or flex-interface
 
 == 2.5.4 (16.08.2012) ==
   * fixed MessageBundleTask: parent-locale-lookup did not work for locales with Country/Variant. 
