@@ -108,7 +108,7 @@ This time, a java interface and .properties files are generated. It makes use of
                                 <taskdef name="msgbundle" classpathref="maven.plugin.classpath"
                                          classname="de.viaboxx.nlstools.tasks.MessageBundleTask"/>
 
-                                <msgbundle writeProperties="true" writeInterface="true"
+                                <msgbundle writeProperties="true" writeInterface="true" merged="false"
                                            sourcePath="target/generated-sources/java" overwrite="true"
                                            deleteOldFiles="false" debugMode="false" flexLayout="false"
                                            preserveNewlines="true" bundles="i18n/main.xml"
