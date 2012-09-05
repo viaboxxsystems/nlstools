@@ -4,6 +4,7 @@ import de.viaboxx.nlstools.model.MBBundle;
 import de.viaboxx.nlstools.model.MBBundles;
 import de.viaboxx.nlstools.model.MBEntry;
 import de.viaboxx.nlstools.model.MBText;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -62,6 +63,7 @@ public class MBExcelPersistencer extends MBPersistencer {
         style = wb.createCellStyle();
         style.setFillPattern(HSSFCellStyle.FINE_DOTS);
         style.setFillBackgroundColor(HSSFColor.BLUE_GREY.index);
+        style.setFillForegroundColor(HSSFColor.BLUE_GREY.index);
         styles.put(STYLE_MISSING, style);
     }
 
@@ -246,11 +248,16 @@ public class MBExcelPersistencer extends MBPersistencer {
                 for (String each : locales) {
                     cell = row.getCell(colNum++);
                     if (cell != null) {
-                        MBText text = new MBText();
-                        text.setLocale(each);
-                        text.setValue(cell.getStringCellValue());
-                        text.setReview(cell.getCellStyle().getFont(wb).getColor() != Font.COLOR_NORMAL);
-                        entry.getTexts().add(text);
+                        if (StringUtils.isNotEmpty(cell.getStringCellValue()) ||
+                                // detect STYLE_MISSING
+                                cell.getCellStyle().getFillBackgroundColor() == HSSFColor.BLUE_GREY.index ||
+                                cell.getCellStyle().getFillForegroundColor() == HSSFColor.BLUE_GREY.index) {
+                            MBText text = new MBText();
+                            text.setLocale(each);
+                            text.setValue(cell.getStringCellValue());
+                            text.setReview(cell.getCellStyle().getFont(wb).getColor() == Font.COLOR_RED);
+                            entry.getTexts().add(text);
+                        }
                     }
                 }
             }
