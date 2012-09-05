@@ -2,8 +2,15 @@
 #labels Featured
 
 = Release notes: nlstools =
+== 2.5.8-SNAPSHOT (current source) ==
 
-== 2.5.6-SNAPSHOT (current source) ==
+== 2.5.7 ==
+  * empty text-entries in xml bundle file will be stored 
+    as excel cell with grey-background color for indication. 
+    this helps to distinguish between empty values and missing values.
+
+== 2.5.6 ==
+  this release does not exist
 
 == 2.5.5 (17.08.2012) ==
   * new attribute "exampleLocale" in MessageBundleTask, used to select a locale as example in the generated java- or flex-interface
