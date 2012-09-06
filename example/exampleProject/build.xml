@@ -13,7 +13,7 @@
             depends="generate-sources-flex,generate-sources-java,generate-sources-json"/>
 
     <target name="generate-sources-flex" depends="init" description="generate runtime bundles for Flex">
-        <msgbundle writeInterface="Flex"
+        <msgbundle writeInterface="Flex"  merged="true"
                    overwrite="true"
                    deleteOldFiles="false"
                    debugMode="false"
@@ -31,7 +31,7 @@
 
 
     <target name="generate-sources-java" depends="init" description="generate runtime bundles for Java">
-        <msgbundle writeProperties="true"
+        <msgbundle writeProperties="true" merged="false"
                    writeInterface="true"
                    overwrite="true"
                    deleteOldFiles="true"
@@ -149,7 +149,7 @@
                 to="${bundlesFile}.xml"/>
     </target>
 
-    <target name="sanity-check" description="create a bundle with missing entries from a bundle (sanity check)">
+    <target name="sanity-check" depends="init" description="create a bundle with missing entries from a bundle (sanity check)">
         <sanityCheck
                 locale="${newLocale}"
                 from="${bundlesFile}"
