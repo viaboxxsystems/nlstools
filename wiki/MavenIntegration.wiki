@@ -52,7 +52,7 @@ This demonstrates the use of the NLS Tasks from within a maven2 (http://maven.ap
                     <dependency>
                         <groupId>de.viaboxx</groupId>
                         <artifactId>nlstools</artifactId>
-                        <version>2.5.5</version>
+                        <version>2.5.7</version>
                     </dependency>
        </dependencies>
       </plugin>
