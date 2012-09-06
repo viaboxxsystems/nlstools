@@ -27,7 +27,7 @@ Download the file from: http://maven.apache.org/ant-tasks/download.html
 
     <target name="init">
         <artifact:dependencies pathid="toolspath">
-            <dependency groupId="de.viaboxx" artifactId="nlstools" version="2.5.2"/>
+            <dependency groupId="de.viaboxx" artifactId="nlstools" version="2.5.7"/>
         </artifact:dependencies>
     </target>
 
@@ -77,7 +77,7 @@ Add the nlstools dependency.
     }
   dependencies {
     // for _Events.groovy to build the project
-    build('de.viaboxx:nlstools:2.5.5') {
+    build('de.viaboxx:nlstools:2.5.7') {
       transitive = true
     }
   }
