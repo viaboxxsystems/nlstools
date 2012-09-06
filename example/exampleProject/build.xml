@@ -10,7 +10,7 @@
 
     <!-- example: generate all sources -->
     <target name="generate-sources-all"
-            depends="generate-sources-flex,generate-sources-java,generate-sources-json"/>
+            depends="generate-sources-flex,generate-sources-java,generate-sources-json,generate-sources-sql"/>
 
     <target name="generate-sources-flex" depends="init" description="generate runtime bundles for Flex">
         <msgbundle writeInterface="Flex"  merged="true"

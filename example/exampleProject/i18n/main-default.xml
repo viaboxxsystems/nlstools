@@ -1,5 +1,5 @@
 <bundles>
-    <bundle baseName="main" interfaceName="com.nlstools.example.myapp.I18nKeys">
+    <bundle baseName="main" interfaceName="com.nlstools.example.myapp.I18nKeys" sqldomain="example">
         <entry key="barcode.button.inputSwitchKeyboard">
             <text locale="de">Tastatureingabe</text>
             <text locale="en">Enter with keyboard</text>
