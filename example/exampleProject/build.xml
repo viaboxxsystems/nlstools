@@ -14,15 +14,14 @@
 
     <target name="generate-sources-flex" depends="init" description="generate runtime bundles for Flex">
         <msgbundle writeInterface="Flex"  merged="true"
-                   overwrite="true"
-                   deleteOldFiles="false"
+                   overwrite="false" deleteOldFiles="true"
                    debugMode="false"
                    bundles="${bundlesFile}${bundlesType}"
                    sourcePath="src/main/flex"
                 />
 
         <msgbundle writeProperties="true" writeJson="false" writeInterface="false"
-                   overwrite="true" deleteOldFiles="false" debugMode="false"
+                   overwrite="false" deleteOldFiles="true" debugMode="false"
                    preserveNewlines="true"
                    flexLayout="true"
                    bundles="${bundlesFile}${bundlesType}"
@@ -33,8 +32,7 @@
     <target name="generate-sources-java" depends="init" description="generate runtime bundles for Java">
         <msgbundle writeProperties="true" merged="false"
                    writeInterface="true"
-                   overwrite="true"
-                   deleteOldFiles="true"
+                   overwrite="false" deleteOldFiles="true"
                    debugMode="false"
                    propertyPath="src/main/resources"
                    bundles="${bundlesFile}${bundlesType}"
@@ -56,7 +54,7 @@
 
     <target name="generate-sources-json" depends="init" description="generate runtime bundles for JSON">
         <!-- jsonFile -->
-        <msgbundle writeJson="true"
+        <msgbundle writeJson="true" overwrite="false" deleteOldFiles="true"
                    debugMode="false"
                    jsonPath="src/json"
                    bundles="${bundlesFile}${bundlesType}"
