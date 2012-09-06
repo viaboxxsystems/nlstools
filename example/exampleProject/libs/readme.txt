@@ -1,10 +1,13 @@
 You need to copy the following libraries into this directory as the classpath for the nlstools's ant tasks
 ----------------------------------------------------------------------------------------------------------
 
- * nlstools-2.4.0-SNAPSHOT.jar (or use from ../../../target/)
- * commons-io-2.0.1.jar
- * commons-lang-2.5.jar
- * xpp3_min-1.1.4c.jar
- * xstream-1.3.1.jar
- * poi-3.7.jar (optional for excel support)
- * jsontools-core-1.5.jar (optional for JSON support)
+
+to determine the libs according to the version of nlstools, execute 'mvn dependency:copy-dependencies' in the nlstools directory and use the jars in directory target/dependency
+
+ * nlstools*.jar (or use from ../../../target/)
+ * commons-io-*.jar
+ * commons-lang*.jar
+ * xpp3_min-*.jar
+ * xstream-*.jar
+ * poi-*.jar (optional for excel support)
+ * jsontools-core-*.jar (optional for JSON support)
