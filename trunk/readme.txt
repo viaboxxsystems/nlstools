@@ -92,5 +92,5 @@ https://code.google.com/p/nlstools/
 http://www.viaboxx.de/
 http://www.viaboxxsystems.de/blog
 
-Roman Stumm, Viaboxx GmbH, 2010, 2011
+Roman Stumm, Viaboxx GmbH, 2010, 2011, 2012
 email: roman.stumm@viaboxx.de
