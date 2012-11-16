@@ -34,6 +34,7 @@ public class MBXMLPersistencer extends MBPersistencer {
     }
 
     public void save(MBBundles obj, File target) throws IOException {
+        mkdirs(target);
         Writer out = FileUtils.openFileWriterUTF8(target);
         try {
             xstream.toXML(obj, out);
