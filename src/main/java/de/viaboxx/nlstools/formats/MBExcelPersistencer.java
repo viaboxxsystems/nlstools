@@ -165,7 +165,7 @@ public class MBExcelPersistencer extends MBPersistencer {
             for (MBBundle bundle : obj.getBundles()) {
                 bundleWriter = new BundleWriterExcel(bundle);
                 rowNum = 0; // FIX for Issue 2: Row numbering is not reset if an xls file has many tabs
-                sheet = wb.createSheet(bundle.getBaseName());
+                sheet = wb.createSheet(bundle.getBaseName().replace('/', '.'));  //  '/' not allowed by excel in sheet name
                 writeRows(bundle, writeHeaders(bundle));
             }
             wb.write(out);
