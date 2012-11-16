@@ -42,6 +42,11 @@ mvn clean install
 
 deploy to maven central:
 ========================
+1. on Mac: set JAVA_HOME
+
+export JAVA_HOME=`/usr/libexec/java_home -v 1.6`
+
+2. call maven
 mvn clean deploy
 
 Note: this also creates javadoc and sources jar and deploys to maven snapshot repository.
