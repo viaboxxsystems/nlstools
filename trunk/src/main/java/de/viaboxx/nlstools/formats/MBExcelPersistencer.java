@@ -157,6 +157,7 @@ public class MBExcelPersistencer extends MBPersistencer {
     }
 
     public void save(MBBundles obj, File target) throws IOException {
+        mkdirs(target);
         OutputStream out = new FileOutputStream(target);
         try {
             wb = new HSSFWorkbook();

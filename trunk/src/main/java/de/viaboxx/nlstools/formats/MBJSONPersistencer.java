@@ -39,6 +39,7 @@ public class MBJSONPersistencer extends MBPersistencer {
     }
 
     public void save(MBBundles object, File file) throws Exception {
+        mkdirs(file);
         saveObject(object, file);
     }
 

@@ -14,6 +14,11 @@ import java.io.File;
 public abstract class MBPersistencer {
     public abstract void save(MBBundles obj, File target) throws Exception;
 
+    protected void mkdirs(File target) {
+        File dir = target.getParentFile();
+        if(dir != null && !dir.exists()) dir.mkdirs();
+    }
+
     public abstract MBBundles load(File source) throws Exception;
 
     public static MBPersistencer forFile(String aFile) {
