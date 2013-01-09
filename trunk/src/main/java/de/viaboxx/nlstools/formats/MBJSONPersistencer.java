@@ -6,10 +6,7 @@ import com.thoughtworks.xstream.io.json.JsonHierarchicalStreamDriver;
 import de.viaboxx.nlstools.model.MBBundles;
 import de.viaboxx.nlstools.util.FileUtils;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.Reader;
-import java.io.Writer;
+import java.io.*;
 
 /**
  * Description: Load/Save JSON Format with XStream<br/>
@@ -59,10 +56,18 @@ public class MBJSONPersistencer extends MBPersistencer {
     public MBBundles load(File source) throws IOException, ClassNotFoundException {
         Reader reader = FileUtils.openFileReaderUTF8(source);
         try {
-            return (MBBundles) xstream.fromXML(reader);
+            return load(reader);
         } finally {
             reader.close();
         }
+    }
+
+    public MBBundles load(Reader reader) throws IOException, ClassNotFoundException {
+        return (MBBundles) xstream.fromXML(reader);
+    }
+
+    public MBBundles load(InputStream in) throws IOException, ClassNotFoundException {
+        return (MBBundles) xstream.fromXML(in);
     }
 
 }
