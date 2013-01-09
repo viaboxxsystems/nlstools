@@ -165,7 +165,8 @@ public class MBExcelPersistencer extends MBPersistencer {
             for (MBBundle bundle : obj.getBundles()) {
                 bundleWriter = new BundleWriterExcel(bundle);
                 rowNum = 0; // FIX for Issue 2: Row numbering is not reset if an xls file has many tabs
-                sheet = wb.createSheet(bundle.getBaseName().replace('/', '.'));  //  '/' not allowed by excel in sheet name
+                sheet = wb.createSheet(
+                        bundle.getBaseName().replace('/', '.'));  //  '/' not allowed by excel in sheet name
                 writeRows(bundle, writeHeaders(bundle));
             }
             wb.write(out);
@@ -177,6 +178,14 @@ public class MBExcelPersistencer extends MBPersistencer {
 
     public MBBundles load(File source) throws IOException, ClassNotFoundException {
         InputStream in = new FileInputStream(source);
+        try {
+            return load(in);
+        } finally {
+            in.close();
+        }
+    }
+
+    public MBBundles load(InputStream in) throws IOException, ClassNotFoundException {
         try {
             wb = new HSSFWorkbook(in);
             MBBundles bundles = new MBBundles();
@@ -195,7 +204,6 @@ public class MBExcelPersistencer extends MBPersistencer {
             }
             return bundles;
         } finally {
-            in.close();
             rowNum = 0;
         }
     }

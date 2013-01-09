@@ -3,6 +3,7 @@ package de.viaboxx.nlstools.formats;
 import de.viaboxx.nlstools.model.MBBundles;
 
 import java.io.File;
+import java.io.InputStream;
 
 /**
  * Description: <br>
@@ -16,17 +17,13 @@ public abstract class MBPersistencer {
 
     protected void mkdirs(File target) {
         File dir = target.getParentFile();
-        if(dir != null && !dir.exists()) dir.mkdirs();
+        if (dir != null && !dir.exists()) dir.mkdirs();
     }
 
     public abstract MBBundles load(File source) throws Exception;
+    public abstract MBBundles load(InputStream source) throws Exception;
 
-    public static MBPersistencer forFile(String aFile) {
-        return forFile(new File(aFile));
-    }
-
-    public static MBPersistencer forFile(File aFile) {
-        String name = aFile.getName().toLowerCase();
+    public static MBPersistencer forName(String name) {
         if (name.endsWith(".xls")) {
             return new MBExcelPersistencer();
         } else if (name.endsWith(".xml")) {
@@ -36,8 +33,16 @@ public abstract class MBPersistencer {
         } else if (name.endsWith(".mem")) {
             return new MBInMemoryPersistencer();
         } else {
-            throw new IllegalArgumentException("File type not supported: " + aFile);
+            throw new IllegalArgumentException("Format type not supported: " + name);
         }
+    }
+
+    public static MBPersistencer forFile(String aFile) {
+        return forName(aFile.toLowerCase());
+    }
+
+    public static MBPersistencer forFile(File aFile) {
+        return forName(aFile.getName().toLowerCase());
     }
 
     public static MBBundles loadFile(File aFile) throws Exception {

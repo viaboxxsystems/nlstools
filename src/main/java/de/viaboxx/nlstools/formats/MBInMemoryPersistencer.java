@@ -3,6 +3,7 @@ package de.viaboxx.nlstools.formats;
 import de.viaboxx.nlstools.model.MBBundles;
 
 import java.io.File;
+import java.io.InputStream;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,7 +25,16 @@ public class MBInMemoryPersistencer extends MBPersistencer {
 
     @Override
     public MBBundles load(File source) throws Exception {
-        MBBundles bundles = memory.get(source.getName());
+        return getCopy(source.getName());
+    }
+
+    @Override
+    public MBBundles load(InputStream source) throws Exception {
+        return getCopy(source.toString());
+    }
+
+    public MBBundles getCopy(String name) {
+        MBBundles bundles = memory.get(name);
         if (bundles != null) {
             bundles = bundles.copy();
         }
