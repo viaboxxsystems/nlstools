@@ -23,7 +23,7 @@ public abstract class MBPersistencer {
     public abstract MBBundles load(File source) throws Exception;
     public abstract MBBundles load(InputStream source) throws Exception;
 
-    public static MBPersistencer forName(String name) {
+    public static MBPersistencer forURL(String name) {
         if (name.endsWith(".xls")) {
             return new MBExcelPersistencer();
         } else if (name.endsWith(".xml")) {
@@ -38,11 +38,11 @@ public abstract class MBPersistencer {
     }
 
     public static MBPersistencer forFile(String aFile) {
-        return forName(aFile.toLowerCase());
+        return forURL(aFile.toLowerCase());
     }
 
     public static MBPersistencer forFile(File aFile) {
-        return forName(aFile.getName().toLowerCase());
+        return forURL(aFile.getName().toLowerCase());
     }
 
     public static MBBundles loadFile(File aFile) throws Exception {
