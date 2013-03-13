@@ -26,6 +26,8 @@ Some [http://ant.apache.org/ ant]-tasks. You can use them with ant or maven2 (wi
 
 === transitive dependencies ===
 
+current info, see http://code.google.com/p/nlstools/source/browse/trunk/pom.xml
+
 {{{
 
         <dependency>
@@ -37,7 +39,7 @@ Some [http://ant.apache.org/ ant]-tasks. You can use them with ant or maven2 (wi
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>3.0</version>
+            <version>3.1</version>
         </dependency>
 
         <dependency>
@@ -49,7 +51,7 @@ Some [http://ant.apache.org/ ant]-tasks. You can use them with ant or maven2 (wi
         <dependency>
             <groupId>org.apache.ant</groupId>
             <artifactId>ant</artifactId>
-            <version>1.8.2</version>
+            <version>1.8.4</version>
             <scope>provided</scope>
         </dependency>
 
@@ -65,7 +67,7 @@ Some [http://ant.apache.org/ ant]-tasks. You can use them with ant or maven2 (wi
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi</artifactId>
-            <version>3.7</version>
+            <version>3.9</version>
             <optional>true</optional>
         </dependency>
 }}}
