@@ -56,7 +56,7 @@ Use https://oss.sonatype.org/index.html#welcome to stage/release
 
 Stage a Release
 ---------------
-mvn release:clean release:prepare release:perform
+mvn release:clean release:prepare release:perform -Dusername=[googlecode user] -Dpassword=[googlecode password]
 
 (optional) generate jar-with-dependencies:
 -------------------------------------------
