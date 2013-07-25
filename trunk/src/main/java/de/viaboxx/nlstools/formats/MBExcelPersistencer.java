@@ -32,7 +32,7 @@ public class MBExcelPersistencer extends MBPersistencer {
     private HSSFWorkbook wb;
     private HSSFSheet sheet;
     private int rowNum = 0;
-    private final Map<Integer, CellStyle> styles = new HashMap();
+    private final Map<Integer, CellStyle> styles = new HashMap<Integer,CellStyle>();
     private BundleWriterExcel bundleWriter;
 
     public MBExcelPersistencer() {
@@ -213,16 +213,16 @@ public class MBExcelPersistencer extends MBPersistencer {
 
         HSSFRow row = sheet.getRow(0);
         if (row.getLastCellNum() < 1 || row.getCell(1) == null) return false;
-        bundle.setBaseName(row.getCell(1).getStringCellValue());
+        bundle.setBaseName(getStringValue(row.getCell(1)));
 
         row = sheet.getRow(1);
         if (row != null) {
             if (row.getCell(1) != null) {
-                bundle.setInterfaceName(row.getCell(1).getStringCellValue());
+                bundle.setInterfaceName(getStringValue(row.getCell(1)));
             }
 
             if (row.getCell(3) != null) {
-                bundle.setSqldomain(row.getCell(3).getStringCellValue());
+                bundle.setSqldomain(getStringValue(row.getCell(3)));
             }
         }
         int firstCol = 2;
@@ -231,12 +231,12 @@ public class MBExcelPersistencer extends MBPersistencer {
         row = sheet.getRow(rowNum++); // read locales
         int colNum = firstCol;
 
-        List<String> locales = new ArrayList();
+        List<String> locales = new ArrayList<String>();
 
         HSSFCell cell = row.getCell(colNum++);
         while (colNum <= row.getLastCellNum()) {
             if (cell != null) {
-                locales.add(cell.getStringCellValue());
+                locales.add(getStringValue(cell));
             }
             if (row.getLastCellNum() >= colNum) {
                 cell = row.getCell(colNum++);
@@ -250,21 +250,22 @@ public class MBExcelPersistencer extends MBPersistencer {
             if (row.getCell(0) != null) {
                 MBEntry entry = new MBEntry();
                 bundle.getEntries().add(entry);
-                entry.setKey(row.getCell(0).getStringCellValue());
+                entry.setKey(getStringValue(row.getCell(0)));
                 if (row.getCell(1) != null) {
-                    entry.setDescription(row.getCell(1).getStringCellValue());
+                    entry.setDescription(getStringValue(row.getCell(1)));
                 }
                 colNum = firstCol;
                 for (String each : locales) {
                     cell = row.getCell(colNum++);
                     if (cell != null) {
-                        if (StringUtils.isNotEmpty(cell.getStringCellValue()) ||
+                        final String svalue = getStringValue(cell);
+                        if (StringUtils.isNotEmpty(svalue) ||
                                 // detect STYLE_MISSING
                                 cell.getCellStyle().getFillBackgroundColor() == HSSFColor.BLUE_GREY.index ||
                                 cell.getCellStyle().getFillForegroundColor() == HSSFColor.BLUE_GREY.index) {
                             MBText text = new MBText();
                             text.setLocale(each);
-                            text.setValue(cell.getStringCellValue());
+                            text.setValue(svalue);
                             text.setReview(cell.getCellStyle().getFont(wb).getColor() == Font.COLOR_RED);
                             entry.getTexts().add(text);
                         }
@@ -275,4 +276,36 @@ public class MBExcelPersistencer extends MBPersistencer {
         }
         return true;
     }
+
+    private String getStringValue(HSSFCell cell) {
+        final Object value = getValue(cell);
+        return (value == null || value instanceof String) ? (String) value : String.valueOf(value);
+    }
+
+    private Object getValue(HSSFCell cell) {
+        return getValue(cell, cell.getCellType());
+    }
+
+    private Object getValue(HSSFCell cell, int cellType) {
+        switch (cellType) {
+            case HSSFCell.CELL_TYPE_NUMERIC:
+                if (HSSFDateUtil.isCellDateFormatted(cell)) {
+                    return cell.getDateCellValue();
+                } else {
+                    return cell.getNumericCellValue();
+                }
+            case HSSFCell.CELL_TYPE_FORMULA:
+                return getValue(cell, cell.getCachedFormulaResultType());
+            case HSSFCell.CELL_TYPE_BOOLEAN:
+                return cell.getBooleanCellValue();
+            case HSSFCell.CELL_TYPE_STRING:
+                return cell.getStringCellValue();
+            case HSSFCell.CELL_TYPE_ERROR:
+                return cell.getErrorCellValue();
+            default:
+                return null;
+            // do not handle Formular, Error, Blank, ...
+        }
+    }
+
 }
