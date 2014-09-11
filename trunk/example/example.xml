@@ -29,8 +29,8 @@
             <text locale="en">Maintenance</text>
         </entry>
         <entry key="admin.thanks">
-            <text locale="de">Danke</text>
             <text locale="">Thanks</text>
+            <text locale="de">Danke</text>
             <text locale="de_NL">Bedankt</text>
         </entry>
     </bundle>

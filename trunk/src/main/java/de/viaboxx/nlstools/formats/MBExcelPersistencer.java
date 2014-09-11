@@ -11,10 +11,7 @@ import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Description: Load from and save bundles to an excel file <br>
@@ -28,11 +25,12 @@ public class MBExcelPersistencer extends MBPersistencer {
     private static final int STYLE_ITALIC = 2;
     private static final int STYLE_REVIEW = 3;
     private static final int STYLE_MISSING = 4;
+    private static final int STYLE_DATETIME = 5;
 
     private HSSFWorkbook wb;
     private HSSFSheet sheet;
     private int rowNum = 0;
-    private final Map<Integer, CellStyle> styles = new HashMap<Integer,CellStyle>();
+    private final Map<Integer, CellStyle> styles = new HashMap<Integer, CellStyle>();
     private BundleWriterExcel bundleWriter;
 
     public MBExcelPersistencer() {
@@ -65,6 +63,12 @@ public class MBExcelPersistencer extends MBPersistencer {
         style.setFillBackgroundColor(HSSFColor.BLUE_GREY.index);
         style.setFillForegroundColor(HSSFColor.BLUE_GREY.index);
         styles.put(STYLE_MISSING, style);
+
+        style = wb.createCellStyle();
+        HSSFCreationHelper createHelper = wb.getCreationHelper();
+        style.setDataFormat(
+            createHelper.createDataFormat().getFormat("yyyy-dd-mm hh:mm"));
+        styles.put(STYLE_DATETIME, style);
     }
 
     private int writeHeaders(MBBundle bundle) throws IOException {
@@ -76,6 +80,12 @@ public class MBExcelPersistencer extends MBPersistencer {
         cell = headerRow.createCell(1);
         cell.setCellStyle(styles.get(STYLE_BOLD));
         cell.setCellValue(bundle.getBaseName());
+
+        cell = headerRow.createCell(3);
+        cell.setCellValue("Created: ");
+        cell = headerRow.createCell(4);
+        cell.setCellValue(new Date());
+        cell.setCellStyle(styles.get(STYLE_DATETIME));
 
         headerRow = createRow();
         if (null != bundle.getInterfaceName()) {
@@ -166,7 +176,7 @@ public class MBExcelPersistencer extends MBPersistencer {
                 bundleWriter = new BundleWriterExcel(bundle);
                 rowNum = 0; // FIX for Issue 2: Row numbering is not reset if an xls file has many tabs
                 sheet = wb.createSheet(
-                        bundle.getBaseName().replace('/', '.'));  //  '/' not allowed by excel in sheet name
+                    bundle.getBaseName().replace('/', '.'));  //  '/' not allowed by excel in sheet name
                 writeRows(bundle, writeHeaders(bundle));
             }
             wb.write(out);
@@ -260,9 +270,9 @@ public class MBExcelPersistencer extends MBPersistencer {
                     if (cell != null) {
                         final String svalue = getStringValue(cell);
                         if (StringUtils.isNotEmpty(svalue) ||
-                                // detect STYLE_MISSING
-                                cell.getCellStyle().getFillBackgroundColor() == HSSFColor.BLUE_GREY.index ||
-                                cell.getCellStyle().getFillForegroundColor() == HSSFColor.BLUE_GREY.index) {
+                            // detect STYLE_MISSING
+                            cell.getCellStyle().getFillBackgroundColor() == HSSFColor.BLUE_GREY.index ||
+                            cell.getCellStyle().getFillForegroundColor() == HSSFColor.BLUE_GREY.index) {
                             MBText text = new MBText();
                             text.setLocale(each);
                             text.setValue(svalue);
