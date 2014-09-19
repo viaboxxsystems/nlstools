@@ -58,6 +58,15 @@ Stage a Release
 ---------------
 mvn release:clean release:prepare release:perform -Dusername=[googlecode user] -Dpassword=[googlecode password]
 
+
+(new) maven way to deploy to OSSRH and release them to the Central Repository
+-----------------------------------------------------------------------------
+see http://central.sonatype.org/pages/apache-maven.html
+
+Perform a release deployment to OSSRH with:
+  mvn release:clean release:prepare
+  mvn release:perform
+
 (optional) generate jar-with-dependencies:
 -------------------------------------------
 mvn assembly:assembly
