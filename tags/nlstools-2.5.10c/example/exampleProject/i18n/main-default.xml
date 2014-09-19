@@ -1,0 +1,37 @@
+<bundles>
+    <bundle baseName="main" interfaceName="com.nlstools.example.myapp.I18nKeys" sqldomain="example">
+        <entry key="barcode.button.inputSwitchKeyboard">
+            <text locale="de">Tastatureingabe</text>
+            <text locale="en">Enter with keyboard</text>
+            <text locale="fr">Veuillez utiliser le clavier.</text>
+            <text locale="it">Tastiera</text>
+        </entry>
+
+        <entry key="barcode.button.inputSwitchScanner">
+            <text locale="de">Barcode Scanner</text>
+            <text locale="en">Scan barcode</text>
+            <text locale="fr">Veuillez scanner le code-barres</text>
+            <text locale="it">Scanner codice a barre</text>
+        </entry>
+
+        <entry key="barcode.error.duplicateIdentcode">
+            <text locale="de">Paket ID schon verwendet</text>
+            <text locale="de_DE" review="true">Paketcode schon verwendet</text>
+            <text locale="en">Parcel ID already used</text>
+            <text locale="fr">Cet identifiant colis a déjà été utilisé.</text>
+            <text locale="it">ID del pacco già utilizzato</text>
+        </entry>
+
+        <entry key="barcode.error.parcelIdentificationTooShort">
+            <text locale="de">Paket ID zu kurz</text>
+            <text locale="de_DE">Paketcode zu kurz</text>
+            <text locale="en">Parcel ID too short</text>
+            <text locale="fr">Identifiant colis trop court.</text>
+            <text locale="it">ID del pacco troppo corto</text>
+        </entry>
+
+        <!-- and many more resources of your application -->
+    </bundle>
+
+    <!-- you can also create more bundles here -->
+</bundles>
