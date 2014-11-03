@@ -40,6 +40,15 @@ public class MBJSONPersistencer extends MBPersistencer {
         saveObject(object, file);
     }
 
+    public void saveString(String json, File target) throws IOException {
+        Writer out = FileUtils.openFileWriterUTF8(target);
+        try {
+            out.write(json);
+        } finally {
+            out.close();
+        }
+    }
+
     public void saveObject(Object obj, File target) throws Exception {
         Writer out = FileUtils.openFileWriterUTF8(target);
         try {

@@ -31,23 +31,23 @@ public class MessageBundleTaskTest extends TestCase {
 
     public void testMBTextConverter() throws Exception {
         String xml = "<bundles>\n" +
-                "  <bundle baseName=\"Example\">\n" +
-                "    <entry key=\"key2\">\n" +
-                "      <text locale=\"de\">anderer Wert</text>\n" + "    </entry>\n" +
-                "  </bundle>\n" + "</bundles>";
+            "  <bundle baseName=\"Example\">\n" +
+            "    <entry key=\"key2\">\n" +
+            "      <text locale=\"de\">anderer Wert</text>\n" + "    </entry>\n" +
+            "  </bundle>\n" + "</bundles>";
         MBBundles bundles0 = (MBBundles) MBXMLPersistencer.getXstream().fromXML(xml);
         assertEquals("anderer Wert",
-                bundles0.getBundles().get(0).getEntries().get(0).getText("de").getValue());
+            bundles0.getBundles().get(0).getEntries().get(0).getText("de").getValue());
 
         xml = "<bundles>\n" +
-                "  <bundle baseName=\"Example\">\n" +
-                "    <entry key=\"key2\">\n" +
-                "      <text locale=\"de\">  <value>anderer Wert</value>  </text>\n" +
-                "      <text locale=\"en\"></text>\n" + "    </entry>\n" +
-                "  </bundle>\n" + "</bundles>";
+            "  <bundle baseName=\"Example\">\n" +
+            "    <entry key=\"key2\">\n" +
+            "      <text locale=\"de\">  <value>anderer Wert</value>  </text>\n" +
+            "      <text locale=\"en\"></text>\n" + "    </entry>\n" +
+            "  </bundle>\n" + "</bundles>";
         bundles0 = (MBBundles) MBXMLPersistencer.getXstream().fromXML(xml);
         assertEquals("anderer Wert",
-                bundles0.getBundles().get(0).getEntries().get(0).getText("de").getValue());
+            bundles0.getBundles().get(0).getEntries().get(0).getText("de").getValue());
 
         MBBundles bundles = createBundles();
         xml = MBXMLPersistencer.getXstream().toXML(bundles);
@@ -99,6 +99,23 @@ public class MessageBundleTaskTest extends TestCase {
 
         bundles.getBundles().add(bundle);
         return bundles;
+    }
+
+    public void testWriteAngularJS() {
+        /*<msgbundle writeJson="angular" overwrite="true" deleteOldFiles="true"
+                          debugMode="true"
+                          jsonPath="src/angular-languages"
+                          flexLayout="true"
+                          bundles="${bundlesFile}${bundlesType}"
+                       />*/
+        MessageBundleTask task = new MessageBundleTask();
+        task.setProject(new Project());
+        task.setBundles("example/example.xml");
+        task.setOverwrite(true);
+        task.setDeleteOldFiles(false);
+        task.setJsonPath("target/out-angular");
+        task.setWriteJson("angular_pretty");
+        task.execute();
     }
 
     public void testGenerate() throws Exception {

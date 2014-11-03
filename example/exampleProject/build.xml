@@ -10,7 +10,11 @@
 
     <!-- example: generate all sources -->
     <target name="generate-sources-all"
-            depends="generate-sources-flex,generate-sources-java,generate-sources-json,generate-sources-sql"/>
+            depends="generate-sources-flex,generate-sources-java,generate-sources-json,generate-sources-angular,generate-sources-sql"/>
+
+    <target name="clean">
+        <delete dir="src"/>
+    </target>
 
     <target name="generate-sources-flex" depends="init" description="generate runtime bundles for Flex">
         <msgbundle writeInterface="Flex"  merged="true"
@@ -53,12 +57,21 @@
     </target>
 
     <target name="generate-sources-json" depends="init" description="generate runtime bundles for JSON">
-        <!-- jsonFile -->
-        <msgbundle writeJson="true" overwrite="false" deleteOldFiles="true"
+        <!-- jsonFile: writeJson="true" or writeJson="pretty" -->
+        <msgbundle writeJson="pretty" overwrite="false" deleteOldFiles="true"
                    debugMode="false"
                    jsonPath="src/json"
                    bundles="${bundlesFile}${bundlesType}"
                    sourcePath="src/main/java"
+                />
+    </target>
+
+    <target name="generate-sources-angular" depends="init" description="generate runtime bundles for angularJS">
+        <!-- jsonFile: writeJson="angular" or writeJson="angular_pretty" -->
+        <msgbundle writeJson="angular_pretty" overwrite="true" deleteOldFiles="true"
+                   debugMode="true"
+                   jsonPath="src/angular-languages"
+                   bundles="${bundlesFile}${bundlesType}"
                 />
     </target>
 

@@ -35,7 +35,7 @@ public abstract class BundleWriter {
 
     public static enum FileType {
         NO, XML, PROPERTIES,
-        JS, JS_PRETTY,
+        JS, JS_PRETTY, JS_ANGULAR, JS_ANGULAR_PRETTY,
         JAVA_FULL_ENUM_KEYS,
         JAVA_ENUM_KEYS,
         JAVA_FULL,
@@ -63,7 +63,7 @@ public abstract class BundleWriter {
         if (!fileType.equals(FileType.NO)) {
             if (!overwrite && !needsNewFiles()) {
                 task.log(suffix() + " file(s) for " + getCurrentBundle().getBaseName() +
-                        " up to date", Project.MSG_VERBOSE);
+                    " up to date", Project.MSG_VERBOSE);
             } else {
                 writeOutputFiles();
             }
@@ -122,14 +122,8 @@ public abstract class BundleWriter {
             // try to delete only if directory exists
             StringBuilder baseName = buildOutputFileNameBase();
             File dir = new File(getOutputPath());
-            if (dir.exists()) {
-                if (fileType.equals(FileType.XML)) {
-                    deleteFiles(baseName.append("*.xml").toString());
-                } else if (fileType.equals(FileType.PROPERTIES)) {
-                    deleteFiles(baseName.append("*.properties").toString());
-                } else if (fileType.equals(FileType.JS)) {
-                    deleteFiles(baseName.append("*.js").toString());
-                }
+            if (fileType != FileType.NO && dir.exists()) {
+                deleteFiles(baseName.append("*" + suffix()).toString());
             }
         }
     }
@@ -275,7 +269,7 @@ public abstract class BundleWriter {
             if (langText == null && merged && !StringUtils.isEmpty(locale)) {
                 List<Locale> locales = LocaleUtils.localeLookupList(LocaleUtils.toLocale(locale));
                 // start with i=1 because locales.get(0) has already been tried - it is the 'locale' itself.
-                for (int i=1;i<locales.size();i++) {  // try to find from parent. begin with next specific
+                for (int i = 1; i < locales.size(); i++) {  // try to find from parent. begin with next specific
                     Locale each = locales.get(i);
                     langText = eachEntry.getText(each.toString());
                     if (langText != null) break;
@@ -296,11 +290,11 @@ public abstract class BundleWriter {
                 while (value != null && (indentIndex = value.indexOf("\n ")) > -1) {
                     int lastBlankIndex = indentIndex + 1;
                     while (lastBlankIndex + 1 < value.length() && Character
-                            .isWhitespace(value.charAt(lastBlankIndex + 1))) {
+                        .isWhitespace(value.charAt(lastBlankIndex + 1))) {
                         lastBlankIndex++;
                     }
                     value = value.substring(0, indentIndex) + ' ' +
-                            value.substring(lastBlankIndex + 1);
+                        value.substring(lastBlankIndex + 1);
                 }
                 task.log("'" + key + "' ==> '" + value + "'", Project.MSG_DEBUG);
                 if (key != null && value != null) {

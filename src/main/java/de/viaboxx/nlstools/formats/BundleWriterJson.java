@@ -1,6 +1,7 @@
 package de.viaboxx.nlstools.formats;
 
 import de.viaboxx.nlstools.model.MBBundle;
+import de.viaboxx.nlstools.tasks.MessageBundleTask;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Task;
 
@@ -23,6 +24,14 @@ public class BundleWriterJson extends BundleWriter {
         this.merged = merged;
     }
 
+    public String getOutputFile() {
+        return outputFile;
+    }
+
+    public boolean isMerged() {
+        return merged;
+    }
+
     public BundleWriterJson(Task task, String configFile,
                             MBBundle currentBundle, String outputPath, String outputFile,
                             FileType fileType, Set<String> allowedLocales) {
@@ -36,7 +45,7 @@ public class BundleWriterJson extends BundleWriter {
         task.log("writing json file " + jsfile, Project.MSG_INFO);
         Properties mergedProperties = createProperties(locale, merged);
         MBJSONPersistencer writer =
-                new MBJSONPersistencer(fileType == FileType.JS_PRETTY);
+            new MBJSONPersistencer(fileType == FileType.JS_PRETTY);
         writer.saveObject(mergedProperties, new File(jsfile));
     }
 
@@ -55,5 +64,19 @@ public class BundleWriterJson extends BundleWriter {
 
     protected String suffix() {
         return ".js";
+    }
+
+    public static BundleWriterJson build(MessageBundleTask task, String configFile, MBBundle currentBundle,
+                                         String outputPath, String outputFile, FileType fileType,
+                                         Set<String> allowedLocales) {
+        switch (fileType) {
+            case JS_ANGULAR:
+            case JS_ANGULAR_PRETTY:
+                return new BundleWriterAngularJS(task, configFile, currentBundle, outputPath, outputFile, fileType,
+                    allowedLocales);
+            default:
+                return new BundleWriterJson(task, configFile, currentBundle, outputPath, outputFile, fileType,
+                    allowedLocales);
+        }
     }
 }
