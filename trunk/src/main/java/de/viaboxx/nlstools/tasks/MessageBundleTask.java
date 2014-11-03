@@ -26,6 +26,8 @@ import java.util.StringTokenizer;
  *      (=.properties), false, xml (=.xml)
  * writeJson = true  (default=false)
  *      (=compressed .js file), false, pretty (formatted .js file)
+ *      angular (for angular-localization, see https://github.com/doshprompt/angular-localization)
+ *      angular_pretty (for angular-localization prettyprinted, see https://github.com/doshprompt/angular-localization)
  * writeInterface = true  (default=false)
  *      (keys + bundle name), false, small_enum, small (bundle name only), Flex (ActionScript class), smallFlex (bundle name only)
  *      enum (keys + bundle name + enum of all keys), small_enum (bundle name + enum of all keys)
@@ -36,7 +38,7 @@ import java.util.StringTokenizer;
  * SQL-Script: .sql
  * Interface: .java
  * </pre>
- *
+ * <p/>
  * <strong>Configuration:</strong>
  * <pre>
  * bundles = the XML (or Excel)-bundles input file(s), separated by ;
@@ -91,7 +93,7 @@ public class MessageBundleTask extends Task {
     private String writeJson = "false";
     private String writeInterface = "false";
     private boolean debugMode = false;
-    private boolean flexLayout = false;
+    private Boolean flexLayout;
     private boolean preserveNewlines = false;
     private boolean merged = true;
 
@@ -124,7 +126,7 @@ public class MessageBundleTask extends Task {
     }
 
     public boolean isFlexLayout() {
-        return flexLayout;
+        return flexLayout != null && flexLayout;
     }
 
     public void setFlexLayout(boolean flexLayout) {
@@ -245,7 +247,7 @@ public class MessageBundleTask extends Task {
             fileType = BundleWriter.FileType.SQL;
         }
         executeBundleWriter(
-                new BundleWriterSql(this, getXMLConfigBundle(), o, getSqlScriptDir(), fileType, allowedLocales));
+            new BundleWriterSql(this, getXMLConfigBundle(), o, getSqlScriptDir(), fileType, allowedLocales));
     }
 
     private void handleInterface(MBBundle o) throws Exception {
@@ -260,13 +262,13 @@ public class MessageBundleTask extends Task {
             fileType = BundleWriter.FileType.JAVA_FULL_ENUM_KEYS;
         } else if (getWriteInterface().equalsIgnoreCase("Flex")) {
             BundleWriterFlexClass writer = new BundleWriterFlexClass(this, getXMLConfigBundle(), o, sourcePath,
-                    BundleWriter.FileType.FLEX_FULL, allowedLocales);
+                BundleWriter.FileType.FLEX_FULL, allowedLocales);
             writer.setExampleLocale(getExampleLocale());
             executeBundleWriter(writer);
             return;
         } else if (getWriteInterface().equalsIgnoreCase("smallFlex")) {
             BundleWriterFlexClass writer = new BundleWriterFlexClass(this, getXMLConfigBundle(), o, sourcePath,
-                    BundleWriter.FileType.FLEX_SMALL, allowedLocales);
+                BundleWriter.FileType.FLEX_SMALL, allowedLocales);
             writer.setExampleLocale(getExampleLocale());
             executeBundleWriter(writer);
             return;
@@ -274,7 +276,7 @@ public class MessageBundleTask extends Task {
             fileType = BundleWriter.FileType.JAVA_FULL;
         }
         BundleWriterJavaInterface writer =
-                new BundleWriterJavaInterface(this, getXMLConfigBundle(), o, sourcePath, fileType, allowedLocales);
+            new BundleWriterJavaInterface(this, getXMLConfigBundle(), o, sourcePath, fileType, allowedLocales);
         writer.setExampleLocale(getExampleLocale());
         executeBundleWriter(writer);
     }
@@ -289,7 +291,7 @@ public class MessageBundleTask extends Task {
             fileType = BundleWriter.FileType.PROPERTIES;
         }
         BundleWriterProperties writer = new BundleWriterProperties(this, getXMLConfigBundle(), o,
-                getPropertyPath(), fileType, allowedLocales);
+            getPropertyPath(), fileType, allowedLocales);
         writer.setMerged(isMerged());
         if (getToCharset() != null) {
             writer.setCharset(getToCharset());
@@ -301,13 +303,17 @@ public class MessageBundleTask extends Task {
         BundleWriter.FileType fileType;
         if (getWriteJson().equalsIgnoreCase("false")) {
             fileType = BundleWriter.FileType.NO;
-        } else if (getWriteProperties().equalsIgnoreCase("pretty")) {
+        } else if (getWriteJson().equalsIgnoreCase("pretty")) {
             fileType = BundleWriter.FileType.JS_PRETTY;
+        } else if (getWriteJson().equalsIgnoreCase("angular")) {
+            fileType = BundleWriter.FileType.JS_ANGULAR;
+        } else if (getWriteJson().equalsIgnoreCase("angular_pretty")) {
+            fileType = BundleWriter.FileType.JS_ANGULAR_PRETTY;
         } else {
             fileType = BundleWriter.FileType.JS;
         }
-        BundleWriterJson writer = new BundleWriterJson(this, getXMLConfigBundle(), o, getJsonPath(),
-                getJsonFile(), fileType, allowedLocales);
+        BundleWriterJson writer = BundleWriterJson.build(this, getXMLConfigBundle(), o, getJsonPath(),
+            getJsonFile(), fileType, allowedLocales);
         writer.setMerged(isMerged());
         executeBundleWriter(writer);
     }
@@ -321,7 +327,7 @@ public class MessageBundleTask extends Task {
     }
 
     private void executeBundleWriter(BundleWriter writer) throws Exception {
-        writer.setFlexLayout(flexLayout);
+        if (flexLayout != null) writer.setFlexLayout(isFlexLayout());
         writer.setOverwrite(overwrite);
         writer.setDeleteOldFiles(deleteOldFiles);
         writer.setDebugMode(debugMode);
