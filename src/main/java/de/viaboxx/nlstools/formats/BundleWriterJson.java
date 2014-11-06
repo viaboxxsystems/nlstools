@@ -14,7 +14,7 @@ import java.util.Set;
  * User: roman.stumm <br/>
  * Date: 15.06.2007 <br/>
  * Time: 09:44:11 <br/>
- * Copyright: Viaboxx GmbH
+ * License: Apache 2.0
  */
 public class BundleWriterJson extends BundleWriter {
     private final String outputFile;

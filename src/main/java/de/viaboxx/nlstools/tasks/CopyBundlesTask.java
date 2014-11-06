@@ -43,7 +43,7 @@ import java.util.Map;
  * User: roman <br/>
  * Date: 09.02.2009 <br/>
  * Time: 16:05:43 <br/>
- * Copyright: Viaboxx GmbH
+ * License: Apache 2.0
  */
 public class CopyBundlesTask extends Task {
     private File masterFile;

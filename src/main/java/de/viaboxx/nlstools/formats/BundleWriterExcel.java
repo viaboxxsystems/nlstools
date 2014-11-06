@@ -13,7 +13,7 @@ import java.util.Set;
  * User: roman.stumm<br>
  * Date: 29.12.2010<br>
  * Time: 15:25:42<br>
- * viaboxx GmbH, 2010
+ * License: Apache 2.02010
  */
 public class BundleWriterExcel extends BundleWriter {
     private MBBundles bundles;

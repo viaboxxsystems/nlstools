@@ -14,7 +14,7 @@ import java.util.Set;
  * User: roman.stumm <br/>
  * Date: 15.06.2007 <br/>
  * Time: 09:44:05 <br/>
- * Copyright: Viaboxx GmbH
+ * License: Apache 2.0
  */
 public class BundleWriterProperties extends BundleWriter {
     private boolean merged = true;

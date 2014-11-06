@@ -13,7 +13,7 @@ import java.io.IOException;
  * User: roman.stumm<br>
  * Date: 29.12.2010<br>
  * Time: 15:07:56<br>
- * viaboxx GmbH, 2010
+ * License: Apache 2.02010
  */
 public class MBExcelPersistencerTest extends TestCase {
     private MBExcelPersistencer persistencer = new MBExcelPersistencer();

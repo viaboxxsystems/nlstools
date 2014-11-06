@@ -18,7 +18,7 @@ import java.util.*;
  * User: roman.stumm<br>
  * Date: 29.12.2010<br>
  * Time: 14:44:37<br>
- * viaboxx GmbH, 2010
+ * License: Apache 2.02010
  */
 public class MBExcelPersistencer extends MBPersistencer {
     private static final int STYLE_BOLD = 1;

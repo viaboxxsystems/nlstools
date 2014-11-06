@@ -13,7 +13,7 @@ import java.util.List;
  * User: roman.stumm <br/>
  * Date: 14.06.2007 <br/>
  * Time: 15:21:50 <br/>
- * Copyright: Viaboxx GmbH
+ * License: Apache 2.0
  */
 @XStreamAlias("bundle")
 public class MBBundle implements Cloneable {

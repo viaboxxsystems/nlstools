@@ -53,7 +53,7 @@ import java.util.Map;
  * User: roman <br/>
  * Date: 08.10.2009 <br/>
  * Time: 14:07:20 <br/>
- * Copyright: Viaboxx GmbH
+ * License: Apache 2.0
  */
 public class OptimizeBundlesTask extends Task {
     private static final String DEFAULT_COMMON_BUNDLE_FILE = "Common.xml";

@@ -15,7 +15,7 @@ import java.util.zip.ZipOutputStream;
  * User: roman <br/>
  * Date: 10.02.2009 <br/>
  * Time: 14:18:13 <br/>
- * Copyright: Viaboxx GmbH
+ * License: Apache 2.0
  */
 public class MBBundlesZipper {
 

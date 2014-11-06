@@ -22,7 +22,7 @@ import java.util.Set;
  * User: roman.stumm <br/>
  * Date: 15.06.2007 <br/>
  * Time: 12:14:13 <br/>
- * Copyright: Viaboxx GmbH
+ * License: Apache 2.0
  */
 public class BundleWriterJavaInterface extends BundleWriter {
     private String exampleLocale;

@@ -5,7 +5,7 @@ package de.viaboxx.nlstools.model;
  * User: roman <br/>
  * Date: 10.02.2009 <br/>
  * Time: 14:14:11 <br/>
- * Copyright: Viaboxx GmbH
+ * License: Apache 2.0
  */
 public final class MBFile {
     private String name;

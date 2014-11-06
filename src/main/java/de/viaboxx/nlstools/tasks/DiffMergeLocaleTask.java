@@ -18,7 +18,7 @@ import java.util.StringTokenizer;
  * User: roman.stumm<br>
  * Date: 02.05.2011<br>
  * Time: 15:35:39<br>
- * viaboxx GmbH, 2010
+ * License: Apache 2.02010
  */
 public class DiffMergeLocaleTask extends MergeLocaleTask {
     /**
