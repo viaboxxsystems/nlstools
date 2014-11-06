@@ -2,11 +2,17 @@
 #labels Featured
 
 = Release notes: nlstools =
-== 2.5.10-SNAPSHOT (current source) ==
+== 2.6.1-SNAPSHOT (current source) ==
+
+== 2.6 (6.11.2014) ==
+  * feature to write angularJS json files with writeJson="angular" or "angular_pretty"
+  * changed readme.txt, mentioned 2014 and jdk1.7
 
 == 2.5.9 (4.4.2013) ==
   * new API: MBPersistencer.forURL(string), load(InputStream)
   * using poi 3.9 (optional)
+  * maven-plugins upgrade
+  * poi, jettision upgrade
 
 == 2.5.8 (16.11.2012) ==
   * Issue 1 fixed
