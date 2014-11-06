@@ -1,0 +1,37 @@
+<bundles>
+    <bundle baseName="Example" interfaceName="de.viaboxx.I_Example">
+        <entry key="key1">
+            <description>Some comment about the entry...</description>
+            <text locale="de">
+                <value>Beispieltext mit ÄÖÜ</value>
+            </text>
+            <text locale="en">
+                <value>An example</value>
+            </text>
+        </entry>
+        <entry key="key2">
+            <text locale="de">
+                <value>anderer Wert</value>
+            </text>
+        </entry>
+    </bundle>
+
+    <bundle baseName="SecondExample" interfaceName="de.viaboxx.I_SecondExample">
+        <entry key="admin.button.reboot">
+            <text locale="de">Neustart</text>
+            <text locale="en">Restart</text>
+        </entry>
+        <entry key="admin.button.debug">
+            <text locale="">Debug</text>
+        </entry>
+        <entry key="admin.maintenance.headline">
+            <text locale="de">Wartung</text>
+            <text locale="en">Maintenance</text>
+        </entry>
+        <entry key="admin.thanks">
+            <text locale="">Thanks</text>
+            <text locale="de">Danke</text>
+            <text locale="de_NL">Bedankt</text>
+        </entry>
+    </bundle>
+</bundles>
