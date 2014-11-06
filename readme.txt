@@ -82,6 +82,7 @@ mv target/site/apidocs javadoc
 svn add javadoc
 cd javadoc
 svn propset -R svn:mime-type text/html *
+svn propset -R svn:mime-type image/gif resources/*.gif
 svn propset svn:mime-type text/css stylesheet.css
 cd ..
 svn commit -m "readded javadoc"
