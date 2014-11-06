@@ -19,7 +19,7 @@ import java.util.Set;
  * User: roman.stumm <br/>
  * Date: 15.06.2007 <br/>
  * Time: 12:20:23 <br/>
- * Copyright: Viaboxx GmbH
+ * License: Apache 2.0
  */
 public class BundleWriterSql extends BundleWriter {
     public BundleWriterSql(Task task, String configFile, MBBundle currentBundle, String outputPath, FileType fileType,

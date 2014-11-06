@@ -12,7 +12,7 @@ import java.io.File;
  * User: roman.stumm<br>
  * Date: 30.12.2010<br>
  * Time: 13:43:41<br>
- * viaboxx GmbH, 2010
+ * License: Apache 2.02010
  */
 public class ConvertBundlesTask extends Task {
     private File from;

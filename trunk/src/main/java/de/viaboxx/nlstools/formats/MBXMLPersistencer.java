@@ -13,7 +13,7 @@ import java.io.*;
  * User: roman.stumm <br/>
  * Date: 14.06.2007 <br/>
  * Time: 15:25:25 <br/>
- * Copyright: Viaboxx GmbH
+ * License: Apache 2.0
  */
 public class MBXMLPersistencer extends MBPersistencer {
     static final XStream xstream = new XStream();

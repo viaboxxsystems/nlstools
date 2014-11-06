@@ -15,7 +15,7 @@ import java.util.*;
  * User: roman <br/>
  * Date: 09.02.2009 <br/>
  * Time: 14:38:05 <br/>
- * Copyright: Viaboxx GmbH
+ * License: Apache 2.0
  */
 public class UpdateBundlesTask extends Task {
     private File zipFile;

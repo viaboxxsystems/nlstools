@@ -19,7 +19,7 @@ import java.util.*;
  * User: roman.stumm <br/>
  * Date: 15.06.2007 <br/>
  * Time: 09:43:56 <br/>
- * Copyright: Viaboxx GmbH
+ * License: Apache 2.0
  */
 public abstract class BundleWriter {
     protected final Task task;

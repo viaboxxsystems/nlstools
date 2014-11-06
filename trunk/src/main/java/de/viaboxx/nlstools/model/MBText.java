@@ -5,7 +5,7 @@ package de.viaboxx.nlstools.model;
  * User: roman.stumm <br/>
  * Date: 14.06.2007 <br/>
  * Time: 15:22:00 <br/>
- * Copyright: Viaboxx GmbH
+ * License: Apache 2.0
  */
 //@XStreamAlias("text")
 public class MBText implements Comparable, Cloneable {

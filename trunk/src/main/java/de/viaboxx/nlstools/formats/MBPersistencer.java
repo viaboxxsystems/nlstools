@@ -10,7 +10,7 @@ import java.io.InputStream;
  * User: roman.stumm<br>
  * Date: 29.12.2010<br>
  * Time: 16:41:46<br>
- * viaboxx GmbH, 2010
+ * License: Apache 2.02010
  */
 public abstract class MBPersistencer {
     public abstract void save(MBBundles obj, File target) throws Exception;

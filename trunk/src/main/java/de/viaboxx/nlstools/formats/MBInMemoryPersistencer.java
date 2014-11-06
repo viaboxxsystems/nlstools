@@ -13,7 +13,7 @@ import java.util.Map;
  * User: roman.stumm<br>
  * Date: 02.05.2011<br>
  * Time: 14:53:59<br>
- * viaboxx GmbH, 2010
+ * License: Apache 2.02010
  */
 public class MBInMemoryPersistencer extends MBPersistencer {
     private static Map<String, MBBundles> memory = Collections.synchronizedMap(new HashMap());

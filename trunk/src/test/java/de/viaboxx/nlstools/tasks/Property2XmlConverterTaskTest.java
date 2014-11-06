@@ -8,7 +8,7 @@ import junit.framework.TestCase;
  * User: roman.stumm<br>
  * Date: 16.11.12<br>
  * Time: 15:34<br>
- * viaboxx GmbH, 2012
+ * License: Apache 2.02012
  * </p>
  */
 public class Property2XmlConverterTaskTest extends TestCase {

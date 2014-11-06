@@ -6,7 +6,7 @@ import java.nio.charset.Charset;
 /**
  * <p>Description: Provides methods to read / write files.</p>
  * <p>Copyright (c) 2007</p>
- * <p>Company: Viaboxx GmbH </p>
+ * <p>License: Apache 2.0</p>
  *
  * @author Roman Stumm
  */

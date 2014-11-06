@@ -12,7 +12,7 @@ import de.viaboxx.nlstools.model.MBText;
  * User: roman <br/>
  * Date: 05.02.2009 <br/>
  * Time: 12:16:18 <br/>
- * Copyright: Viaboxx GmbH
+ * License: Apache 2.0
  */
 final class MBTextConverter implements Converter {
     public void marshal(Object o, HierarchicalStreamWriter writer,
