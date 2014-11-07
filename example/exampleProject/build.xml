@@ -1,4 +1,10 @@
-<project name="nlstools for flex invoker" default="generate-sources-all">
+<project name="nlstools for flex invoker" default="generate-sources-all"
+         xmlns:artifact="antlib:maven-artifact-ant">
+
+    <property name="nlstools.version" value="2.6"/>
+    <path id="maven-ant-tasks.classpath" path="libs/maven-ant-tasks-2.1.3.jar"/>
+    <typedef resource="org/apache/maven/artifact/ant/antlib.xml" uri="antlib:maven-artifact-ant"
+                classpathref="maven-ant-tasks.classpath"/>
 
     <!-- name of the default example resource bundle file (without suffix) -->
     <property name="bundlesFile" value="i18n/main-default"/>
@@ -17,7 +23,7 @@
     </target>
 
     <target name="generate-sources-flex" depends="init" description="generate runtime bundles for Flex">
-        <msgbundle writeInterface="Flex"  merged="true"
+        <msgbundle writeInterface="Flex" merged="true"
                    overwrite="false" deleteOldFiles="true"
                    debugMode="false"
                    bundles="${bundlesFile}${bundlesType}"
@@ -75,16 +81,13 @@
                 />
     </target>
 
-    <path id="toolspath">
-        <fileset dir="../../target/">
-            <include name="*.jar"/>
-        </fileset>
-        <fileset dir="libs">
-            <include name="*.jar"/>
-        </fileset>
-    </path>
-
     <target name="init">
+        <artifact:dependencies pathid="toolspath">
+            <dependency groupId="de.viaboxx" artifactId="nlstools" version="${nlstools.version}"/>
+            <dependency groupId="org.apache.poi" artifactId="poi" version="3.10.1"/>
+            <dependency groupId="org.codehaus.jettison" artifactId="jettison" version="1.3.6"/>
+        </artifact:dependencies>
+
         <taskdef name="prop2xml"
                  classname="de.viaboxx.nlstools.tasks.Property2XMLConverterTask"
                  classpathref="toolspath"/>
@@ -160,7 +163,8 @@
                 to="${bundlesFile}.xml"/>
     </target>
 
-    <target name="sanity-check" depends="init" description="create a bundle with missing entries from a bundle (sanity check)">
+    <target name="sanity-check" depends="init"
+            description="create a bundle with missing entries from a bundle (sanity check)">
         <sanityCheck
                 locale="${newLocale}"
                 from="${bundlesFile}"
