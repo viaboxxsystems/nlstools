@@ -49,6 +49,7 @@ public class BundleWriterFlexClass extends BundleWriter {
      */
     public void writeOutputFiles() throws Exception {
         // now write the flex class
+        if(currentBundle.getInterfaceName() == null) return;
         String iffile = getInterfaceFileName();
         task.log("writing flex class to: " + iffile, Project.MSG_INFO);
         mkdirs(iffile);
@@ -189,6 +190,7 @@ public class BundleWriterFlexClass extends BundleWriter {
      */
     @Override
     protected boolean needsNewFiles() throws FileNotFoundException {
+        if(currentBundle.getInterfaceName() == null) return false;
         File outfile = new File(getInterfaceFileName());
         if (!outfile.exists()) {
             return true;
