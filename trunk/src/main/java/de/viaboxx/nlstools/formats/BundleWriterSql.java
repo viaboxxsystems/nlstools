@@ -28,22 +28,24 @@ public class BundleWriterSql extends BundleWriter {
     }
 
     private File getSQLFile() {
-        return new File(getOutputPath(), currentBundle.getSqldomain() + suffix());
+        return currentBundle.getSqldomain() == null ? null :
+            new File(getOutputPath(), currentBundle.getSqldomain() + suffix());
     }
 
     protected void writeOutputFiles() throws IOException {
-        String domain = currentBundle.getSqldomain();
         File file = getSQLFile();
+        if (file == null) return;
+        String domain = currentBundle.getSqldomain();
         Writer fw = FileUtils.openFileWriterUTF8(file);
         task.log("writing statements for SQLDomain " + domain + " to: " + file,
-                Project.MSG_INFO);
+            Project.MSG_INFO);
         try {
             fw.write(
-                    "DELETE FROM NLSTEXT t WHERE EXISTS (SELECT 1 FROM NLSBUNDLE b WHERE DOMAIN='" +
-                            domain + "' AND t.BUNDLEID=b.ID);\n");
+                "DELETE FROM NLSTEXT t WHERE EXISTS (SELECT 1 FROM NLSBUNDLE b WHERE DOMAIN='" +
+                    domain + "' AND t.BUNDLEID=b.ID);\n");
             fw.write("DELETE FROM NLSBUNDLE WHERE DOMAIN='" + domain + "';\n");
             fw.write("INSERT INTO NLSBUNDLE (ID, DOMAIN) SELECT SEQ_NLSBundle.NEXTVAL,'" +
-                    domain + "' FROM DUAL;\n");
+                domain + "' FROM DUAL;\n");
 
             for (MBEntry theEntry : getCurrentBundle().getEntries()) {
                 String name = theEntry.getKey();
@@ -53,10 +55,10 @@ public class BundleWriterSql extends BundleWriter {
                     MBText theText = texts.next();
                     String lang = theText.getLocale();
                     fw.write(
-                            "INSERT INTO NLSTEXT (KEY, TRANSLATED, LOCALE, BundleID) SELECT ");
+                        "INSERT INTO NLSTEXT (KEY, TRANSLATED, LOCALE, BundleID) SELECT ");
                     fw.write("'" + theKey + "','" + theText.getValue() + "', '" + lang +
-                            "', b.ID  FROM NLSBUNDLE b WHERE b.DOMAIN = '" + domain +
-                            "';\n");
+                        "', b.ID  FROM NLSBUNDLE b WHERE b.DOMAIN = '" + domain +
+                        "';\n");
                 }
             }
             fw.write("COMMIT;\n\n");
@@ -67,6 +69,7 @@ public class BundleWriterSql extends BundleWriter {
 
     protected boolean needsNewFiles() throws FileNotFoundException {
         File outfile = getSQLFile();
+        if (outfile == null) return false;
         if (!outfile.exists()) {
             return true;
         }
