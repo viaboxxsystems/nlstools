@@ -51,6 +51,7 @@ public class BundleWriterJavaInterface extends BundleWriter {
      */
     public void writeOutputFiles() throws Exception {
         // now write the interface
+        if(currentBundle.getInterfaceName() == null) return;
         String iffile = getInterfaceFileName();
         task.log("writing interface to: " + iffile, Project.MSG_INFO);
         mkdirs(iffile);
@@ -218,6 +219,7 @@ public class BundleWriterJavaInterface extends BundleWriter {
      */
     @Override
     protected boolean needsNewFiles() throws FileNotFoundException {
+        if(currentBundle.getInterfaceName() == null) return false;
         File outfile = new File(getInterfaceFileName());
         if (!outfile.exists()) {
             return true;
