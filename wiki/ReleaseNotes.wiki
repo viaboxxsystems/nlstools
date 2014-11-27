@@ -2,7 +2,11 @@
 #labels Featured
 
 = Release notes: nlstools =
-== 2.6.1-SNAPSHOT (current source) ==
+== 2.6.2-SNAPSHOT (current source) ==
+
+== 2.6.1 (27.11.2014) ==
+  * fixed potential NullPointerExceptions when some bundles
+  in the source file have no interfaceName or sqlDomain
 
 == 2.6 (6.11.2014) ==
   * feature to write angularJS json files with writeJson="angular" or "angular_pretty"
