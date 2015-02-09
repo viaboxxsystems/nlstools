@@ -182,5 +182,6 @@
     </build>
 
     <properties>
+        <additionalparam>-Xdoclint:none</additionalparam> <!-- due to stricter javadoc for jdk1.8 -->
     </properties>
 </project>
