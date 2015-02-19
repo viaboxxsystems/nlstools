@@ -1,6 +1,7 @@
 <bundles>
     <bundle baseName="main" interfaceName="com.nlstools.example.myapp.I18nKeys" sqldomain="example">
         <entry key="barcode.button.inputSwitchKeyboard">
+            <description>Label of button 'Enter with keyboard'</description>
             <text locale="de">Tastatureingabe</text>
             <text locale="en">Enter with keyboard</text>
             <text locale="fr">Veuillez utiliser le clavier.</text>
@@ -8,6 +9,7 @@
         </entry>
 
         <entry key="barcode.button.inputSwitchScanner">
+            <description>Label of button 'Scan barcode'</description>
             <text locale="de">Barcode Scanner</text>
             <text locale="en">Scan barcode</text>
             <text locale="fr">Veuillez scanner le code-barres</text>
