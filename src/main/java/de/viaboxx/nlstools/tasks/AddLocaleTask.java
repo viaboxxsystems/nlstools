@@ -74,7 +74,7 @@ public class AddLocaleTask extends Task {
                 for (MBBundle bundle : loadedBundles.getBundles()) {
                     for (MBEntry entry : bundle.getEntries()) {
                         // divide the locale string
-                        StringTokenizer tokens = new StringTokenizer(locales, ";");
+                        StringTokenizer tokens = new StringTokenizer(locales, ",;");
                         while (tokens.hasMoreTokens()) {
                             String locale = tokens.nextToken();
 

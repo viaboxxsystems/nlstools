@@ -20,7 +20,10 @@ import java.util.*;
 public class UpdateBundlesTask extends Task {
     private File zipFile;
     private File masterFile;
-    private String locales; // comma or blank separated list, default: ""==all
+    /**
+     * , or ; separated list, default: ""==all
+     */
+    private String locales;
 
     public File getZipFile() {
         return zipFile;
@@ -67,12 +70,12 @@ public class UpdateBundlesTask extends Task {
     private void updateFiles(List<MBFile> files) throws IOException {
         Map<String, File> mapping = CopyBundlesTask.readControlFileMapping(masterFile);
 
-        Set<String> effectiveLocales = parseLocales(locales);
+        Collection<String> effectiveLocales = parseLocales(locales);
         for (MBFile file : files) {
             File outFile = mapping.get(file.getName()); // - ".xml"
             if (outFile == null) {
                 getProject().log("skipping " + file.getName() + ", not mapped in " + masterFile
-                        , Project.MSG_WARN);
+                    , Project.MSG_WARN);
                 continue;
             }
             if (!outFile.exists()) { // create it
@@ -84,7 +87,7 @@ public class UpdateBundlesTask extends Task {
                 } else { // parse and filter
                     getProject().log("parsing (1)" + file.getName());
                     MBBundles newBundles = (MBBundles) MBXMLPersistencer.getXstream()
-                            .fromXML(file.getContent());
+                        .fromXML(file.getContent());
                     filterBundleLocales(newBundles, effectiveLocales);
                     getProject().log("writing (2) " + outFile);
                     writer.write(MBXMLPersistencer.getXstream().toXML(newBundles));
@@ -96,10 +99,10 @@ public class UpdateBundlesTask extends Task {
                 FileReader reader = new FileReader(outFile);
                 getProject().log("parsing (2) " + outFile);
                 MBBundles oldBundles =
-                        (MBBundles) MBXMLPersistencer.getXstream().fromXML(reader);
+                    (MBBundles) MBXMLPersistencer.getXstream().fromXML(reader);
                 reader.close();
                 MBBundles newBundles = (MBBundles) MBXMLPersistencer.getXstream()
-                        .fromXML(file.getContent());
+                    .fromXML(file.getContent());
                 copyBundleLocales(newBundles, oldBundles, effectiveLocales);
                 getProject().log("writing (3) " + outFile);
                 FileWriter writer = new FileWriter(outFile);
@@ -112,14 +115,14 @@ public class UpdateBundlesTask extends Task {
         }
     }
 
-    private void filterBundleLocales(MBBundles bundles, Set<String> effectiveLocales) {
+    private void filterBundleLocales(MBBundles bundles, Collection<String> effectiveLocales) {
         if (effectiveLocales == null || effectiveLocales.isEmpty())
             return; // no filtering
 
         for (MBBundle bundle : bundles.getBundles()) {
             for (MBEntry entry : bundle.getEntries()) {
                 for (Iterator<MBText> textIterator =
-                        entry.getTexts().iterator(); textIterator.hasNext();) {
+                     entry.getTexts().iterator(); textIterator.hasNext(); ) {
                     MBText text = textIterator.next();
                     if (!effectiveLocales.contains(text.getLocale())) {
                         textIterator.remove();
@@ -130,12 +133,12 @@ public class UpdateBundlesTask extends Task {
     }
 
     private void copyBundleLocales(MBBundles from, MBBundles to,
-                                   Set<String> effectiveLocale) {
+                                   Collection<String> effectiveLocale) {
         for (MBBundle bundle : from.getBundles()) {
             for (MBEntry entry : bundle.getEntries()) {
                 for (MBText text : entry.getTexts()) {
                     if (effectiveLocale == null || effectiveLocale.isEmpty() ||
-                            effectiveLocale.contains(text.getLocale())) { // copy
+                        effectiveLocale.contains(text.getLocale())) { // copy
                         if (to == null) {
                             to = new MBBundles();
                         }
@@ -164,12 +167,15 @@ public class UpdateBundlesTask extends Task {
         }
     }
 
-    private Set<String> parseLocales(String locales) {
-        if (locales == null) return Collections.EMPTY_SET;
-        StringTokenizer tokens = new StringTokenizer(locales, " ,");
-        HashSet result = new HashSet();
+    public static List<String> parseLocales(String locales) {
+        if (locales == null) return Collections.emptyList();
+        StringTokenizer tokens = new StringTokenizer(locales, ",;");
+        List<String> result = new ArrayList<String>();
         while (tokens.hasMoreTokens()) {
-            result.add(tokens.nextToken());
+            String each = tokens.nextToken();
+            if (!result.contains(each)) {
+                result.add(each);
+            }
         }
         return result;
     }

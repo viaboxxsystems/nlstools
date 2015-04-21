@@ -26,7 +26,7 @@ import java.util.StringTokenizer;
  * &lt;mergeLocale
  * from="src/main/bundles/Common.xml"
  * with="src/main/bundles/Common_de_DE.xml"
- * locales="de_DE"
+ * locales="de_DE;en,it"
  * to="src/main/bundles/Common_de_DE.xml"/>
  * </pre>
  */
@@ -105,7 +105,7 @@ public class MergeLocaleTask extends Task {
             for (MBBundle bundle : loadedBundles.getBundles()) {
                 for (MBEntry entry : bundle.getEntries()) {
                     // divide the locale string
-                    StringTokenizer tokens = new StringTokenizer(locales, ";");
+                    StringTokenizer tokens = new StringTokenizer(locales, ";,");
                     while (tokens.hasMoreTokens()) {
                         String locale = tokens.nextToken();
                         MBText tmpText = null;

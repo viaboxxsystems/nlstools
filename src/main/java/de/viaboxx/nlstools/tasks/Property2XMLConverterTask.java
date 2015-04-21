@@ -9,7 +9,10 @@ import de.viaboxx.nlstools.util.FileUtils;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.Reader;
 import java.util.*;
 
 /**
@@ -112,7 +115,7 @@ public class Property2XMLConverterTask extends Task {
             bundle.setBaseName(getInterfacePackage().replace('.', '/') + "/" +
                     getPropertyBaseName());
 
-            StringTokenizer tokens = new StringTokenizer(getLocales(), ";");
+            StringTokenizer tokens = new StringTokenizer(getLocales(), ",;");
             Map properties = new HashMap();
             Set allKeys = new HashSet();
             while (tokens.hasMoreTokens()) {

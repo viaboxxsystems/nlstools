@@ -339,7 +339,7 @@ public class MessageBundleTask extends Task {
      */
     protected MBBundles loadBundles() throws Exception {
         if (parsedBundles == null) {
-            StringTokenizer tokens = new StringTokenizer(getBundles(), ";");
+            StringTokenizer tokens = new StringTokenizer(getBundles(), ",;");
             while (tokens.hasMoreTokens()) {
                 String bundlesFileName = getProject().resolveFile(tokens.nextToken()).getPath();
                 log("Reading bundles from " + bundlesFileName, Project.MSG_INFO);

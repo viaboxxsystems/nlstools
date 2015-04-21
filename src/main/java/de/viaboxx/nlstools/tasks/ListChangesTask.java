@@ -53,7 +53,7 @@ public class ListChangesTask extends Task {
                     locales.addAll(new BundleWriterExcel(each).getLocalesUsed());
                 }
             } else {
-                StringTokenizer localesTokens = new StringTokenizer(this.locales, ";");
+                StringTokenizer localesTokens = new StringTokenizer(this.locales, ",;");
                 while (localesTokens.hasMoreTokens()) {
                     String locale = localesTokens.nextToken();
                     locales.add(locale);

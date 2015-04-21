@@ -43,7 +43,7 @@ public class DiffMergeLocaleTask extends MergeLocaleTask {
             for (MBBundle bundle : loadedBundles.getBundles()) {
                 for (MBEntry entry : bundle.getEntries()) {
                     // divide the locale string
-                    StringTokenizer tokens = new StringTokenizer(getLocales(), ";");
+                    StringTokenizer tokens = new StringTokenizer(getLocales(), ",;");
                     while (tokens.hasMoreTokens()) {
                         String locale = tokens.nextToken();
                         MBText tmpText = null;
