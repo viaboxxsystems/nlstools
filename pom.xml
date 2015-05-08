@@ -24,9 +24,9 @@
         </license>
     </licenses>
     <scm>
-        <url>https://nlstools.googlecode.com/svn/trunk</url>
-        <connection>scm:svn:http://nlstools.googlecode.com/svn/trunk</connection>
-        <developerConnection>scm:svn:https://nlstools.googlecode.com/svn/trunk</developerConnection>
+        <url>https://github.com/viaboxxsystems/nlstools</url>
+        <connection>scm:git:https://github.com/viaboxxsystems/nlstools</connection>
+        <developerConnection>scm:git:https://github.com/viaboxxsystems/nlstools</developerConnection>
     </scm>
     <developers>
         <developer>
