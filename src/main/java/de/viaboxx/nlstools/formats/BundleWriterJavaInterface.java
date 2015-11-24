@@ -51,7 +51,7 @@ public class BundleWriterJavaInterface extends BundleWriter {
      */
     public void writeOutputFiles() throws Exception {
         // now write the interface
-        if(currentBundle.getInterfaceName() == null) return;
+        if (currentBundle.getInterfaceName() == null) return;
         String iffile = getInterfaceFileName();
         task.log("writing interface to: " + iffile, Project.MSG_INFO);
         mkdirs(iffile);
@@ -59,16 +59,24 @@ public class BundleWriterJavaInterface extends BundleWriter {
         PrintWriter pw = new PrintWriter(out);
         try {
             writeStaticIntro(pw);
-            if (FileType.JAVA_SMALL == fileType || FileType.JAVA_ENUM_KEYS == fileType) {
+            if (isKeyNotContained()) {
                 pw.println(
-                        "// keys not contained (small interface). see .xml source file for possible keys");
-            } else if (FileType.JAVA_FULL == fileType || FileType.JAVA_FULL_ENUM_KEYS == fileType) {
+                    "// keys not contained (small interface). see .xml source file for possible keys");
+            } else if (isKeysContained()) {
                 writeConstants(pw, getCurrentBundle());
             }
             writeStaticOutro(pw);
         } finally {
             pw.close();
         }
+    }
+
+    protected boolean isKeysContained() {
+        return FileType.JAVA_FULL == fileType || FileType.JAVA_FULL_ENUM_KEYS == fileType;
+    }
+
+    protected boolean isKeyNotContained() {
+        return FileType.JAVA_SMALL == fileType || FileType.JAVA_ENUM_KEYS == fileType;
     }
 
     String getIPackage() {
@@ -80,7 +88,7 @@ public class BundleWriterJavaInterface extends BundleWriter {
         return inf.substring(0, pidx);
     }
 
-    String getIClass() {
+    protected String getIClass() {
         String inf = currentBundle.getInterfaceName();
         int pidx = inf.lastIndexOf('.');
         if (pidx < 0) {
@@ -112,7 +120,7 @@ public class BundleWriterJavaInterface extends BundleWriter {
      *
      * @param pw writer to write to
      */
-    void writeStaticIntro(PrintWriter pw) {
+    protected void writeStaticIntro(PrintWriter pw) {
         String str = getIPackage();
         if (str != null && str.length() > 0) {
             pw.print("package ");
@@ -121,8 +129,8 @@ public class BundleWriterJavaInterface extends BundleWriter {
         }
         pw.println();
         writeDoNotAlter(pw);
-        pw.print("public interface ");
-        pw.print(getIClass());
+        writeType(pw);
+
         pw.println(" {");
         pw.print("  String _BUNDLE_NAME = \"");
         pw.print(currentBundle.getBaseName());
@@ -130,7 +138,12 @@ public class BundleWriterJavaInterface extends BundleWriter {
         pw.println();
     }
 
-    void writeDoNotAlter(PrintWriter pw) {
+    protected void writeType(PrintWriter pw) {
+        pw.print("public interface ");
+        pw.print(getIClass());
+    }
+
+    protected void writeDoNotAlter(PrintWriter pw) {
         pw.println("/**");
         pw.print(" * contains keys of resource bundle ");
         pw.print(currentBundle.getBaseName());
@@ -140,11 +153,11 @@ public class BundleWriterJavaInterface extends BundleWriter {
     }
 
     /**
-     * Write the staic end of the interface file.
+     * Write the static end of the interface file.
      *
      * @param pw writer to write to
      */
-    private void writeStaticOutro(PrintWriter pw) {
+    protected void writeStaticOutro(PrintWriter pw) {
         pw.println("}");
         writeDoNotAlter(pw);
     }
@@ -158,7 +171,7 @@ public class BundleWriterJavaInterface extends BundleWriter {
     void writeConstants(PrintWriter pw, MBBundle aBundle) {
         Iterator<MBEntry> iter = aBundle.getEntries().iterator();
         boolean enumerateNames =
-                (fileType == FileType.JAVA_ENUM_KEYS || fileType == FileType.JAVA_FULL_ENUM_KEYS);
+            (fileType == FileType.JAVA_ENUM_KEYS || fileType == FileType.JAVA_FULL_ENUM_KEYS);
         List<String> allNames = enumerateNames ? new ArrayList<String>() : null;
         while (iter.hasNext()) {
             MBEntry eachEntry = iter.next();
@@ -180,19 +193,27 @@ public class BundleWriterJavaInterface extends BundleWriter {
                 pw.print(StringEscapeUtils.escapeXml(xmpl.getValue()));
             }
             pw.println(" */");
-            pw.print("  String ");
-            String theKey = keyName.replace('.', '_');
-            pw.print(theKey);
+            String theKey = createKeyName(keyName);
             if (enumerateNames) {
                 allNames.add(theKey);
             }
-            pw.print(" = \"");
-            pw.print(keyName);
-            pw.println("\";");
+            writeKeyValue(pw, theKey, keyName);
         }
         if (enumerateNames) {
             writeNameEnumeration(pw, allNames);
         }
+    }
+
+    protected void writeKeyValue(PrintWriter pw, String key, String value) {
+        pw.print("  String ");
+        pw.print(key);
+        pw.print(" = \"");
+        pw.print(value);
+        pw.println("\";");
+    }
+
+    protected String createKeyName(String keyName) {
+        return keyName.replace('.', '_');
     }
 
     /**
@@ -203,7 +224,7 @@ public class BundleWriterJavaInterface extends BundleWriter {
      */
     private void writeNameEnumeration(PrintWriter pw, List<String> allNames) {
         pw.print("  String[] _ALL_KEYS = {");
-        for (Iterator<String> i = allNames.iterator(); i.hasNext();) {
+        for (Iterator<String> i = allNames.iterator(); i.hasNext(); ) {
             pw.print(i.next());
             if (i.hasNext()) {
                 pw.print(", ");
@@ -219,7 +240,7 @@ public class BundleWriterJavaInterface extends BundleWriter {
      */
     @Override
     protected boolean needsNewFiles() throws FileNotFoundException {
-        if(currentBundle.getInterfaceName() == null) return false;
+        if (currentBundle.getInterfaceName() == null) return false;
         File outfile = new File(getInterfaceFileName());
         if (!outfile.exists()) {
             return true;

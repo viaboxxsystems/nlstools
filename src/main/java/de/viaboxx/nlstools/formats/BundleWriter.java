@@ -33,11 +33,12 @@ public abstract class BundleWriter {
     // => true: output format de/path/bundle.properties, false: path/bundle_de.properties
     protected Set<String> allowedLocales;
 
-    public static enum FileType {
+    public enum FileType {
         NO, XML, PROPERTIES,
         JS, JS_PRETTY, JS_ANGULAR, JS_ANGULAR_PRETTY,
         JAVA_FULL_ENUM_KEYS,
         JAVA_ENUM_KEYS,
+        GROOVY_ENUM,
         JAVA_FULL,
         JAVA_SMALL,
         SQL,

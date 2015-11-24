@@ -10,6 +10,7 @@ import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Task;
 
 import java.io.File;
+import java.lang.reflect.Constructor;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -30,7 +31,7 @@ import java.util.StringTokenizer;
  *      angular_pretty (for angular-localization prettyprinted, see https://github.com/doshprompt/angular-localization)
  * writeInterface = true  (default=false)
  *      (keys + bundle name), false, small_enum, small (bundle name only), Flex (ActionScript class), smallFlex (bundle name only)
- *      enum (keys + bundle name + enum of all keys), small_enum (bundle name + enum of all keys)
+ *      enum (keys + bundle name + enum of all keys), small_enum (bundle name + enum of all keys), groovy-enum (Groovy Enum)
  *
  * This utility can generate:
  * Properties: .properties, .xml
@@ -48,6 +49,8 @@ import java.util.StringTokenizer;
  * jsonPath = to write .js to
  * jsonFile = null or the hard-coded json file name
  * sqlScriptDir = to write .sql to
+ * writeSql = true to write SQL
+ * sqlDialect = Oracle|Postgres, default is Oracle
  * flexLayout=true: output format is "de_DE/path/bundle.properties"  (Adobe Flex directory format)
  * flexLayout=false: output format is "path/bundle_de_DE.properties" (default, java style)
  * preserveNewlines=true: newlines will *not* be escaped when writing properties files
@@ -92,6 +95,9 @@ public class MessageBundleTask extends Task {
     private String writeProperties = "false";
     private String writeJson = "false";
     private String writeInterface = "false";
+    private String writeGroovyEnum = "false";
+    private boolean writeSql = true;
+    private String sqlDialect = "Oracle";
     private boolean debugMode = false;
     private Boolean flexLayout;
     private boolean preserveNewlines = false;
@@ -160,6 +166,30 @@ public class MessageBundleTask extends Task {
 
     public String getWriteJson() {
         return writeJson;
+    }
+
+    public boolean isWriteSql() {
+        return writeSql;
+    }
+
+    public void setWriteSql(boolean writeSql) {
+        this.writeSql = writeSql;
+    }
+
+    public String getSqlDialect() {
+        return sqlDialect;
+    }
+
+    public void setSqlDialect(String sqlDialect) {
+        this.sqlDialect = sqlDialect;
+    }
+
+    public String getWriteGroovyEnum() {
+        return writeGroovyEnum;
+    }
+
+    public void setWriteGroovyEnum(String writeGroovyEnum) {
+        this.writeGroovyEnum = writeGroovyEnum;
     }
 
     public void setWriteJson(String writeJson) {
@@ -240,14 +270,20 @@ public class MessageBundleTask extends Task {
     }
 
     private void handleSql(MBBundle o) throws Exception {
-        final BundleWriter.FileType fileType;
-        if (o.getSqldomain() == null) {
-            fileType = BundleWriter.FileType.NO;
-        } else {
+        BundleWriter.FileType fileType = BundleWriter.FileType.NO;
+        if (o.getSqldomain() != null && writeSql) {
             fileType = BundleWriter.FileType.SQL;
         }
-        executeBundleWriter(
-            new BundleWriterSql(this, getXMLConfigBundle(), o, getSqlScriptDir(), fileType, allowedLocales));
+        String clsName = "de.viaboxx.nlstools.formats.BundleWriterSql" + sqlDialect;
+        log("writing SQL with " + clsName);
+        Class<? extends BundleWriter> cls =
+            (Class<? extends BundleWriter>) Class.forName(clsName);
+        Constructor<? extends BundleWriter> cons =
+            cls.getConstructor(Task.class, String.class, MBBundle.class, String.class,
+                BundleWriter.FileType.class, Set.class);
+        BundleWriter writer =
+            cons.newInstance(this, getXMLConfigBundle(), o, getSqlScriptDir(), fileType, allowedLocales);
+        executeBundleWriter(writer);
     }
 
     private void handleInterface(MBBundle o) throws Exception {
@@ -260,6 +296,8 @@ public class MessageBundleTask extends Task {
             fileType = BundleWriter.FileType.JAVA_ENUM_KEYS;
         } else if (getWriteInterface().equalsIgnoreCase("enum")) {
             fileType = BundleWriter.FileType.JAVA_FULL_ENUM_KEYS;
+        } else if (getWriteInterface().equalsIgnoreCase("groovy-enum")) {
+            fileType = BundleWriter.FileType.GROOVY_ENUM;
         } else if (getWriteInterface().equalsIgnoreCase("Flex")) {
             BundleWriterFlexClass writer = new BundleWriterFlexClass(this, getXMLConfigBundle(), o, sourcePath,
                 BundleWriter.FileType.FLEX_FULL, allowedLocales);
@@ -275,8 +313,14 @@ public class MessageBundleTask extends Task {
         } else {
             fileType = BundleWriter.FileType.JAVA_FULL;
         }
-        BundleWriterJavaInterface writer =
-            new BundleWriterJavaInterface(this, getXMLConfigBundle(), o, sourcePath, fileType, allowedLocales);
+        BundleWriterJavaInterface writer;
+        if (fileType == BundleWriter.FileType.GROOVY_ENUM) {
+            writer =
+                new BundleWriterGroovyEnum(this, getXMLConfigBundle(), o, sourcePath, fileType, allowedLocales);
+        } else {
+            writer =
+                new BundleWriterJavaInterface(this, getXMLConfigBundle(), o, sourcePath, fileType, allowedLocales);
+        }
         writer.setExampleLocale(getExampleLocale());
         executeBundleWriter(writer);
     }
