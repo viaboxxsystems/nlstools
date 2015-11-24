@@ -103,4 +103,8 @@ public class MBBundle implements Cloneable {
             return null;
         }
     }
+
+    public void removeEntries() {
+        getEntries().clear();
+    }
 }

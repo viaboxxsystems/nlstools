@@ -41,6 +41,10 @@ public abstract class MBPersistencer {
         return forURL(aFile.toLowerCase());
     }
 
+    public MBPersistencer withOptions(String options) {
+        return this;
+    }
+
     public static MBPersistencer forFile(File aFile) {
         return forURL(aFile.getName().toLowerCase());
     }
@@ -52,5 +56,10 @@ public abstract class MBPersistencer {
     public static void saveFile(MBBundles obj, File aFile) throws Exception {
         obj.sort();
         forFile(aFile).save(obj, aFile);
+    }
+
+    public static void saveFile(MBBundles obj, File aFile, String options) throws Exception {
+        obj.sort();
+        forFile(aFile).withOptions(options).save(obj, aFile);
     }
 }

@@ -36,7 +36,7 @@ public class MBBundles implements Cloneable {
     public MBBundle getBundle(String baseName) {
         for (MBBundle each : bundles) {
             if ((baseName == null && null == each.getBaseName()) ||
-                    (baseName != null && baseName.equals(each.getBaseName()))) {
+                (baseName != null && baseName.equals(each.getBaseName()))) {
                 return each;
             }
         }
@@ -73,12 +73,18 @@ public class MBBundles implements Cloneable {
         try {
             MBBundles copy = (MBBundles) clone();
             copy.setBundles(new ArrayList(getBundles().size()));
-            for (MBBundle bundle : copy.getBundles()) {
+            for (MBBundle bundle : getBundles()) {
                 copy.getBundles().add(bundle.copy());
             }
             return copy;
         } catch (CloneNotSupportedException e) {
             return null;
+        }
+    }
+
+    public void removeEntries() {
+        for (MBBundle bundle : getBundles()) {
+            bundle.removeEntries();
         }
     }
 }

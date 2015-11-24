@@ -20,6 +20,7 @@ public class MBJSONPersistencer extends MBPersistencer {
     static final XStream xstream_pretty;
 
     private boolean pretty;
+    private boolean noTexts = false;
 
     static {
         xstream = new XStream(new JettisonMappedXmlDriver());
@@ -35,8 +36,18 @@ public class MBJSONPersistencer extends MBPersistencer {
         this.pretty = pretty;
     }
 
+    @Override
+    public MBPersistencer withOptions(String options) {
+        if (options.contains("-no-texts")) noTexts = true;
+        return super.withOptions(options);    // call super!
+    }
+
     public void save(MBBundles object, File file) throws Exception {
         mkdirs(file);
+        if (noTexts) {
+            object = object.copy();
+            object.removeEntries();
+        }
         saveObject(object, file);
     }
 
@@ -51,6 +62,7 @@ public class MBJSONPersistencer extends MBPersistencer {
 
     public void saveObject(Object obj, File target) throws Exception {
         Writer out = FileUtils.openFileWriterUTF8(target);
+
         try {
             if (pretty) {
                 xstream_pretty.toXML(obj, out);

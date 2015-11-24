@@ -17,6 +17,7 @@ import java.io.*;
  */
 public class MBXMLPersistencer extends MBPersistencer {
     static final XStream xstream = new XStream();
+    private boolean noTexts = false;
 
     static {
         configure(xstream);
@@ -33,12 +34,23 @@ public class MBXMLPersistencer extends MBPersistencer {
     public void save(MBBundles obj, File target) throws IOException {
         mkdirs(target);
         Writer out = FileUtils.openFileWriterUTF8(target);
+        if(noTexts) {
+            obj = obj.copy();
+            obj.removeEntries();
+        }
         try {
             xstream.toXML(obj, out);
         } finally {
             out.close();
         }
     }
+
+    @Override
+    public MBPersistencer withOptions(String options) {
+        if(options.contains("-no-texts")) noTexts = true;
+        return super.withOptions(options);    // call super!
+    }
+
 
     public MBBundles load(File source) throws IOException, ClassNotFoundException {
         Reader reader = FileUtils.openFileReaderUTF8(source);

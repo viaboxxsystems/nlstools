@@ -17,6 +17,15 @@ import java.io.File;
 public class ConvertBundlesTask extends Task {
     private File from;
     private File to;
+    private String options;
+
+    public String getOptions() {
+        return options;
+    }
+
+    public void setOptions(String options) {
+        this.options = options;
+    }
 
     @Override
     public void execute() throws BuildException {
@@ -31,7 +40,7 @@ public class ConvertBundlesTask extends Task {
         }
         try {
             this.log("Convert " + from.getPath() + " ==> " + to.getPath());
-            MBPersistencer.saveFile(MBPersistencer.loadFile(from), to);
+            MBPersistencer.saveFile(MBPersistencer.loadFile(from), to, options);
         } catch (Exception e) {
             e.printStackTrace();
             throw new BuildException(
