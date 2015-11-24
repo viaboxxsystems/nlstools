@@ -9,8 +9,8 @@ The project nlstools is a Java project, built with maven2 or maven2, that contai
 How to compile the project from source
 =======================================
 Requirements:
-0. Sources require java1.5 or higher. (Tested with JDK 1.6.0, JDK 1.7)
-1. Maven2 or Maven3 required
+0. Sources require java1.5 or higher. (Tested with JDK 1.6.0, JDK 1.7, JDK 1.8)
+1. Maven3 required
    Download and install maven from: http://maven.apache.org/
 2. Invoke maven from within one of the directories that contain a pom.xml file
 
@@ -22,7 +22,7 @@ a) WITH MAVEN (recommended)
    <dependency>
         <groupId>de.viaboxx</groupId>
         <artifactId>nlstools</artifactId>
-        <version>2.5.0</version> <!-- or a later version... --->
+        <version>2.6.3</version> <!-- or a later version... --->
    </dependency>
 
 b) WITHOUT MAVEN
@@ -44,7 +44,7 @@ deploy to maven central:
 ========================
 1. on Mac: set JAVA_HOME
 
-export JAVA_HOME=`/usr/libexec/java_home -v 1.6`
+export JAVA_HOME=`/usr/libexec/java_home -v 1.8`
 
 2. call maven
 mvn clean deploy
@@ -56,7 +56,7 @@ Use https://oss.sonatype.org/index.html#welcome to stage/release
 
 Stage a Release
 ---------------
-mvn release:clean release:prepare release:perform -Dusername=[googlecode user] -Dpassword=[googlecode password]
+mvn release:clean release:prepare release:perform -Dusername=[github user] -Dpassword=[github password]
 
 
 (new) maven way to deploy to OSSRH and release them to the Central Repository
@@ -104,9 +104,7 @@ Feedback, questions, contribution
 =================================
 ** Your feedback is welcome! **
 
-https://code.google.com/p/nlstools/
-http://www.viaboxx.de/
-http://www.viaboxxsystems.de/blog
+https://github.com/viaboxxsystems/nlstools
 
-Roman Stumm, Viaboxx GmbH, 2010 - 2014
+Roman Stumm, Viaboxx GmbH, 2010 - 2015
 email: roman.stumm@viaboxx.de
