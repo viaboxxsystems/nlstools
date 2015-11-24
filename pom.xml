@@ -15,7 +15,7 @@
   <name>I18n NLSTools</name>
   <description>Ant tasks for managing resource bundles with XML or Excel to generate files for Java, Adobe Flex, SQL
   </description>
-  <url>http://code.google.com/p/nlstools/</url>
+  <url>https://github.com/viaboxxsystems/nlstools</url>
   <licenses>
     <license>
       <name>The Apache Software License, Version 2.0</name>
