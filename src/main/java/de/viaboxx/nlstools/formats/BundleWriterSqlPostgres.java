@@ -20,13 +20,17 @@ public class BundleWriterSqlPostgres extends BundleWriterSqlOracle {
         super(task, configFile, currentBundle, outputPath, fileType, allowedLocales);
     }
 
+    protected String nextVal() {
+        return "NEXTVAL('SEQ_NLSBundle')";
+    }
+
     protected void writeSeqNextVal(String domain, Writer fw) throws IOException {
         fw.write("-- CREATE SEQUENCE SEQ_NLSBundle " +
             "  INCREMENT 1 " +
             "  MINVALUE 1 " +
             "  START 1 " +
             "  CACHE 10;\n");
-        fw.write("INSERT INTO NLSBUNDLE (ID, DOMAIN) SELECT NEXTVAL('SEQ_NLSBundle'),'" +
+        fw.write("INSERT INTO NLSBUNDLE (ID, DOMAIN) SELECT " + nextVal() + ",'" +
             domain + "';\n");
     }
 }

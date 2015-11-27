@@ -110,7 +110,7 @@ public class MBExcelPersistencer extends MBPersistencer {
 
         rowNum++; // empty row
         headerRow = createRow();
-        String[] headerCols = {"Key", "Description"};
+        String[] headerCols = {"Key", "Aliases", "Description"};
         for (int i = 0; i < headerCols.length; i++) {
             HSSFCell headerCell = headerRow.createCell(i);
             HSSFRichTextString text = new HSSFRichTextString(headerCols[i]);
@@ -138,8 +138,20 @@ public class MBExcelPersistencer extends MBPersistencer {
             HSSFCell cell = row.createCell(0);
             cell.setCellValue(new HSSFRichTextString(entry.getKey()));
 
-            if (entry.getDescription() != null) {
+            if (entry.getAliases() != null && !entry.getAliases().isEmpty()) {
                 cell = row.createCell(1);
+                StringBuilder buf = new StringBuilder();
+                boolean comma = false;
+                for (String each : entry.getAliases()) {
+                    if (comma) buf.append(",");
+                    else comma = each != null && each.length() > 0;
+                    if (each != null) buf.append(each);
+                }
+                cell.setCellValue(new HSSFRichTextString(buf.toString()));
+            }
+
+            if (entry.getDescription() != null) {
+                cell = row.createCell(2);
                 cell.setCellValue(new HSSFRichTextString(entry.getDescription()));
             }
 
@@ -239,6 +251,13 @@ public class MBExcelPersistencer extends MBPersistencer {
 
         rowNum = 3;
         row = sheet.getRow(rowNum++); // read locales
+
+        String aliasOrDescriptionHeader = getStringValue(row.getCell(1)); // backward compatibility
+        boolean aliasColumnAvailable = false;
+        if(aliasOrDescriptionHeader != null && "Aliases".equals(aliasOrDescriptionHeader.trim())) {
+            firstCol++;
+            aliasColumnAvailable = true;
+        }
         int colNum = firstCol;
 
         List<String> locales = new ArrayList<String>();
@@ -261,8 +280,19 @@ public class MBExcelPersistencer extends MBPersistencer {
                 MBEntry entry = new MBEntry();
                 bundle.getEntries().add(entry);
                 entry.setKey(getStringValue(row.getCell(0)));
-                if (row.getCell(1) != null) {
-                    entry.setDescription(getStringValue(row.getCell(1)));
+                if(aliasColumnAvailable) { // backward compatibility
+                    String aliasesCommaSeparated = getStringValue(row.getCell(1));
+                    if(aliasesCommaSeparated != null) {
+                        StringTokenizer tokens =new StringTokenizer(aliasesCommaSeparated, ", ");
+                        List<String> aliases = new ArrayList<String>();
+                        while(tokens.hasMoreTokens()) {
+                            aliases.add(tokens.nextToken());
+                        }
+                        entry.setAliases(aliases);
+                    }
+                }
+                if (row.getCell(firstCol-1) != null) {
+                    entry.setDescription(getStringValue(row.getCell(firstCol-1)));
                 }
                 colNum = firstCol;
                 for (String each : locales) {
@@ -293,7 +323,7 @@ public class MBExcelPersistencer extends MBPersistencer {
     }
 
     private Object getValue(HSSFCell cell) {
-        return getValue(cell, cell.getCellType());
+        return cell == null ? null : getValue(cell, cell.getCellType());
     }
 
     private Object getValue(HSSFCell cell, int cellType) {

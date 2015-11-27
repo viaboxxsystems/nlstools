@@ -20,9 +20,22 @@ import java.util.List;
 public class MBEntry implements Comparable, Cloneable {
     @XStreamAsAttribute
     private String key;
+
+    @XStreamImplicit(itemFieldName = "alias")
+    private List<String> aliases;
+
     private String description;  // comment field
     @XStreamImplicit(itemFieldName = "text")
     private List<MBText> texts = new ArrayList<MBText>();
+
+
+    public List<String> getAliases() {
+        return aliases;
+    }
+
+    public void setAliases(List<String> aliases) {
+        this.aliases = aliases;
+    }
 
     public void sort() {
         if (texts != null) Collections.sort(texts);

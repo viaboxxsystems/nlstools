@@ -17,7 +17,7 @@ import java.io.File;
 public class ConvertBundlesTask extends Task {
     private File from;
     private File to;
-    private String options;
+    private String options = "";
 
     public String getOptions() {
         return options;

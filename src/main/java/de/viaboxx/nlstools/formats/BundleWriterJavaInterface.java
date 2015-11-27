@@ -178,6 +178,14 @@ public class BundleWriterJavaInterface extends BundleWriter {
             String keyName = eachEntry.getKey();
             Iterator<MBText> texts = eachEntry.getTexts().iterator();
             pw.print("  /** ");
+            if (eachEntry.getDescription() != null && eachEntry.getDescription().length() > 0) {
+                pw.print(eachEntry.getDescription());
+                pw.print("\n  ");
+            }
+            if (eachEntry.getAliases() != null && !eachEntry.getAliases().isEmpty()) {
+                pw.print(eachEntry.getAliases());
+                pw.print("\n  ");
+            }
             while (texts.hasNext()) {
                 MBText theText = texts.next();
                 String lang = theText.getLocale();

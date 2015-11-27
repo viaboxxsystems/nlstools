@@ -22,7 +22,8 @@ import java.util.Set;
  * License: Apache 2.0
  */
 public class BundleWriterSqlOracle extends BundleWriter {
-    public BundleWriterSqlOracle(Task task, String configFile, MBBundle currentBundle, String outputPath, FileType fileType,
+    public BundleWriterSqlOracle(Task task, String configFile, MBBundle currentBundle, String outputPath,
+                                 FileType fileType,
                                  Set<String> allowedLocales) {
         super(task, configFile, currentBundle, outputPath, fileType, allowedLocales);
     }
@@ -55,9 +56,9 @@ public class BundleWriterSqlOracle extends BundleWriter {
                     MBText theText = texts.next();
                     String lang = theText.getLocale();
                     fw.write(
-                        "INSERT INTO NLSTEXT (KEY, TRANSLATED, LOCALE, BundleID) SELECT ");
+                        "INSERT INTO NLSTEXT (ID, KEY, TRANSLATED, LOCALE, BundleID) SELECT " + nextVal() + ",");
                     fw.write("'" + theKey + "','" + theText.getValue() + "', '" + lang +
-                        "', b.ID  FROM NLSBUNDLE b WHERE b.DOMAIN = '" + domain +
+                        "', b.ID FROM NLSBUNDLE b WHERE b.DOMAIN = '" + domain +
                         "';\n");
                 }
             }
@@ -66,8 +67,12 @@ public class BundleWriterSqlOracle extends BundleWriter {
         }
     }
 
+    protected String nextVal() {
+        return "SEQ_NLSBundle.NEXTVAL";
+    }
+
     protected void writeSeqNextVal(String domain, Writer fw) throws IOException {
-        fw.write("INSERT INTO NLSBUNDLE (ID, DOMAIN) SELECT SEQ_NLSBundle.NEXTVAL,'" +
+        fw.write("INSERT INTO NLSBUNDLE (ID, DOMAIN) SELECT " + nextVal() + ",'" +
             domain + "' FROM DUAL;\n");
     }
 

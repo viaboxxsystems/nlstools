@@ -38,7 +38,7 @@ public class MBJSONPersistencer extends MBPersistencer {
 
     @Override
     public MBPersistencer withOptions(String options) {
-        if (options.contains("-no-texts")) noTexts = true;
+        if (options != null && options.contains("-no-texts")) noTexts = true;
         return super.withOptions(options);    // call super!
     }
 
