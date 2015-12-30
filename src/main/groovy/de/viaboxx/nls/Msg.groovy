@@ -1,4 +1,7 @@
 package de.viaboxx.nls
+
+import org.apache.commons.lang3.ArrayUtils
+
 /**
  * Description: Message trait for generated groovy-enums for
  * multi-bundle support<br>
@@ -26,10 +29,30 @@ trait Msg {
     }
 
     /**
-     * example of a method in the trait to combine bundleName and value
-     * @return
+     * combine bundleName and code
+     * @return bundleName + "#" + code
      */
     String getBundleAndCode() {
         return bundleName + "#" + code
+    }
+
+    String getClassBundleAndCode() {
+        return getClass().simpleName + '{' + bundleAndCode + '}'
+    }
+
+    /**
+     * combine simpleName of class and code
+     * @return getClass ( ) .simpleName + "." + code
+     */
+    String getClassDotCode() {
+        return getClass().simpleName + "." + code
+    }
+
+    String classDotCode(Object[] args) {
+        return getClassDotCode() + ArrayUtils.toString(args)
+    }
+
+    String classDotCode(Collection args) {
+        return getClassDotCode() + ArrayUtils.toString(args as Object[])
     }
 }
