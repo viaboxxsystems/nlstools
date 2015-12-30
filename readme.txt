@@ -64,8 +64,8 @@ mvn release:clean release:prepare release:perform -Dusername=[github user] -Dpas
 see http://central.sonatype.org/pages/apache-maven.html
 
 Perform a release deployment to OSSRH with:
-  mvn release:clean release:prepare -Dusername=[googlecode user] -Dpassword=[googlecode password]
-  mvn release:perform               -Dusername=[googlecode user] -Dpassword=[googlecode password]
+  mvn release:clean release:prepare -Dusername=[github user] -Dpassword=[github password]
+  mvn release:perform               -Dusername=[github user] -Dpassword=[github password]
 
 (optional) generate jar-with-dependencies:
 -------------------------------------------
@@ -95,7 +95,7 @@ Getting started
 ---------------
 Refer to the project page and WIKI at:
 
-https://code.google.com/p/nlstools/
+https://github.com/viaboxxsystems/nlstools
 
 You can checkout latest sources and releases from there.
 You can also refer to the test cases, examples and templates.
@@ -106,5 +106,5 @@ Feedback, questions, contribution
 
 https://github.com/viaboxxsystems/nlstools
 
-Roman Stumm, Viaboxx GmbH, 2010 - 2015
+Roman Stumm, Viaboxx GmbH, 2010 - 2016
 email: roman.stumm@viaboxx.de
