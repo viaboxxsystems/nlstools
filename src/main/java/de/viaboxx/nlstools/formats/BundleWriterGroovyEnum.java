@@ -67,6 +67,12 @@ public class BundleWriterGroovyEnum extends BundleWriterJavaInterface {
         pw.println("  static String getBUNDLE_NAME() {");
         pw.println("    return \"" + currentBundle.getBaseName() + "\"");
         pw.println("  }");
+        if (currentBundle.getSqldomain() != null && currentBundle.getSqldomain().length() > 0) {
+            pw.println();
+            pw.println("  static String getSQL_DOMAIN() {");
+            pw.println("    return \"" + currentBundle.getSqldomain() + "\"");
+            pw.println("  }");
+        }
         pw.println("}");
         writeDoNotAlter(pw);
     }
