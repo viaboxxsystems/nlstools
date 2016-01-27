@@ -22,7 +22,7 @@ public class MBBundle implements Cloneable {
     @XStreamAsAttribute
     private String sqldomain;
     @XStreamImplicit
-    private List<MBEntry> entries = new ArrayList();
+    private List<MBEntry> entries = new ArrayList<MBEntry>();
 
     public void sort() {
         if (entries != null) Collections.sort(entries);
@@ -32,7 +32,7 @@ public class MBBundle implements Cloneable {
     }
 
     public List<MBEntry> getEntries() {
-        if (entries == null) entries = new ArrayList();
+        if (entries == null) entries = new ArrayList<MBEntry>();
         return entries;
     }
 
@@ -92,7 +92,7 @@ public class MBBundle implements Cloneable {
     public MBBundle copy() {
         try {
             MBBundle copy = (MBBundle) clone();
-            copy.setEntries(new ArrayList(getEntries().size()));
+            copy.setEntries(new ArrayList<MBEntry>(getEntries().size()));
             for (MBEntry entry : getEntries()) {
                 copy.getEntries().add(entry.copy());
             }
