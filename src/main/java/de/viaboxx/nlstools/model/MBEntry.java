@@ -5,9 +5,7 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * Description: <br/>
@@ -93,14 +91,14 @@ public class MBEntry implements Comparable, Cloneable {
         if (reviewLocale == null) {
             for (MBText each : texts) {
                 if (each.isReview() ||
-                        (!each.isUseDefault() && StringUtils.isEmpty(each.getValue())))
+                    (!each.isUseDefault() && StringUtils.isEmpty(each.getValue())))
                     return true;
             }
             return false;
         } else {
             MBText text = getText(reviewLocale);
             return (text == null || text.isReview() ||
-                    (!text.isUseDefault() && StringUtils.isEmpty(text.getValue())));
+                (!text.isUseDefault() && StringUtils.isEmpty(text.getValue())));
         }
     }
 
@@ -110,8 +108,8 @@ public class MBEntry implements Comparable, Cloneable {
         if (o == null || getClass() != o.getClass()) return false;
         MBEntry mbEntry = (MBEntry) o;
         return !(description != null ? !description.equals(mbEntry.description) : mbEntry.description != null) &&
-                !(key != null ? !key.equals(mbEntry.key) : mbEntry.key != null) &&
-                !(texts != null ? !texts.equals(mbEntry.texts) : mbEntry.texts != null);
+            !(key != null ? !key.equals(mbEntry.key) : mbEntry.key != null) &&
+            !(texts != null ? !texts.equals(mbEntry.texts) : mbEntry.texts != null);
     }
 
     public int compareTo(Object o) {
@@ -136,5 +134,13 @@ public class MBEntry implements Comparable, Cloneable {
         } catch (CloneNotSupportedException ex) {
             return null;
         }
+    }
+
+    public Set<String> locales() {
+        Set<String> locales = new HashSet<String>();
+        for (MBText text : getTexts()) {
+            locales.add(text.getLocale());
+        }
+        return locales;
     }
 }

@@ -20,18 +20,19 @@ import java.util.StringTokenizer;
  * @author Simon Tiffert
  */
 public class AddLocaleTask extends Task {
-    private String from, to, locales;
+    private File from, to;
+    private String locales;
 
     /**
      * The xml file with path name to read from
      *
      * @return
      */
-    public String getFrom() {
+    public File getFrom() {
         return from;
     }
 
-    public void setFrom(String from) {
+    public void setFrom(File from) {
         this.from = from;
     }
 
@@ -40,11 +41,11 @@ public class AddLocaleTask extends Task {
      *
      * @return
      */
-    public String getTo() {
+    public File getTo() {
         return to;
     }
 
-    public void setTo(String to) {
+    public void setTo(File to) {
         this.to = to;
     }
 
@@ -67,14 +68,15 @@ public class AddLocaleTask extends Task {
         // try to load the bundles of the file
         try {
             MBPersistencer persistencer = MBPersistencer.forFile(from);
-            loadedBundles = persistencer.load(new File(from));
+            loadedBundles = persistencer.load(from);
 
             // if bundles exist
             if (loadedBundles != null) {
+                setLocales(MergeLocaleTask.localesString(loadedBundles, getLocales()));
                 for (MBBundle bundle : loadedBundles.getBundles()) {
                     for (MBEntry entry : bundle.getEntries()) {
                         // divide the locale string
-                        StringTokenizer tokens = new StringTokenizer(locales, ",;");
+                        StringTokenizer tokens = MergeLocaleTask.tokenize(locales);
                         while (tokens.hasMoreTokens()) {
                             String locale = tokens.nextToken();
 
@@ -101,7 +103,7 @@ public class AddLocaleTask extends Task {
 
             // write the combined locales into a file
             if(loadedBundles != null) loadedBundles.sort();
-            persistencer.save(loadedBundles, new File(to));
+            persistencer.save(loadedBundles, to);
             log("Writing to XML file " + to, Project.MSG_INFO);
         } catch (Exception e) {
             throw new BuildException(e);

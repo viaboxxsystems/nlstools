@@ -26,7 +26,7 @@ public class DiffMergeLocaleTask extends MergeLocaleTask {
      * current:   is the current 'source' (probably containing newer changes that are neither in 'origin' nor in 'from'
      * conflicts: the file where to store the conflicts
      */
-    private String origin, current, conflicts;
+    private File origin, current, conflicts;
 
     // originBundles     => A) source version of the bundles on which 'translatedBundles' is based on (older than loadedBundles)
     // translatedBundles => B) file with new translation from translator
@@ -40,10 +40,11 @@ public class DiffMergeLocaleTask extends MergeLocaleTask {
     protected void processExecute() {
         // if bundles exist
         if (loadedBundles != null) {
+            setLocales(localesString(loadedBundles, getLocales()));
             for (MBBundle bundle : loadedBundles.getBundles()) {
                 for (MBEntry entry : bundle.getEntries()) {
                     // divide the locale string
-                    StringTokenizer tokens = new StringTokenizer(getLocales(), ",;");
+                    StringTokenizer tokens = MergeLocaleTask.tokenize(getLocales());
                     while (tokens.hasMoreTokens()) {
                         String locale = tokens.nextToken();
                         MBText tmpText = null;
@@ -66,9 +67,9 @@ public class DiffMergeLocaleTask extends MergeLocaleTask {
                         MBText originText = findMBTextForLocale(entry.getKey(), locale, originBundles);
                         if (translatedText != null) {
                             if (originText != null &&
-                                    !originText.equals(translatedText) &&
-                                    !translatedText.equals(tmpText) &&
-                                    !originText.equals(tmpText)) {
+                                !originText.equals(translatedText) &&
+                                !translatedText.equals(tmpText) &&
+                                !originText.equals(tmpText)) {
                                 MBBundle conflictBundle = getConflictBundle(bundle);
                                 MBEntry conflictEntry = entry.copy();
                                 conflictEntry.setKey(conflictEntry.getKey() + ".transl");
@@ -80,8 +81,8 @@ public class DiffMergeLocaleTask extends MergeLocaleTask {
                                 conflictEntry.getTexts().add(tmpText);
                                 conflictBundle.getEntries().add(conflictEntry);
                             } else if (originText != null &&
-                                    originText.equals(translatedText) &&
-                                    !originText.equals(tmpText)) {
+                                originText.equals(translatedText) &&
+                                !originText.equals(tmpText)) {
                                 MBBundle conflictBundle = getConflictBundle(bundle);
                                 MBEntry conflictEntry = entry.copy();
                                 conflictEntry.setKey(conflictEntry.getKey() + ".origin");
@@ -125,7 +126,7 @@ public class DiffMergeLocaleTask extends MergeLocaleTask {
         super.loadExecute();
         if (getOrigin() != null) {
             log("Reading Bundles from " + getOrigin(), Project.MSG_INFO);
-            originBundles = MBPersistencer.loadFile(new File(getOrigin()));
+            originBundles = MBPersistencer.loadFile(getOrigin());
         }
     }
 
@@ -133,43 +134,43 @@ public class DiffMergeLocaleTask extends MergeLocaleTask {
     protected void outputExecute() throws Exception {
         if (conflictsBundles != null) {
             if (conflicts != null) {
-                MBPersistencer.saveFile(conflictsBundles, new File(conflicts));
+                MBPersistencer.saveFile(conflictsBundles, conflicts);
                 log("Merged and writing conflict bundles to " + conflicts, Project.MSG_INFO);
             } else {
                 log("Merged with conflicts found: \n" + MBXMLPersistencer.getXstream().toXML(conflictsBundles),
-                        Project.MSG_INFO);
+                    Project.MSG_INFO);
             }
         } else {
             if (conflicts != null) {
                 log("Merged without conflicts - writing empty bundles to " + conflicts, Project.MSG_INFO);
-                MBPersistencer.saveFile(new MBBundles(), new File(conflicts));
+                MBPersistencer.saveFile(new MBBundles(), conflicts);
             } else {
                 log("Merged without conflicts", Project.MSG_INFO);
             }
         }
     }
 
-    public String getOrigin() {
+    public File getOrigin() {
         return origin;
     }
 
-    public void setOrigin(String origin) {
+    public void setOrigin(File origin) {
         this.origin = origin;
     }
 
-    public String getConflicts() {
+    public File getConflicts() {
         return conflicts;
     }
 
-    public void setConflicts(String conflicts) {
+    public void setConflicts(File conflicts) {
         this.conflicts = conflicts;
     }
 
-    public String getCurrent() {
+    public File getCurrent() {
         return current;
     }
 
-    public void setCurrent(String current) {
+    public void setCurrent(File current) {
         this.current = current;
     }
 }

@@ -1,6 +1,5 @@
 package de.viaboxx.nlstools.tasks;
 
-import de.viaboxx.nlstools.formats.BundleWriterExcel;
 import de.viaboxx.nlstools.formats.MBPersistencer;
 import de.viaboxx.nlstools.model.MBBundle;
 import de.viaboxx.nlstools.model.MBBundles;
@@ -12,7 +11,9 @@ import org.apache.tools.ant.Task;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.Writer;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringTokenizer;
 
 /**
  * Print different values between two bundles.
@@ -47,21 +48,10 @@ public class ListChangesTask extends Task {
             MBBundles originalBundles = MBPersistencer.loadFile(original);
             MBBundles newBundles = MBPersistencer.loadFile(newer);
 
-            HashSet<String> locales = new HashSet();
-            if (this.locales == null || this.locales.length() == 0) {
-                for (MBBundle each : originalBundles.getBundles()) {
-                    locales.addAll(new BundleWriterExcel(each).getLocalesUsed());
-                }
-            } else {
-                StringTokenizer localesTokens = new StringTokenizer(this.locales, ",;");
-                while (localesTokens.hasMoreTokens()) {
-                    String locale = localesTokens.nextToken();
-                    locales.add(locale);
-                }
-            }
-            List<String> localeOrdered = new ArrayList(locales);
-            Collections.sort(localeOrdered);
-            for (String locale : localeOrdered) {
+            setLocales(MergeLocaleTask.localesString(originalBundles, getLocales()));
+            StringTokenizer tokens = MergeLocaleTask.tokenize(getLocales());
+            while(tokens.hasMoreTokens()){
+                String locale = tokens.nextToken();
                 log("Checking locale:" + locale);
                 for (MBBundle originalBundle : originalBundles.getBundles()) {
                     for (MBEntry originalEntry : originalBundle.getEntries()) {

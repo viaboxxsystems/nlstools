@@ -4,7 +4,9 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Description: <br/>
@@ -16,7 +18,7 @@ import java.util.List;
 @XStreamAlias("bundles")
 public class MBBundles implements Cloneable {
     @XStreamImplicit
-    private List<MBBundle> bundles = new ArrayList();
+    private List<MBBundle> bundles = new ArrayList<MBBundle>();
 
     public void sort() {
         for (MBBundle each : getBundles()) {
@@ -25,7 +27,7 @@ public class MBBundles implements Cloneable {
     }
 
     public List<MBBundle> getBundles() {
-        if (bundles == null) bundles = new ArrayList();
+        if (bundles == null) bundles = new ArrayList<MBBundle>();
         return bundles;
     }
 
@@ -72,7 +74,7 @@ public class MBBundles implements Cloneable {
     public MBBundles copy() {
         try {
             MBBundles copy = (MBBundles) clone();
-            copy.setBundles(new ArrayList(getBundles().size()));
+            copy.setBundles(new ArrayList<MBBundle>(getBundles().size()));
             for (MBBundle bundle : getBundles()) {
                 copy.getBundles().add(bundle.copy());
             }
@@ -86,5 +88,13 @@ public class MBBundles implements Cloneable {
         for (MBBundle bundle : getBundles()) {
             bundle.removeEntries();
         }
+    }
+
+    public Set<String> locales() {
+        HashSet<String> locales = new HashSet<String>();
+        for(MBBundle bundle : getBundles()) {
+            locales.addAll(bundle.locales());
+        }
+        return locales;
     }
 }

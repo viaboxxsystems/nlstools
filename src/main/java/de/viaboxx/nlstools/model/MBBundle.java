@@ -4,9 +4,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * Description: <br/>
@@ -69,7 +67,7 @@ public class MBBundle implements Cloneable {
     public MBEntry getEntry(String key) {
         for (MBEntry each : entries) {
             if ((key == null && each.getKey() == null) ||
-                    (key != null && key.equals(each.getKey()))) {
+                (key != null && key.equals(each.getKey()))) {
                 return each;
             }
         }
@@ -84,10 +82,10 @@ public class MBBundle implements Cloneable {
         MBBundle mbBundle = (MBBundle) o;
 
         return !(baseName != null ? !baseName.equals(mbBundle.baseName) : mbBundle.baseName != null) &&
-                !(entries != null ? !entries.equals(mbBundle.entries) : mbBundle.entries != null) &&
-                !(interfaceName != null ? !interfaceName.equals(mbBundle.interfaceName) :
-                        mbBundle.interfaceName != null) &&
-                !(sqldomain != null ? !sqldomain.equals(mbBundle.sqldomain) : mbBundle.sqldomain != null);
+            !(entries != null ? !entries.equals(mbBundle.entries) : mbBundle.entries != null) &&
+            !(interfaceName != null ? !interfaceName.equals(mbBundle.interfaceName) :
+                mbBundle.interfaceName != null) &&
+            !(sqldomain != null ? !sqldomain.equals(mbBundle.sqldomain) : mbBundle.sqldomain != null);
 
     }
 
@@ -106,5 +104,14 @@ public class MBBundle implements Cloneable {
 
     public void removeEntries() {
         getEntries().clear();
+    }
+
+
+    public Set<String> locales() {
+        Set<String> locales = new HashSet<String>();
+        for (MBEntry entry : getEntries()) {
+            locales.addAll(entry.locales());
+        }
+        return locales;
     }
 }

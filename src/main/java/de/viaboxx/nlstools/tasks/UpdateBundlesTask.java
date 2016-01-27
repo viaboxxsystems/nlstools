@@ -169,7 +169,7 @@ public class UpdateBundlesTask extends Task {
 
     public static List<String> parseLocales(String locales) {
         if (locales == null) return Collections.emptyList();
-        StringTokenizer tokens = new StringTokenizer(locales, ",;");
+        StringTokenizer tokens = MergeLocaleTask.tokenize(locales);
         List<String> result = new ArrayList<String>();
         while (tokens.hasMoreTokens()) {
             String each = tokens.nextToken();

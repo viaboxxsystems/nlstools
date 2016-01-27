@@ -115,7 +115,7 @@ public class Property2XMLConverterTask extends Task {
             bundle.setBaseName(getInterfacePackage().replace('.', '/') + "/" +
                     getPropertyBaseName());
 
-            StringTokenizer tokens = new StringTokenizer(getLocales(), ",;");
+            StringTokenizer tokens = MergeLocaleTask.tokenize(getLocales());
             Map properties = new HashMap();
             Set allKeys = new HashSet();
             while (tokens.hasMoreTokens()) {
@@ -152,7 +152,7 @@ public class Property2XMLConverterTask extends Task {
                 MBEntry entry = new MBEntry();
                 bundle.getEntries().add(entry);
                 entry.setKey(key);
-                tokens = new StringTokenizer(getLocales(), ";");
+                tokens = MergeLocaleTask.tokenize(getLocales());
                 while (tokens.hasMoreTokens()) {
                     String eachLocale = tokens.nextToken();
                     if (eachLocale.equals("-")) eachLocale = "";
