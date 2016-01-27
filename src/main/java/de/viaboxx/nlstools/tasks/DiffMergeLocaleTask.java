@@ -42,6 +42,12 @@ public class DiffMergeLocaleTask extends MergeLocaleTask {
         if (loadedBundles != null) {
             setLocales(localesString(loadedBundles, getLocales()));
             for (MBBundle bundle : loadedBundles.getBundles()) {
+                if (!isBundleToProcess(bundle)) {
+                    getProject().log("Skipped " + bundle.getBaseName());
+                    continue; // skip
+                } else {
+                    getProject().log("Merging " + bundle.getBaseName());
+                }
                 for (MBEntry entry : bundle.getEntries()) {
                     // divide the locale string
                     StringTokenizer tokens = MergeLocaleTask.tokenize(getLocales());

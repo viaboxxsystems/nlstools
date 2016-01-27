@@ -35,6 +35,7 @@ public class MergeLocaleTask extends Task {
     private File from, with, to;
     private String locales;
     private String bundleNames;
+    private Set<String> namesFilter;
     protected MBBundles loadedBundles;
     protected MBBundles translatedBundles;
 
@@ -139,27 +140,31 @@ public class MergeLocaleTask extends Task {
         }
     }
 
+    protected boolean isBundleToProcess(MBBundle bundle) {
+        if (namesFilter == null) {
+            namesFilter = new HashSet<String>();
+            if (!StringUtils.isEmpty(bundleNames)) {
+                StringTokenizer tokens = tokenize(bundleNames);
+                while (tokens.hasMoreTokens()) {
+                    namesFilter.add(tokens.nextToken());
+                }
+            } else {
+                namesFilter = Collections.emptySet();
+            }
+        }
+        return namesFilter.isEmpty() || namesFilter.contains(bundle.getBaseName());
+    }
+
     protected void processExecute() {
         // if bundles exist
-        Set<String> namesFilter = new HashSet<String>();
-        if (!StringUtils.isEmpty(bundleNames)) {
-            StringTokenizer tokens = tokenize(bundleNames);
-            while (tokens.hasMoreTokens()) {
-                namesFilter.add(tokens.nextToken());
-            }
-        } else {
-            namesFilter = Collections.emptySet();
-        }
         if (loadedBundles != null) {
             setLocales(localesString(loadedBundles, getLocales()));
             for (MBBundle bundle : loadedBundles.getBundles()) {
-                if (!namesFilter.isEmpty()) {
-                    if (!namesFilter.contains(bundle.getBaseName())) {
-                        getProject().log("Skipped " + bundle.getBaseName());
-                        continue; // skip
-                    } else {
-                        getProject().log("Merging " + bundle.getBaseName());
-                    }
+                if (!isBundleToProcess(bundle)) {
+                    getProject().log("Skipped " + bundle.getBaseName());
+                    continue; // skip
+                } else {
+                    getProject().log("Merging " + bundle.getBaseName());
                 }
                 for (MBEntry entry : bundle.getEntries()) {
                     // divide the locale string
