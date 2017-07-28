@@ -1,0 +1,193 @@
+<bundles>
+  <bundle baseName="app/format" interfaceName="app.FormatsBundle">
+    <entry key="shortDate">
+      <text locale="de">d.M.yyyy</text>
+      <text locale="en">yyyy-M-d</text>
+    </entry>
+  </bundle>
+  <bundle baseName="app/error" interfaceName="app.ErrorsBundle">
+    <entry key="title">
+      <text locale="de">Uups...</text>
+      <text locale="en">Sorry...</text>
+    </entry>
+  </bundle>
+  <bundle baseName="app/buttons" interfaceName="app.ButtonsBundle">
+    <entry key="yes">
+      <text locale="de">Ja</text>
+      <text locale="en">Yes</text>
+    </entry>
+    <entry key="no">
+      <text locale="de">Nein</text>
+      <text locale="en">No</text>
+    </entry>
+  </bundle>
+  <bundle baseName="app/dashboard" interfaceName="app.DashboardBundle">
+    <entry key="machine.section.headline.singluar">
+      <text locale="de">Ihre MyHomeStation</text>
+      <text locale="en">Your MyHomeStation</text>
+    </entry>
+    <entry key="machine.section.headline.plural">
+      <text locale="de">Ihre MyHomeStations</text>
+      <text locale="en">Your MyHomeStations</text>
+    </entry>
+    <entry key="status.ACTIVE">
+      <text locale="de">Bereit</text>
+      <text locale="en">Ready</text>
+    </entry>
+    <entry key="status.INACTIVE">
+      <text locale="de">Wartung</text>
+      <text locale="en">Maintenance</text>
+    </entry>
+    <entry key="status.PLANNED">
+      <text locale="de">Wartung</text>
+      <text locale="en">Maintenance</text>
+    </entry>
+    <entry key="status.PHASE_OUT">
+      <text locale="de">Wird abgeschaltet</text>
+      <text locale="en">Will be phased out</text>
+    </entry>
+    <entry key="placeholder.INACTIVE">
+      <text locale="de">Ihre MyHomeStation ({{code}}) wird derzeit gewartet.</text>
+      <text locale="en">Your MyHomeStation ({{code}}) is currently under maintenance.</text>
+    </entry>
+    <entry key="placeholder.PLANNED">
+      <text locale="de">Ihre MyHomeStation ({{code}}) wird derzeit gewartet.</text>
+      <text locale="en">Your MyHomeStation ({{code}}) is currently under maintenance.</text>
+    </entry>
+    <entry key="placeholder.PHASE_OUT">
+      <text locale="de">Ihre MyHomeStation ({{code}}) wird demnächst abgeschaltet. Es können keine neuen Sendungen
+        eingeliefert werden.
+      </text>
+      <text locale="en">Your MyHomeStation ({{code}}) will be phased out soon. You cannot deliver further shipments
+        anymore.
+      </text>
+    </entry>
+    <entry key="availableBoxes.total">
+      <text locale="de">{{free}}/{{total}} Fächer verfügbar</text>
+      <text locale="en">{{free}}/{{total}} Compartments available</text>
+    </entry>
+    <entry key="availableBoxes.ofSize">
+      <text locale="de">{{free}}/{{total}} Fächer</text>
+      <text locale="en">{{free}}/{{total}} Compartments</text>
+    </entry>
+    <entry key="boxTable.header.boxSize">
+      <text locale="de">Fachgröße</text>
+      <text locale="en">Compartment size</text>
+    </entry>
+    <entry key="boxTable.header.available">
+      <text locale="de">Verfügbar</text>
+      <text locale="en">Available</text>
+    </entry>
+    <entry key="tan.section.headline.plural">
+      <text locale="de">Ihre Zugangscodes</text>
+      <text locale="en">Your access codes</text>
+    </entry>
+    <entry key="tan.insert.headline">
+      <text locale="de">Einlieferungen (noch {{free}}/{{total}} verfügbar)</text>
+      <text locale="en">Deliveries ({{free}}/{{total}} available)</text>
+    </entry>
+    <entry key="tan.insert.info">
+      <text locale="de">Mit diesen Zugangscodes kann ein Zusteller, lokaler Dienstleister oder Ihr Bekannter eine
+        Sendung für Sie in Ihrer MyHomeStation einliefern.
+      </text>
+      <text locale="en">A courier, local supplier or your friends can delivery shipments for you into your MyHomeStation
+        with these codes.
+      </text>
+    </entry>
+    <entry key="tan.insert.table.header.tan">
+      <text locale="de">Zugangscode</text>
+      <text locale="en">Access code</text>
+    </entry>
+    <entry key="tan.insert.table.header.validUntil">
+      <text locale="de">Gültig bis</text>
+      <text locale="en">Valid until</text>
+    </entry>
+    <entry key="tan.insert.table.header.actions">
+      <text locale="de">Aktion</text>
+      <text locale="en">Action</text>
+    </entry>
+    <entry key="tan.insert.table.actions.extend">
+      <text locale="de">verlängern</text>
+      <text locale="en">extend</text>
+    </entry>
+    <entry key="tan.insert.table.actions.delete">
+      <text locale="de">löschen</text>
+      <text locale="en">delete</text>
+    </entry>
+    <entry key="tan.insert.table.actions.new">
+      <text locale="de">neu</text>
+      <text locale="en">new</text>
+    </entry>
+    <entry key="tan.insert.create.selectMachine.title">
+      <text locale="de">Neuer Zugangscode</text>
+      <text locale="en">New access code</text>
+    </entry>
+    <entry key="tan.insert.create.selectMachine.text">
+      <text locale="de">Bitte wählen Sie aus für welche MyHomeStation ihr neuer Zugangscode gültig sein soll.</text>
+      <text locale="en">Please select for which MyHomeStation the new access codes should be valid.</text>
+    </entry>
+    <entry key="tan.insert.create.selectMachine.reject">
+      <text locale="de">Bitte wählen eine MyHomeStation aus.</text>
+      <text locale="en">Please select a MyHomeStation.</text>
+    </entry>
+    <entry key="tan.pickup.headline">
+      <text locale="de">Abholungen</text>
+      <text locale="en">Pickups</text>
+    </entry>
+    <entry key="tan.pickup.info">
+      <text locale="de">Mit diesen Zugangscodes können Sie, ein Zusteller, ein lokaler Dienstleister oder Ihr Bekannter
+        eine hinterlegte Sendung aus Ihrer MyHomeStation entnehmen.
+      </text>
+      <text locale="en">A courier, local supplier or your friends can pickup shipments from you out of your
+        MyHomeStation
+        with these codes.
+      </text>
+    </entry>
+    <entry key="tan.pickup.table.header.tan">
+      <text locale="de">Zugangscode</text>
+      <text locale="en">Access code</text>
+    </entry>
+    <entry key="tan.pickup.table.header.validUntil">
+      <text locale="de">Gültig bis</text>
+      <text locale="en">Valid until</text>
+    </entry>
+    <entry key="tan.pickup.table.header.actions">
+      <text locale="de">Aktion</text>
+      <text locale="en">Action</text>
+    </entry>
+    <entry key="tan.pickup.table.actions.extend">
+      <text locale="de">verlängern</text>
+      <text locale="en">extend</text>
+    </entry>
+    <entry key="tan.pickup.table.actions.delete">
+      <text locale="de">löschen</text>
+      <text locale="en">delete</text>
+    </entry>
+    <entry key="tan.pickup.table.actions.new">
+      <text locale="de">neu</text>
+      <text locale="en">new</text>
+    </entry>
+    <entry key="tan.pickup.placeholder">
+      <text locale="de">Zur Zeit ist keine Sendung zur Abholung in Ihrer MyHomeStation hinterlegt.</text>
+      <text locale="en">Currently no shipment is in your MyHomeStation for pickup.</text>
+    </entry>
+    <entry key="tan.shared.extend.question.title">
+      <text locale="de">Gültigkeit des Zugangscode verlängern</text>
+      <text locale="en">Extend the expiry date of your access code</text>
+    </entry>
+    <entry key="tan.shared.extend.question.text">
+      <text locale="de">Möchten Sie die Gültigkeit des Zugangscodes {{value}} (gültig bis: {{expires}}) verlängern?
+      </text>
+      <text locale="en">Do you want to extend the expiry date of access code {{value}} (valid until: {{expires}})?
+      </text>
+    </entry>
+    <entry key="tan.shared.extend.success.title">
+      <text locale="de">Erfolgreich!</text>
+      <text locale="en">Successful!</text>
+    </entry>
+    <entry key="tan.shared.extend.success.text">
+      <text locale="de">Der Zugangscode {{value}} ist nun bis zum {{expires}} gültig.</text>
+      <text locale="en">Access code {{value}} is now valid until {{expires}}.</text>
+    </entry>
+  </bundle>
+</bundles>

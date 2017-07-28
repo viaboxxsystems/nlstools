@@ -1,6 +1,7 @@
 package de.viaboxx.nlstools.formats;
 
 import de.viaboxx.nlstools.model.MBBundle;
+import de.viaboxx.nlstools.model.MBBundles;
 import de.viaboxx.nlstools.model.MBEntry;
 import de.viaboxx.nlstools.model.MBText;
 import org.apache.commons.lang3.LocaleUtils;
@@ -23,15 +24,20 @@ import java.util.*;
  */
 public abstract class BundleWriter {
     protected final Task task;
-    protected final MBBundle currentBundle;
+    protected MBBundle currentBundle;
     protected final String configFile;
     protected final String outputPath;
     protected final FileType fileType;
     protected boolean overwrite = false, deleteOldFiles = true;
-    private boolean debugMode;
+    protected boolean debugMode;
     protected boolean flexLayout = false;
     // => true: output format de/path/bundle.properties, false: path/bundle_de.properties
     protected Set<String> allowedLocales;
+    protected MBBundles bundles;
+
+    public void setBundles(MBBundles bundles) {
+        this.bundles = bundles;
+    }
 
     public enum FileType {
         NO, XML, PROPERTIES,
@@ -44,7 +50,9 @@ public abstract class BundleWriter {
         SQL,
         // Adobe ActionScript
         FLEX_FULL,
-        FLEX_SMALL
+        FLEX_SMALL,
+        // TypeScript
+        NG2_TRANSLATE
     }
 
     protected List<String> myUsedLocales;
@@ -233,21 +241,26 @@ public abstract class BundleWriter {
      */
     protected List<String> getLocalesUsed() {
         if (myUsedLocales == null) {
-            HashSet<String> locales = new HashSet<String>();
-            if (getCurrentBundle().getEntries() != null) {
-                for (MBEntry eachEntry : getCurrentBundle().getEntries()) {
-                    if (eachEntry.getTexts() != null) {
-                        for (MBText eachText : eachEntry.getTexts()) {
-                            locales.add(eachText.getLocale());
-                        }
-                    }
-                }
-            }
+            Set<String> locales = getLocalesUsed(getCurrentBundle());
             List<String> result = new ArrayList<String>(locales);
             Collections.sort(result);
             myUsedLocales = result;
         }
         return myUsedLocales;
+    }
+
+    protected Set<String> getLocalesUsed(MBBundle bundle) {
+        Set<String> locales = new HashSet<String>();
+        if (bundle.getEntries() != null) {
+            for (MBEntry eachEntry : bundle.getEntries()) {
+                if (eachEntry.getTexts() != null) {
+                    for (MBText eachText : eachEntry.getTexts()) {
+                        locales.add(eachText.getLocale());
+                    }
+                }
+            }
+        }
+        return locales;
     }
 
     protected MBBundle getCurrentBundle() {
@@ -260,7 +273,12 @@ public abstract class BundleWriter {
      * @return some properties for the locale (and - if merged == true - of its parent bundles)
      */
     protected Properties createProperties(String locale, boolean merged) {
-        Iterator<MBEntry> entries = getCurrentBundle().getEntries().iterator();
+        return createProperties(locale, getCurrentBundle(), merged, debugMode, task);
+    }
+
+    public static Properties createProperties(String locale, MBBundle bundle, boolean merged, boolean debugMode,
+                                                 Task task) {
+        Iterator<MBEntry> entries = bundle.getEntries().iterator();
         Properties p = new Properties();
 
         while (entries.hasNext()) {

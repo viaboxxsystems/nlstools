@@ -257,11 +257,21 @@ public class MessageBundleTask extends Task {
 
     public void execute() throws BuildException {
         try {
-            for (MBBundle o : loadBundles().getBundles()) {
-                handleInterface(o);
-                handleProperties(o);
-                handleJson(o);
-                handleSql(o);
+            if (getWriteJson().equalsIgnoreCase("ng2-translate")) {
+                loadBundles();
+                handleJson(null);
+                for (MBBundle o : loadBundles().getBundles()) {
+                    handleInterface(o);
+                    handleProperties(o);
+                    handleSql(o);
+                }
+            } else {
+                for (MBBundle o : loadBundles().getBundles()) {
+                    handleInterface(o);
+                    handleProperties(o);
+                    handleJson(o);
+                    handleSql(o);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -283,6 +293,7 @@ public class MessageBundleTask extends Task {
                 BundleWriter.FileType.class, Set.class);
         BundleWriter writer =
             cons.newInstance(this, getXMLConfigBundle(), o, getSqlScriptDir(), fileType, allowedLocales);
+        writer.setBundles(loadBundles());
         executeBundleWriter(writer);
     }
 
@@ -310,6 +321,12 @@ public class MessageBundleTask extends Task {
             writer.setExampleLocale(getExampleLocale());
             executeBundleWriter(writer);
             return;
+        } else if (getWriteInterface().equalsIgnoreCase("typescript")) {
+            BundleWriterTypeScript writer = new BundleWriterTypeScript(this, getXMLConfigBundle(), o, sourcePath,
+                BundleWriter.FileType.NG2_TRANSLATE, allowedLocales);
+            writer.setExampleLocale(getExampleLocale());
+            executeBundleWriter(writer);
+            return;
         } else {
             fileType = BundleWriter.FileType.JAVA_FULL;
         }
@@ -321,6 +338,7 @@ public class MessageBundleTask extends Task {
             writer =
                 new BundleWriterJavaInterface(this, getXMLConfigBundle(), o, sourcePath, fileType, allowedLocales);
         }
+        writer.setBundles(loadBundles());
         writer.setExampleLocale(getExampleLocale());
         executeBundleWriter(writer);
     }
@@ -336,6 +354,7 @@ public class MessageBundleTask extends Task {
         }
         BundleWriterProperties writer = new BundleWriterProperties(this, getXMLConfigBundle(), o,
             getPropertyPath(), fileType, allowedLocales);
+        writer.setBundles(loadBundles());
         writer.setMerged(isMerged());
         if (getToCharset() != null) {
             writer.setCharset(getToCharset());
@@ -353,11 +372,14 @@ public class MessageBundleTask extends Task {
             fileType = BundleWriter.FileType.JS_ANGULAR;
         } else if (getWriteJson().equalsIgnoreCase("angular_pretty")) {
             fileType = BundleWriter.FileType.JS_ANGULAR_PRETTY;
+        } else if (getWriteJson().equalsIgnoreCase("ng2-translate")) {
+            fileType = BundleWriter.FileType.NG2_TRANSLATE;
         } else {
             fileType = BundleWriter.FileType.JS;
         }
         BundleWriterJson writer = BundleWriterJson.build(this, getXMLConfigBundle(), o, getJsonPath(),
             getJsonFile(), fileType, allowedLocales);
+        writer.setBundles(loadBundles());
         writer.setMerged(isMerged());
         executeBundleWriter(writer);
     }

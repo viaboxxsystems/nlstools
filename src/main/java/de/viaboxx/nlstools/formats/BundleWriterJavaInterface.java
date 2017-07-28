@@ -25,6 +25,8 @@ import java.util.Set;
  * License: Apache 2.0
  */
 public class BundleWriterJavaInterface extends BundleWriter {
+    protected int indentNum = 0;
+    protected int indentSize = 2;
     private String exampleLocale;
 
     public BundleWriterJavaInterface(Task task, String configFile, MBBundle currentBundle, String outputPath,
@@ -97,7 +99,7 @@ public class BundleWriterJavaInterface extends BundleWriter {
         return inf.substring(pidx + 1);
     }
 
-    private String getInterfaceFileName() {
+    protected String getInterfaceFileName() {
         StringBuilder fileName = new StringBuilder(getInterfacePathName());
         fileName.append("/");
         fileName.append(getIClass());
@@ -105,7 +107,7 @@ public class BundleWriterJavaInterface extends BundleWriter {
         return fileName.toString();
     }
 
-    private String getInterfacePathName() {
+    protected String getInterfacePathName() {
         String fileName = getOutputPath();
         char lastChar = fileName.charAt(fileName.length() - 1);
         if (lastChar != '\\' && lastChar != '/') {
@@ -132,10 +134,11 @@ public class BundleWriterJavaInterface extends BundleWriter {
         writeType(pw);
 
         pw.println(" {");
-        pw.print("  String _BUNDLE_NAME = \"");
+        printIndent(pw).print("String _BUNDLE_NAME = \"");
         pw.print(currentBundle.getBaseName());
         pw.println("\";");
         pw.println();
+        indentNum += indentSize;
     }
 
     protected void writeType(PrintWriter pw) {
@@ -159,6 +162,7 @@ public class BundleWriterJavaInterface extends BundleWriter {
      */
     protected void writeStaticOutro(PrintWriter pw) {
         pw.println("}");
+        indentNum -= indentSize;
         writeDoNotAlter(pw);
     }
 
@@ -168,7 +172,7 @@ public class BundleWriterJavaInterface extends BundleWriter {
      * @param pw      writer to write to
      * @param aBundle to read from
      */
-    void writeConstants(PrintWriter pw, MBBundle aBundle) {
+    protected void writeConstants(PrintWriter pw, MBBundle aBundle) {
         Iterator<MBEntry> iter = aBundle.getEntries().iterator();
         boolean enumerateNames =
             (fileType == FileType.JAVA_ENUM_KEYS || fileType == FileType.JAVA_FULL_ENUM_KEYS);
@@ -177,30 +181,7 @@ public class BundleWriterJavaInterface extends BundleWriter {
             MBEntry eachEntry = iter.next();
             String keyName = eachEntry.getKey();
             Iterator<MBText> texts = eachEntry.getTexts().iterator();
-            pw.print("  /** ");
-            if (eachEntry.getDescription() != null && eachEntry.getDescription().length() > 0) {
-                pw.print(eachEntry.getDescription());
-                pw.print("\n  ");
-            }
-            if (eachEntry.getAliases() != null && !eachEntry.getAliases().isEmpty()) {
-                pw.print(eachEntry.getAliases());
-                pw.print("\n  ");
-            }
-            while (texts.hasNext()) {
-                MBText theText = texts.next();
-                String lang = theText.getLocale();
-                pw.print("{");
-                pw.print(lang);
-                pw.print("} ");
-            }
-            MBText xmpl = eachEntry.findExampleText(getExampleLocale());
-            if (xmpl != null) {
-                pw.print(" | ");
-                pw.print(xmpl.getLocale());
-                pw.print(" = ");
-                pw.print(StringEscapeUtils.escapeXml(xmpl.getValue()));
-            }
-            pw.println(" */");
+            printEntryComment(pw, eachEntry, texts);
             String theKey = createKeyName(keyName);
             if (enumerateNames) {
                 allNames.add(theKey);
@@ -212,8 +193,35 @@ public class BundleWriterJavaInterface extends BundleWriter {
         }
     }
 
+    protected void printEntryComment(PrintWriter pw, MBEntry eachEntry, Iterator<MBText> texts) {
+        printIndent(pw).print("/** ");
+        if (eachEntry.getDescription() != null && eachEntry.getDescription().length() > 0) {
+            pw.print(eachEntry.getDescription());
+            pw.print("\n  ");
+        }
+        if (eachEntry.getAliases() != null && !eachEntry.getAliases().isEmpty()) {
+            pw.print(eachEntry.getAliases());
+            pw.print("\n  ");
+        }
+        while (texts.hasNext()) {
+            MBText theText = texts.next();
+            String lang = theText.getLocale();
+            pw.print("{");
+            pw.print(lang);
+            pw.print("} ");
+        }
+        MBText xmpl = eachEntry.findExampleText(getExampleLocale());
+        if (xmpl != null) {
+            pw.print(" | ");
+            pw.print(xmpl.getLocale());
+            pw.print(" = ");
+            pw.print(StringEscapeUtils.escapeXml(xmpl.getValue()));
+        }
+        pw.println(" */");
+    }
+    
     protected void writeKeyValue(PrintWriter pw, String key, String value) {
-        pw.print("  String ");
+        printIndent(pw).print("String ");
         pw.print(key);
         pw.print(" = \"");
         pw.print(value);
@@ -231,7 +239,7 @@ public class BundleWriterJavaInterface extends BundleWriter {
      * @param allNames to iterate over and read from
      */
     private void writeNameEnumeration(PrintWriter pw, List<String> allNames) {
-        pw.print("  String[] _ALL_KEYS = {");
+        printIndent(pw).print("  String[] _ALL_KEYS = {");
         for (Iterator<String> i = allNames.iterator(); i.hasNext(); ) {
             pw.print(i.next());
             if (i.hasNext()) {
@@ -258,6 +266,13 @@ public class BundleWriterJavaInterface extends BundleWriter {
             throw new FileNotFoundException(infile + " not found");
         }
         return (infile.lastModified() > outfile.lastModified());
+    }
+
+    protected PrintWriter printIndent(PrintWriter pw) {
+        for (int i = 0; i < indentNum; i++) {
+            pw.print(" ");
+        }
+        return pw;
     }
 
 }

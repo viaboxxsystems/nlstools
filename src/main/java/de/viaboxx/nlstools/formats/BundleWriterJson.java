@@ -70,6 +70,9 @@ public class BundleWriterJson extends BundleWriter {
                                          String outputPath, String outputFile, FileType fileType,
                                          Set<String> allowedLocales) {
         switch (fileType) {
+            case NG2_TRANSLATE:
+                return new BundleWriterNg2Translate(task, configFile, outputPath, outputFile, fileType,
+                    allowedLocales);
             case JS_ANGULAR:
             case JS_ANGULAR_PRETTY:
                 return new BundleWriterAngularJS(task, configFile, currentBundle, outputPath, outputFile, fileType,

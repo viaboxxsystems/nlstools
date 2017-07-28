@@ -101,6 +101,19 @@ public class MessageBundleTaskTest extends TestCase {
         return bundles;
     }
 
+    public void testWriteTypeScriptAndNg2Translate() {
+        MessageBundleTask task = new MessageBundleTask();
+        task.setProject(new Project());
+        task.setBundles("example/messages.xml");
+        task.setWriteJson("ng2-translate");
+        task.setWriteInterface("typescript");
+        task.setExampleLocale("de");
+        task.setOverwrite(true);
+        task.setSourcePath("target/out-ts");
+        task.setJsonPath("target/out-ng2");
+        task.execute();
+    }
+
     public void testWriteAngularJS() {
         /*<msgbundle writeJson="angular" overwrite="true" deleteOldFiles="true"
                           debugMode="true"
