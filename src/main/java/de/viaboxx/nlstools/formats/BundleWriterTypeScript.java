@@ -102,7 +102,7 @@ public class BundleWriterTypeScript extends BundleWriterJavaInterface {
                 Iterator<MBText> texts = eachEntry.getTexts().iterator();
                 printEntryComment(pw, eachEntry, texts);
                 String theKey = nonReservedWord(createKeyName(keyName));
-                writeKeyValue(pw, theKey, keyName);
+                writeKeyValue(pw, theKey, eachEntry.getKey());
             } else if (entry.getValue() instanceof Map) {
                 String keyName = (String) entry.getKey();
                 printIndent(pw).print("static ");
