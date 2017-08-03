@@ -4,10 +4,11 @@ import de.viaboxx.nlstools.model.MBBundle;
 import de.viaboxx.nlstools.model.MBEntry;
 import de.viaboxx.nlstools.model.MBText;
 import org.apache.tools.ant.Task;
+import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
 
 import java.io.PrintWriter;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
@@ -86,31 +87,38 @@ public class BundleWriterTypeScript extends BundleWriterJavaInterface {
     }
 
     protected void writeConstants(PrintWriter pw, MBBundle bundle) {
-        Properties slot = new Properties();
-        for (String locale : bundle.locales()) {
-            BundleWriterNg2Translate.addGroupedEntries(locale, slot, bundle, true, debugMode, task);
+        try {
+            Properties map = new Properties();
+            JSONObject slot = new JSONObject(map);
+            for (String locale : bundle.locales()) {
+                BundleWriterNg2Translate.addGroupedEntries(locale, slot, bundle, true, debugMode, task);
+
+            }
+            printEntries(pw, bundle, slot, "");
+        } catch (JSONException e) {
+            throw new RuntimeException(e.getMessage(), e);
         }
-        printEntries(pw, bundle, slot, "");
     }
 
-    private void printEntries(PrintWriter pw, MBBundle bundle, Map slot, String context) {
-        for (Object each : slot.entrySet()) {
-            Map.Entry entry = (Map.Entry) each;
-            if (entry.getValue() instanceof String) {
-                String key = (String) entry.getKey();
+    private void printEntries(PrintWriter pw, MBBundle bundle, JSONObject slot, String context) throws JSONException {
+        Iterator it = slot.keys();
+        while (it.hasNext()) {
+            String key = (String) it.next();
+            Object value = slot.get(key);
+            if (value instanceof String) {
                 MBEntry eachEntry = bundle.getEntry(context + key);
                 Iterator<MBText> texts = eachEntry.getTexts().iterator();
                 printEntryComment(pw, eachEntry, texts);
                 String theKey = nonReservedWord(createKeyName(key));
-                String theValue = bundle.getBaseName().replace('/', '.') + "." + context + entry.getKey();
+                String theValue = bundle.getBaseName().replace('/', '.') + "." + context + key;
                 writeKeyValue(pw, theKey, theValue);
-            } else if (entry.getValue() instanceof Map) {
+            } else {
                 printIndent(pw).print("static ");
                 indentNum += indentSize;
-                pw.print(nonReservedWord((String)entry.getKey()));
+                pw.print(nonReservedWord(key));
                 pw.println(" = class { ");
-                String context2 = context + entry.getKey() + ".";
-                printEntries(pw, bundle, (Map) entry.getValue(), context2);  // recursion
+                String context2 = context + key + ".";
+                printEntries(pw, bundle, (JSONObject) value, context2);  // recursion
                 indentNum -= indentSize;
                 printIndent(pw).println("};");
             }

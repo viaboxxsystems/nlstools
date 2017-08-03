@@ -3,6 +3,7 @@ package de.viaboxx.nlstools.formats;
 import de.viaboxx.nlstools.model.MBBundle;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Task;
+import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
 import java.io.File;
@@ -73,24 +74,23 @@ public class BundleWriterNg2Translate extends BundleWriterJson {
         File outFile = new File(getOutputPath(), jsfile);
         mkdirs(outFile.getPath());
         task.log("writing ng2translate json file " + jsfile, Project.MSG_INFO);
-        Properties properties = new Properties();
+        JSONObject map = new JSONObject(new Properties());
+        map.setEscapeForwardSlashAlways(false);
         for (MBBundle bundle : bundles.getBundles()) {
             List<String> path = split(bundle.getBaseName());
-            Properties slot = prepareSlot(properties, path);
+            JSONObject slot = prepareSlot(map, path);
             addGroupedEntries(locale, slot, bundle, isMerged(), debugMode, task);
         }
         MBJSONPersistencer writer = new MBJSONPersistencer(true);
-        JSONObject map = new JSONObject(properties);
-        map.setEscapeForwardSlashAlways(false);
         writer.saveString(map.toString(2), outFile);
     }
 
-    public static void addGroupedEntries(String locale, Properties slot, MBBundle bundle, boolean merged,
-                                         boolean debugMode, Task task) {
+    public static void addGroupedEntries(String locale, JSONObject slot, MBBundle bundle, boolean merged,
+                                         boolean debugMode, Task task) throws JSONException {
         Properties bundleProperties = createProperties(locale, bundle, merged, debugMode, task);
         for (Map.Entry entry : bundleProperties.entrySet()) {
             List<String> keys = split((String) entry.getKey());
-            Properties targetSlot = slot;
+            JSONObject targetSlot = slot;
             if (keys.size() > 1) {
                 targetSlot = prepareSlot(slot, keys.subList(0, keys.size() - 1));
             }
@@ -100,15 +100,16 @@ public class BundleWriterNg2Translate extends BundleWriterJson {
         }
     }
 
-    private static Properties prepareSlot(Properties properties, List<String> path) {
-        Properties slot = properties;
+    private static JSONObject prepareSlot(JSONObject properties, List<String> path) throws JSONException {
+        JSONObject slot = properties;
         for (String each : path) {
-            Object slot2 = slot.get(each);
-            if (slot2 == null) {
-                slot2 = new Properties();
+            JSONObject slot2;
+            if (!slot.has(each)) {
+                slot2 = new JSONObject(new Properties());
+                slot2.setEscapeForwardSlashAlways(false);
                 slot.put(each, slot2);
-            }
-            slot = (Properties) slot2;
+            } else slot2 = (JSONObject) slot.get(each);
+            slot = slot2;
         }
         return slot;
     }
