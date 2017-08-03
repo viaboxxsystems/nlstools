@@ -81,6 +81,7 @@ public class BundleWriterNg2Translate extends BundleWriterJson {
         }
         MBJSONPersistencer writer = new MBJSONPersistencer(true);
         JSONObject map = new JSONObject(properties);
+        map.setEscapeForwardSlashAlways(false);
         writer.saveString(map.toString(2), outFile);
     }
 
