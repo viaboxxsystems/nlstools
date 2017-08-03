@@ -97,19 +97,19 @@ public class BundleWriterTypeScript extends BundleWriterJavaInterface {
         for (Object each : slot.entrySet()) {
             Map.Entry entry = (Map.Entry) each;
             if (entry.getValue() instanceof String) {
-                String keyName = (String) entry.getKey();
-                MBEntry eachEntry = bundle.getEntry(context + keyName);
+                String key = (String) entry.getKey();
+                MBEntry eachEntry = bundle.getEntry(context + key);
                 Iterator<MBText> texts = eachEntry.getTexts().iterator();
                 printEntryComment(pw, eachEntry, texts);
-                String theKey = nonReservedWord(createKeyName(keyName));
-                writeKeyValue(pw, theKey, eachEntry.getKey());
+                String theKey = nonReservedWord(createKeyName(key));
+                String theValue = bundle.getBaseName().replace('/', '.') + "." + context + entry.getKey();
+                writeKeyValue(pw, theKey, theValue);
             } else if (entry.getValue() instanceof Map) {
-                String keyName = (String) entry.getKey();
                 printIndent(pw).print("static ");
                 indentNum += indentSize;
-                pw.print(nonReservedWord(keyName));
+                pw.print(nonReservedWord((String)entry.getKey()));
                 pw.println(" = class { ");
-                String context2 = context + keyName + ".";
+                String context2 = context + entry.getKey() + ".";
                 printEntries(pw, bundle, (Map) entry.getValue(), context2);  // recursion
                 indentNum -= indentSize;
                 printIndent(pw).println("};");
