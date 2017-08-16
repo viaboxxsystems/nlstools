@@ -7,8 +7,7 @@ import de.viaboxx.nlstools.model.MBText;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.hssf.util.HSSFColor;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.*;
 
 import java.io.*;
 import java.util.*;
@@ -26,8 +25,10 @@ public class MBExcelPersistencer extends MBPersistencer {
     private static final int STYLE_REVIEW = 3;
     private static final int STYLE_MISSING = 4;
     private static final int STYLE_DATETIME = 5;
+    private static final int STYLE_MISSING_REVIEW = 6;
 
     private HSSFWorkbook wb;
+    private HSSFCreationHelper helper;
     private HSSFSheet sheet;
     private int rowNum = 0;
     private final Map<Integer, CellStyle> styles = new HashMap<Integer, CellStyle>();
@@ -63,6 +64,13 @@ public class MBExcelPersistencer extends MBPersistencer {
         style.setFillBackgroundColor(HSSFColor.BLUE_GREY.index);
         style.setFillForegroundColor(HSSFColor.BLUE_GREY.index);
         styles.put(STYLE_MISSING, style);
+
+        style = wb.createCellStyle();
+        style.setFillPattern(HSSFCellStyle.FINE_DOTS);
+        style.setFillBackgroundColor(HSSFColor.BLUE_GREY.index);
+        style.setFillForegroundColor(HSSFColor.BLUE_GREY.index);
+        style.setFont(font);
+        styles.put(STYLE_MISSING_REVIEW, style);
 
         style = wb.createCellStyle();
         HSSFCreationHelper createHelper = wb.getCreationHelper();
@@ -161,15 +169,38 @@ public class MBExcelPersistencer extends MBPersistencer {
                 if (text != null) {
                     cell = row.createCell(colNum);
                     cell.setCellValue(new HSSFRichTextString(text.getValue()));
-                    if (text.isReview()) {
+                    if (text.getValue() == null || text.getValue().length() == 0) {
+                        if (text.isReview()) {
+                            comment(cell, each);
+                            cell.setCellStyle(styles.get(STYLE_MISSING_REVIEW));
+                        } else {
+                            comment(cell, each);
+                            cell.setCellStyle(styles.get(STYLE_MISSING));
+                        }
+                    } else if (text.isReview()) {
+                        comment(cell, each);
                         cell.setCellStyle(styles.get(STYLE_REVIEW));
-                    } else if (text.getValue() == null || text.getValue().length() == 0) {
-                        cell.setCellStyle(styles.get(STYLE_MISSING));
                     }
                 }
                 colNum++;
             }
         }
+    }
+
+    private Comment comment(HSSFCell cell, String text) {
+        CreationHelper factory = wb.getCreationHelper();
+        Drawing drawing = sheet.createDrawingPatriarch();
+        // When the comment box is visible, have it show in a 1x3 space
+        ClientAnchor anchor = factory.createClientAnchor();
+        anchor.setCol1(cell.getColumnIndex());
+        anchor.setCol2(cell.getColumnIndex() + 1);
+        anchor.setRow1(cell.getRow().getRowNum());
+        anchor.setRow2(cell.getRow().getRowNum() + 3);
+        Comment comment = drawing.createCellComment(anchor);
+        RichTextString str = factory.createRichTextString(text);
+        comment.setString(str);
+        cell.setCellComment(comment);
+        return comment;
     }
 
     private HSSFRow createRow() {
@@ -254,7 +285,7 @@ public class MBExcelPersistencer extends MBPersistencer {
 
         String aliasOrDescriptionHeader = getStringValue(row.getCell(1)); // backward compatibility
         boolean aliasColumnAvailable = false;
-        if(aliasOrDescriptionHeader != null && "Aliases".equals(aliasOrDescriptionHeader.trim())) {
+        if (aliasOrDescriptionHeader != null && "Aliases".equals(aliasOrDescriptionHeader.trim())) {
             firstCol++;
             aliasColumnAvailable = true;
         }
@@ -280,19 +311,19 @@ public class MBExcelPersistencer extends MBPersistencer {
                 MBEntry entry = new MBEntry();
                 bundle.getEntries().add(entry);
                 entry.setKey(getStringValue(row.getCell(0)));
-                if(aliasColumnAvailable) { // backward compatibility
+                if (aliasColumnAvailable) { // backward compatibility
                     String aliasesCommaSeparated = getStringValue(row.getCell(1));
-                    if(aliasesCommaSeparated != null) {
-                        StringTokenizer tokens =new StringTokenizer(aliasesCommaSeparated, ", ");
+                    if (aliasesCommaSeparated != null) {
+                        StringTokenizer tokens = new StringTokenizer(aliasesCommaSeparated, ", ");
                         List<String> aliases = new ArrayList<String>();
-                        while(tokens.hasMoreTokens()) {
+                        while (tokens.hasMoreTokens()) {
                             aliases.add(tokens.nextToken());
                         }
                         entry.setAliases(aliases);
                     }
                 }
-                if (row.getCell(firstCol-1) != null) {
-                    entry.setDescription(getStringValue(row.getCell(firstCol-1)));
+                if (row.getCell(firstCol - 1) != null) {
+                    entry.setDescription(getStringValue(row.getCell(firstCol - 1)));
                 }
                 colNum = firstCol;
                 for (String each : locales) {
@@ -302,7 +333,8 @@ public class MBExcelPersistencer extends MBPersistencer {
                         if (StringUtils.isNotEmpty(svalue) ||
                             // detect STYLE_MISSING
                             cell.getCellStyle().getFillBackgroundColor() == HSSFColor.BLUE_GREY.index ||
-                            cell.getCellStyle().getFillForegroundColor() == HSSFColor.BLUE_GREY.index) {
+                            cell.getCellStyle().getFillForegroundColor() == HSSFColor.BLUE_GREY.index ||
+                            cell.getCellStyle().getFont(wb).getColor() == Font.COLOR_RED) {
                             MBText text = new MBText();
                             text.setLocale(each);
                             text.setValue(svalue);
@@ -315,6 +347,13 @@ public class MBExcelPersistencer extends MBPersistencer {
             row = sheet.getRow(rowNum++);
         }
         return true;
+    }
+
+    private HSSFCreationHelper getCreationHelper() {
+        if (helper == null) {
+            helper = wb.getCreationHelper();
+        }
+        return helper;
     }
 
     private String getStringValue(HSSFCell cell) {
