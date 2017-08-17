@@ -13,7 +13,8 @@
   <packaging>jar</packaging>
   <version>2.6.9-SNAPSHOT</version>
   <name>I18n NLSTools</name>
-  <description>Ant tasks for managing resource bundles with XML or Excel to generate files for Java, Adobe Flex, SQL
+  <description>Ant tasks for managing resource bundles with XML or Excel to generate files
+    for Java, SQL, TypeScript, Groovy, Adobe Flex 
   </description>
   <url>https://github.com/viaboxxsystems/nlstools</url>
   <licenses>
