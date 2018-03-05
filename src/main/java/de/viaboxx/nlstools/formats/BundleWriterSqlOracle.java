@@ -15,10 +15,10 @@ import java.util.Iterator;
 import java.util.Set;
 
 /**
- * Description: <br/>
- * User: roman.stumm <br/>
- * Date: 15.06.2007 <br/>
- * Time: 12:20:23 <br/>
+ * Description: <br>
+ * User: roman.stumm <br>
+ * Date: 15.06.2007 <br>
+ * Time: 12:20:23 <br>
  * License: Apache 2.0
  */
 public class BundleWriterSqlOracle extends BundleWriter {

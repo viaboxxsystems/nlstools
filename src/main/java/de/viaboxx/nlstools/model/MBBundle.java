@@ -7,10 +7,10 @@ import com.thoughtworks.xstream.annotations.XStreamImplicit;
 import java.util.*;
 
 /**
- * Description: <br/>
- * User: roman.stumm <br/>
- * Date: 14.06.2007 <br/>
- * Time: 15:21:50 <br/>
+ * Description: <br>
+ * User: roman.stumm <br>
+ * Date: 14.06.2007 <br>
+ * Time: 15:21:50 <br>
  * License: Apache 2.0
  */
 @XStreamAlias("bundle")

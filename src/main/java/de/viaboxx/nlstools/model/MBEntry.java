@@ -8,10 +8,10 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.*;
 
 /**
- * Description: <br/>
- * User: roman.stumm <br/>
- * Date: 14.06.2007 <br/>
- * Time: 15:21:57 <br/>
+ * Description: <br>
+ * User: roman.stumm <br>
+ * Date: 14.06.2007 <br>
+ * Time: 15:21:57 <br>
  * License: Apache 2.0
  */
 @XStreamAlias("entry")

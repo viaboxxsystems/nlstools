@@ -4,7 +4,7 @@ import de.viaboxx.nlstools.model.MBBundle;
 import de.viaboxx.nlstools.model.MBEntry;
 import de.viaboxx.nlstools.model.MBText;
 import de.viaboxx.nlstools.util.FileUtils;
-import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.text.StringEscapeUtils;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Task;
 
@@ -18,10 +18,10 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Description: <br/>
- * User: roman.stumm <br/>
- * Date: 15.06.2007 <br/>
- * Time: 12:14:13 <br/>
+ * Description: <br>
+ * User: roman.stumm <br>
+ * Date: 15.06.2007 <br>
+ * Time: 12:14:13 <br>
  * License: Apache 2.0
  */
 public class BundleWriterJavaInterface extends BundleWriter {
@@ -48,8 +48,6 @@ public class BundleWriterJavaInterface extends BundleWriter {
 
     /**
      * generate the current bundle's interface
-     *
-     * @throws Exception
      */
     public void writeOutputFiles() throws Exception {
         // now write the interface
@@ -215,7 +213,7 @@ public class BundleWriterJavaInterface extends BundleWriter {
             pw.print(" | ");
             pw.print(xmpl.getLocale());
             pw.print(" = ");
-            pw.print(StringEscapeUtils.escapeXml(xmpl.getValue()));
+            pw.print(StringEscapeUtils.escapeXml11(xmpl.getValue()));
         }
         pw.println(" */");
     }

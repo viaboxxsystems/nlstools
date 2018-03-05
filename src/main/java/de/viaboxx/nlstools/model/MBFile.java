@@ -1,10 +1,10 @@
 package de.viaboxx.nlstools.model;
 
 /**
- * Description: <br/>
- * User: roman <br/>
- * Date: 10.02.2009 <br/>
- * Time: 14:14:11 <br/>
+ * Description: <br>
+ * User: roman <br>
+ * Date: 10.02.2009 <br>
+ * Time: 14:14:11 <br>
  * License: Apache 2.0
  */
 public final class MBFile {

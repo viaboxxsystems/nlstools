@@ -9,10 +9,10 @@ import de.viaboxx.nlstools.util.FileUtils;
 import java.io.*;
 
 /**
- * Description: <br/>
- * User: roman.stumm <br/>
- * Date: 14.06.2007 <br/>
- * Time: 15:25:25 <br/>
+ * Description: <br>
+ * User: roman.stumm <br>
+ * Date: 14.06.2007 <br>
+ * Time: 15:25:25 <br>
  * License: Apache 2.0
  */
 public class MBXMLPersistencer extends MBPersistencer {

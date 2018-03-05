@@ -11,10 +11,10 @@ import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 /**
- * Description: <br/>
- * User: roman <br/>
- * Date: 10.02.2009 <br/>
- * Time: 14:18:13 <br/>
+ * Description: <br>
+ * User: roman <br>
+ * Date: 10.02.2009 <br>
+ * Time: 14:18:13 <br>
  * License: Apache 2.0
  */
 public class MBBundlesZipper {

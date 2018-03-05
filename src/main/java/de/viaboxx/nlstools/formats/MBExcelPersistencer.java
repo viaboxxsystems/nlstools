@@ -41,7 +41,7 @@ public class MBExcelPersistencer extends MBPersistencer {
         // cache styles used to write text into cells
         HSSFCellStyle style = wb.createCellStyle();
         HSSFFont font = wb.createFont();
-        font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+        font.setBold(true);
         style.setFont(font);
         styles.put(STYLE_BOLD, style);
 
@@ -60,15 +60,15 @@ public class MBExcelPersistencer extends MBPersistencer {
         styles.put(STYLE_REVIEW, style);
 
         style = wb.createCellStyle();
-        style.setFillPattern(HSSFCellStyle.FINE_DOTS);
-        style.setFillBackgroundColor(HSSFColor.BLUE_GREY.index);
-        style.setFillForegroundColor(HSSFColor.BLUE_GREY.index);
+        style.setFillPattern(FillPatternType.FINE_DOTS);
+        style.setFillBackgroundColor(HSSFColor.HSSFColorPredefined.BLUE_GREY.getIndex());
+        style.setFillForegroundColor(HSSFColor.HSSFColorPredefined.BLUE_GREY.getIndex());
         styles.put(STYLE_MISSING, style);
 
         style = wb.createCellStyle();
-        style.setFillPattern(HSSFCellStyle.FINE_DOTS);
-        style.setFillBackgroundColor(HSSFColor.BLUE_GREY.index);
-        style.setFillForegroundColor(HSSFColor.BLUE_GREY.index);
+        style.setFillPattern(FillPatternType.FINE_DOTS);
+        style.setFillBackgroundColor(HSSFColor.HSSFColorPredefined.BLUE_GREY.getIndex());
+        style.setFillForegroundColor(HSSFColor.HSSFColorPredefined.BLUE_GREY.getIndex());
         style.setFont(font);
         styles.put(STYLE_MISSING_REVIEW, style);
 
@@ -332,8 +332,8 @@ public class MBExcelPersistencer extends MBPersistencer {
                         final String svalue = getStringValue(cell);
                         if (StringUtils.isNotEmpty(svalue) ||
                             // detect STYLE_MISSING
-                            cell.getCellStyle().getFillBackgroundColor() == HSSFColor.BLUE_GREY.index ||
-                            cell.getCellStyle().getFillForegroundColor() == HSSFColor.BLUE_GREY.index ||
+                            cell.getCellStyle().getFillBackgroundColor() == HSSFColor.HSSFColorPredefined.BLUE_GREY.getIndex() ||
+                            cell.getCellStyle().getFillForegroundColor() == HSSFColor.HSSFColorPredefined.BLUE_GREY.getIndex() ||
                             cell.getCellStyle().getFont(wb).getColor() == Font.COLOR_RED) {
                             MBText text = new MBText();
                             text.setLocale(each);
@@ -362,24 +362,24 @@ public class MBExcelPersistencer extends MBPersistencer {
     }
 
     private Object getValue(HSSFCell cell) {
-        return cell == null ? null : getValue(cell, cell.getCellType());
+        return cell == null ? null : getValue(cell, cell.getCellTypeEnum());
     }
 
-    private Object getValue(HSSFCell cell, int cellType) {
+    private Object getValue(HSSFCell cell, CellType cellType) {
         switch (cellType) {
-            case HSSFCell.CELL_TYPE_NUMERIC:
+            case NUMERIC:
                 if (HSSFDateUtil.isCellDateFormatted(cell)) {
                     return cell.getDateCellValue();
                 } else {
                     return cell.getNumericCellValue();
                 }
-            case HSSFCell.CELL_TYPE_FORMULA:
-                return getValue(cell, cell.getCachedFormulaResultType());
-            case HSSFCell.CELL_TYPE_BOOLEAN:
+            case FORMULA:
+                return getValue(cell, cell.getCachedFormulaResultTypeEnum());
+            case BOOLEAN:
                 return cell.getBooleanCellValue();
-            case HSSFCell.CELL_TYPE_STRING:
+            case STRING:
                 return cell.getStringCellValue();
-            case HSSFCell.CELL_TYPE_ERROR:
+            case ERROR:
                 return cell.getErrorCellValue();
             default:
                 return null;

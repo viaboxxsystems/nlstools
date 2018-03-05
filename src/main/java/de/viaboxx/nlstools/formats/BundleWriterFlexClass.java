@@ -4,7 +4,7 @@ import de.viaboxx.nlstools.model.MBBundle;
 import de.viaboxx.nlstools.model.MBEntry;
 import de.viaboxx.nlstools.model.MBText;
 import de.viaboxx.nlstools.util.FileUtils;
-import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.text.StringEscapeUtils;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Task;
 
@@ -16,10 +16,10 @@ import java.util.Iterator;
 import java.util.Set;
 
 /**
- * Description: <br/>
- * User: roman.stumm <br/>
- * Date: 12.10.2010 <br/>
- * Time: 12:14:13 <br/>
+ * Description: <br>
+ * User: roman.stumm <br>
+ * Date: 12.10.2010 <br>
+ * Time: 12:14:13 <br>
  * License: Apache 2.0
  */
 public class BundleWriterFlexClass extends BundleWriter {
@@ -171,7 +171,7 @@ public class BundleWriterFlexClass extends BundleWriter {
                 pw.print(" | ");
                 pw.print(xmpl.getLocale());
                 pw.print(" = ");
-                pw.print(StringEscapeUtils.escapeXml(xmpl.getValue()));
+                pw.print(StringEscapeUtils.escapeXml11(xmpl.getValue()));
             }
             pw.println(" */");
             pw.print("  public static const ");

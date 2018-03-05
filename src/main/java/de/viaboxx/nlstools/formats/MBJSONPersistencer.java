@@ -9,10 +9,10 @@ import de.viaboxx.nlstools.util.FileUtils;
 import java.io.*;
 
 /**
- * Description: Load/Save JSON Format with XStream<br/>
- * User: roman.stumm <br/>
- * Date: 14.06.2007 <br/>
- * Time: 15:29:50 <br/>
+ * Description: Load/Save JSON Format with XStream<br>
+ * User: roman.stumm <br>
+ * Date: 14.06.2007 <br>
+ * Time: 15:29:50 <br>
  * License: Apache 2.0
  */
 public class MBJSONPersistencer extends MBPersistencer {

@@ -14,8 +14,8 @@ import java.util.StringTokenizer;
 
 /**
  * Takes an XML bundle and adds new entries for the specified locales.
- * <br/>NEW (29.12.2010):<br/>
- * * Can handle XML and Excel files.<br/>
+ * <br>NEW (29.12.2010):<br>
+ * * Can handle XML and Excel files.<br>
  *
  * @author Simon Tiffert
  */
@@ -39,7 +39,6 @@ public class AddLocaleTask extends Task {
     /**
      * The xml file with the path name to write into
      *
-     * @return
      */
     public File getTo() {
         return to;
@@ -52,7 +51,6 @@ public class AddLocaleTask extends Task {
     /**
      * semicolon separated locale names
      *
-     * @return
      */
     public String getLocales() {
         return locales;

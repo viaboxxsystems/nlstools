@@ -19,10 +19,10 @@ import java.util.List;
  *
  * @see ListChangesTask to compare translation values
  *      <p/>
- *      <br/>NEW (29.12.2010):<br/>
+ *      <br>NEW (29.12.2010):<br>
  *      * Can handle XML and Excel files.
  *      <p/>
- *      <br/>
+ *      <br>
  *      Sample usage:
  *      &lt;compareBundles
  *      original=&quot;original/main-default.xml&quot;

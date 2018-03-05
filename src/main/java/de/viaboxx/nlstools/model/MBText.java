@@ -1,10 +1,10 @@
 package de.viaboxx.nlstools.model;
 
 /**
- * Description: <br/>
- * User: roman.stumm <br/>
- * Date: 14.06.2007 <br/>
- * Time: 15:22:00 <br/>
+ * Description: <br>
+ * User: roman.stumm <br>
+ * Date: 14.06.2007 <br>
+ * Time: 15:22:00 <br>
  * License: Apache 2.0
  */
 //@XStreamAlias("text")

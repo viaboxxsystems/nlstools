@@ -9,10 +9,10 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Description: <br/>
- * User: roman.stumm <br/>
- * Date: 14.06.2007 <br/>
- * Time: 15:21:45 <br/>
+ * Description: <br>
+ * User: roman.stumm <br>
+ * Date: 14.06.2007 <br>
+ * Time: 15:21:45 <br>
  * License: Apache 2.0
  */
 @XStreamAlias("bundles")
