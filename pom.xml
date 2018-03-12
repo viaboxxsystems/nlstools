@@ -11,7 +11,7 @@
   <groupId>de.viaboxx</groupId>
   <artifactId>nlstools</artifactId>
   <packaging>jar</packaging>
-  <version>2.6.9</version>
+  <version>2.6.10-SNAPSHOT</version>
   <name>I18n NLSTools</name>
   <description>Ant tasks for managing resource bundles with XML or Excel to generate files
     for Java, SQL, TypeScript, Groovy, Adobe Flex 
@@ -28,7 +28,7 @@
     <url>https://github.com/viaboxxsystems/nlstools</url>
     <connection>scm:git:https://github.com/viaboxxsystems/nlstools</connection>
     <developerConnection>scm:git:https://github.com/viaboxxsystems/nlstools</developerConnection>
-    <tag>nlstools-2.6.9</tag>
+    <tag>HEAD</tag>
   </scm>
   <developers>
     <developer>
