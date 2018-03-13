@@ -16,8 +16,8 @@ import java.io.*;
  * License: Apache 2.0
  */
 public class MBJSONPersistencer extends MBPersistencer {
-    static final XStream xstream;
-    static final XStream xstream_pretty;
+    public static final XStream xstream;
+    public static final XStream xstream_pretty;
 
     private boolean pretty;
     private boolean noTexts = false;

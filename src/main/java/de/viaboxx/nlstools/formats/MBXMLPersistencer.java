@@ -1,9 +1,7 @@
 package de.viaboxx.nlstools.formats;
 
 import com.thoughtworks.xstream.XStream;
-import de.viaboxx.nlstools.model.MBBundle;
-import de.viaboxx.nlstools.model.MBBundles;
-import de.viaboxx.nlstools.model.MBEntry;
+import de.viaboxx.nlstools.model.*;
 import de.viaboxx.nlstools.util.FileUtils;
 
 import java.io.*;
@@ -16,25 +14,30 @@ import java.io.*;
  * License: Apache 2.0
  */
 public class MBXMLPersistencer extends MBPersistencer {
-    static final XStream xstream = new XStream();
+    public static final XStream xstream;
     private boolean noTexts = false;
 
     static {
+        xstream = new XStream();
         configure(xstream);
     }
 
     static void configure(XStream xstream) {
-        xstream.processAnnotations(MBBundle.class);
-        xstream.processAnnotations(MBBundles.class);
-        xstream.processAnnotations(MBEntry.class);
-//        xstream.processAnnotations(MBText.class);
+        Class[] types = new Class[]{MBBundle.class, MBBundles.class, MBEntry.class, MBFile.class, MBText.class};
+        // security config
+        XStream.setupDefaultSecurity(xstream);
+        xstream.allowTypes(types);
+        xstream.allowTypeHierarchy(MBText.class);
+
+        // annotation processing
+        xstream.processAnnotations(types);
         xstream.registerConverter(new MBTextConverter());
     }
 
     public void save(MBBundles obj, File target) throws IOException {
         mkdirs(target);
         Writer out = FileUtils.openFileWriterUTF8(target);
-        if(noTexts) {
+        if (noTexts) {
             obj = obj.copy();
             obj.removeEntries();
         }
@@ -47,7 +50,7 @@ public class MBXMLPersistencer extends MBPersistencer {
 
     @Override
     public MBPersistencer withOptions(String options) {
-        if(options != null && options.contains("-no-texts")) noTexts = true;
+        if (options != null && options.contains("-no-texts")) noTexts = true;
         return super.withOptions(options);    // call super!
     }
 
