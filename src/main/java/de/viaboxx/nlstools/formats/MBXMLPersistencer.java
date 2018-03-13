@@ -27,7 +27,6 @@ public class MBXMLPersistencer extends MBPersistencer {
         // security config
         XStream.setupDefaultSecurity(xstream);
         xstream.allowTypes(types);
-        xstream.allowTypeHierarchy(MBText.class);
 
         // annotation processing
         xstream.processAnnotations(types);
