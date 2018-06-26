@@ -38,7 +38,6 @@ public class AddLocaleTask extends Task {
 
     /**
      * The xml file with the path name to write into
-     *
      */
     public File getTo() {
         return to;
@@ -50,7 +49,6 @@ public class AddLocaleTask extends Task {
 
     /**
      * semicolon separated locale names
-     *
      */
     public String getLocales() {
         return locales;
@@ -100,9 +98,11 @@ public class AddLocaleTask extends Task {
             }
 
             // write the combined locales into a file
-            if(loadedBundles != null) loadedBundles.sort();
-            persistencer.save(loadedBundles, to);
-            log("Writing to XML file " + to, Project.MSG_INFO);
+            if (loadedBundles != null) {
+                loadedBundles.sort();
+                MBPersistencer.saveFile(loadedBundles, to);
+                log("Writing to XML file " + to, Project.MSG_INFO);
+            }
         } catch (Exception e) {
             throw new BuildException(e);
         }
