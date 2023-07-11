@@ -9,7 +9,7 @@ The project nlstools is a Java project, built with maven2 or maven2, that contai
 How to compile the project from source
 =======================================
 Requirements:
-0. Sources require java1.5 or higher. (Tested with JDK 1.6.0, JDK 1.7, JDK 1.8)
+0. Sources require java1.8 or higher. (Tested with JDK JDK 1.8, JDK 11)
 1. Maven3 required
    Download and install maven from: http://maven.apache.org/
 2. Invoke maven from within one of the directories that contain a pom.xml file
