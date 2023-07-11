@@ -362,19 +362,19 @@ public class MBExcelPersistencer extends MBPersistencer {
     }
 
     private Object getValue(HSSFCell cell) {
-        return cell == null ? null : getValue(cell, cell.getCellTypeEnum());
+        return cell == null ? null : getValue(cell, cell.getCellType());
     }
 
     private Object getValue(HSSFCell cell, CellType cellType) {
         switch (cellType) {
             case NUMERIC:
-                if (HSSFDateUtil.isCellDateFormatted(cell)) {
+                if (DateUtil.isCellDateFormatted(cell)) {
                     return cell.getDateCellValue();
                 } else {
                     return cell.getNumericCellValue();
                 }
             case FORMULA:
-                return getValue(cell, cell.getCachedFormulaResultTypeEnum());
+                return getValue(cell, cell.getCachedFormulaResultType());
             case BOOLEAN:
                 return cell.getBooleanCellValue();
             case STRING:
